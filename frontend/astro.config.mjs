@@ -1,8 +1,18 @@
-// @ts-check
-import tailwind from "@astrojs/tailwind";
-import { defineConfig } from "astro/config";
+import node from '@astrojs/node';
+import tailwind from '@astrojs/tailwind';
+import { defineConfig } from 'astro/config';
+import { fileURLToPath } from 'url';
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind()]
+  output: 'server',
+  adapter: node({ mode: 'standalone' }),
+  integrations: [tailwind()],
+  vite: {
+    resolve: {
+      alias: {
+        '@contracts': fileURLToPath(new URL('../backend/src/contracts', import.meta.url)),
+      },
+    },
+  },
 });

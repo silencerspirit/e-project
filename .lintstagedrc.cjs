@@ -1,3 +1,3 @@
 module.exports = {
-  "{backend,frontend}/**/*.{js,jsx,ts,tsx,astro}": ["eslint --fix"]
+  "{backend,frontend,shared}/**/*.{js,jsx,ts,tsx,astro}": ["eslint --fix"]
 };

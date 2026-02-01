@@ -386,14 +386,17 @@ export interface ApiNavigationItemNavigationItem extends Struct.CollectionTypeSc
     draftAndPublish: true;
   };
   attributes: {
-    children: Schema.Attribute.Relation<'manyToOne', 'api::navigation-item.navigation-item'>;
+    children: Schema.Attribute.Relation<'oneToMany', 'api::navigation-item.navigation-item'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::navigation-item.navigation-item'> &
       Schema.Attribute.Private;
     order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<1>;
-    parent: Schema.Attribute.Relation<'oneToMany', 'api::navigation-item.navigation-item'>;
+    parent: Schema.Attribute.Relation<'manyToOne', 'api::navigation-item.navigation-item'>;
+    position: Schema.Attribute.Enumeration<['header', 'footer']> &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'header'>;
     publishedAt: Schema.Attribute.DateTime;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;

@@ -6,11 +6,13 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "start": "bun ./dist/server/entry.mjs",
     "astro": "astro",
     "check": "astro check"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.0",
+    "@astrojs/node": "^9.5.1",
     "@astrojs/tailwind": "^5.1.2",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.38",
