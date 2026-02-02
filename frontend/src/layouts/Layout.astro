@@ -1,9 +1,14 @@
 ---
-import '../styles/global.scss';
+import { getMenu } from '@/api';
+import '@/styles/global.scss';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+
+const { header, footer } = await getMenu();
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <meta
@@ -26,6 +31,8 @@ import '../styles/global.scss';
     <title>Astro Basics</title>
   </head>
   <body>
+    <Header menu={header} />
     <slot />
+    <Footer menu={footer} />
   </body>
 </html>

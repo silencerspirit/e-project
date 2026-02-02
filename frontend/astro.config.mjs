@@ -11,6 +11,7 @@ export default defineConfig({
   vite: {
     resolve: {
       alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
         '@contracts': fileURLToPath(new URL('../backend/src/contracts', import.meta.url)),
       },
     },
