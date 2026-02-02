@@ -22,7 +22,6 @@ function getTree(position: MenuPosition) {
 export default {
   async find(ctx: Context) {
     const [header, footer] = await Promise.all([getTree(MenuPosition.Header), getTree(MenuPosition.Footer)]);
-    console.log(header);
     ctx.body = parse(MenuSchema, { header, footer });
   },
 };
