@@ -1,7 +1,7 @@
-import { parse } from 'valibot';
+import { array, parse } from 'valibot';
 import { Context } from 'koa';
 import { DEFAULT_PAGINATE_LIMIT } from '@/utils';
-import { NewsQuerySchema, NewsListItemCollectionSchema } from '@/contracts/news';
+import { NewsQuerySchema, NewsListItemCollectionSchema, NewsListItemSchema } from '@/contracts/news';
 
 const baseQuery = {
   status: 'published',
@@ -40,6 +40,28 @@ export default {
       list,
       paginate: { page, total },
     });
+  },
+  async findNewest(context: Context) {
+    const list = await strapi.documents('api::news-item.news-item').findMany({
+      ...baseQuery,
+      sort: ['publishedDate:desc'],
+      start: 0,
+      limit: 2,
+      fields: ['title', 'description', 'slug', 'publishedDate', 'visible'],
+      populate: {
+        images: {
+          populate: {
+            image: {
+              fields: ['url', 'alternativeText'],
+            },
+          },
+        },
+      },
+    });
+
+    context.body = {
+      list: parse(array(NewsListItemSchema), list),
+    };
   },
   async findOneBySlug() {},
 };

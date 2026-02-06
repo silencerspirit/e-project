@@ -10,6 +10,14 @@ export default {
     },
     {
       method: 'GET',
+      path: '/news/newest',
+      handler: 'news.findNewest',
+      config: {
+        auth: false,
+      },
+    },
+    {
+      method: 'GET',
       path: '/news/:slug',
       handler: 'news.findOneBySlug',
       config: {

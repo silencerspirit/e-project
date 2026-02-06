@@ -11,7 +11,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc -p backend/tsconfig.json --noEmit && bun --cwd frontend run check",
-    "prepare": "husky"
+    "prepare": "husky",
+    "preinstall": "node -e \"const major=Number(process.versions.node.split('.')[0]); if (major<20){console.error('Node 20+ required. Current: '+process.versions.node); process.exit(1)}\""
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^7.18.0",
