@@ -1,0 +1,49 @@
+---
+import type { TNewsListItem } from '@contracts/news';
+
+interface Props {
+  list: TNewsListItem[];
+  class?: string;
+}
+
+const { list, class: className = '' } = Astro.props as Props;
+const items = list ?? [];
+
+const formatDate = (value?: string) =>
+  value ? new Date(value).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '';
+---
+
+<aside class={`${className}`}>
+  <div class="ui-card p-pad-md">
+    <div>
+      <h2 class="h4">Новости компании</h2>
+      <p class="text-mutedText caption">Новости компании и недвижимости</p>
+    </div>
+
+    <ul class="mt-pad-md space-y-pad-sm">
+      {
+        items.slice(0, 6).map((item) => (
+          <li class="ui-card hover:shadow-soft-2 p-pad-sm transition">
+            <a
+              href={`/news/${item.slug}`}
+              class="block"
+            >
+              <div class="text-accent caption">{formatDate(item.publishedDate)}</div>
+              <div class="body text-text mt-pad-xxs font-semibold">{item.title}</div>
+              {item.description ? <p class="text-text2 caption mt-pad-xxs">{item.description}</p> : null}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="mt-pad-md">
+      <a
+        href="/news"
+        class="btn btn-ghost min-h-btn-sm w-full"
+      >
+        Все новости
+      </a>
+    </div>
+  </div>
+</aside>
