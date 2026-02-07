@@ -1,5 +1,6 @@
 ---
-import type { TNewsListItem } from '@backend/contracts';
+import type { TNewsListItem } from '@contracts';
+import { ArrowRightIcon } from '@/assets/icons';
 
 interface Props {
   list: TNewsListItem[];
@@ -7,43 +8,55 @@ interface Props {
 }
 
 const { list, class: className = '' } = Astro.props as Props;
-const items = list ?? [];
 
 const formatDate = (value?: string) =>
   value ? new Date(value).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '';
 ---
 
-<aside class={`${className}`}>
-  <div class="ui-card p-pad-md">
-    <div>
-      <h2 class="h4">Новости компании</h2>
-      <p class="text-mutedText caption">Новости компании и недвижимости</p>
-    </div>
-
-    <ul class="mt-pad-md space-y-pad-sm">
-      {
-        items.slice(0, 6).map((item) => (
-          <li class="ui-card hover:shadow-soft-2 p-pad-sm transition">
-            <a
-              href={`/news/${item.slug}`}
-              class="block"
-            >
-              <div class="text-accent caption">{formatDate(item.publishedDate)}</div>
-              <div class="body text-text mt-pad-xxs font-semibold">{item.title}</div>
-              {item.shortDescription ? <p class="text-text2 caption mt-pad-xxs">{item.shortDescription}</p> : null}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-
-    <div class="mt-pad-md">
-      <a
-        href="/news"
-        class="btn btn-ghost min-h-btn-sm w-full"
-      >
-        Все новости
-      </a>
-    </div>
+<aside class={`${className} bg-grey-light rounded flex flex-col p-pad-md gap-grid-md self-start`}>
+  <div class="flex flex-col">
+    <h2 class="h1 font-bold uppercase">Новости</h2>
+    <h3 class="h4 font-semibold uppercase text-red">Новости компании</h3>
   </div>
+
+  <ul class="flex flex-col gap-grid-xxs">
+    {
+      list.map((item, i) => (
+        <li
+          class="flex flex-col"
+          class:list={{
+            'border-t border-white pt-grid-xxs': i > 0,
+          }}
+        >
+          <article class="flex flex-col">
+            <div class="inline-flex items-center">
+              <a
+                href={`/news/${item.slug}/`}
+                class="line-clamp-1 transition-colors hover:text-red"
+                aria-label={`Новость: ${item.title}`}
+              >
+                {item.title}
+              </a>
+              <time
+                class="h5 rounded bg-red px-pad-xxs py-pad-3xs leading-1 text-white"
+                datetime={item.publishedDate}
+              >
+                {formatDate(item.publishedDate)}
+              </time>
+            </div>
+
+            <p class="h5 line-clamp-2">{item.shortDescription}</p>
+          </article>
+        </li>
+      ))
+    }
+  </ul>
+
+  <a
+    href="/news/"
+    class="h4 inline-flex items-center gap-grid-3xs self-end font-bold transition-colors hover:text-red"
+  >
+    Читать все новости
+    <ArrowRightIcon class="h-sz-14" />
+  </a>
 </aside>

@@ -6,32 +6,44 @@ import Footer from '@/components/Footer.astro';
 import NewsLatest from '@/components/NewsLatest.astro';
 import Head from '@/components/head/Head.astro';
 
-const [{ header, footer }, { list: newsList }, config] = await Promise.all([
+interface Props {
+  withSidebar?: boolean;
+}
+
+const { withSidebar = true } = Astro.props as Props;
+
+const [{ header }, config, news] = await Promise.all([
   getMenu(),
-  getNewsNewest(),
   getSiteConfig(),
+  withSidebar ? getNewsNewest() : Promise.resolve({ list: [] }),
 ]);
+
+const isExistNewsList = news.list.length > 0;
 ---
 
 <!doctype html>
 <html lang="ru">
   <Head />
 
-  <body class="ui-container">
+  <body class="ui-container shadow-lg">
     <Header
       menu={header}
       config={config}
     />
-    <main class="my-pad-md grid grid-cols-12 gap-grid-sm rounded p-pad-sm shadow-lg">
-      <NewsLatest
-        class="col-span-3"
-        list={newsList}
-      />
-      <div class="col-span-9">
+    <main class="my-pad-md grid grow grid-cols-12 gap-grid-sm rounded py-pad-sm">
+      {
+        isExistNewsList && (
+          <NewsLatest
+            class="col-span-4"
+            list={news.list}
+          />
+        )
+      }
+      <div class={isExistNewsList ? 'col-span-8' : 'col-span-12'}>
         <slot />
       </div>
     </main>
 
-    <Footer menu={footer} />
+    <Footer menu={header} />
   </body>
 </html>

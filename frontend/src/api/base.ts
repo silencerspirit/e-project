@@ -1,4 +1,4 @@
-import { MenuSchema, SiteConfigSchema, type TMenu, type TSiteConfig } from '@backend/contracts';
+import { MenuSchema, SiteConfigSchema, type TMenu, type TSiteConfig } from '@contracts';
 import { parse } from 'valibot';
 import { cached, strapiFetch } from 'src/utils';
 import { BASE_CACHE_TIME_MS } from 'src/constants';

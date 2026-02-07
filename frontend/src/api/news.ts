@@ -1,4 +1,4 @@
-import type { TNewsListItem } from '@backend/contracts';
+import type { TNewsListItem } from '@contracts';
 import { cached, strapiFetch } from '@/utils';
 import { BASE_CACHE_TIME_MS } from '@/constants';
 

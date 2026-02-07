@@ -1,4 +1,4 @@
-import { DEFAULT_PAGINATE_LIMIT } from '@/utils';
+import { DEFAULT_PAGINATE_LIMIT } from '@/contracts';
 import { imagesPopulate, seoPopulate } from '@/populate';
 
 const baseQuery = {
@@ -7,6 +7,7 @@ const baseQuery = {
 } as const;
 
 const listFields = ['title', 'shortDescription', 'slug', 'publishedDate', 'visible'] as const;
+const NEWEST_NEWS_COUNT = 2;
 
 export default ({ strapi }) => ({
   async getList(page: number, limit = DEFAULT_PAGINATE_LIMIT) {
@@ -27,12 +28,12 @@ export default ({ strapi }) => ({
     return { list, total };
   },
 
-  async getNewest(limit = 2) {
+  async getNewest() {
     return strapi.documents('api::news-item.news-item').findMany({
       ...baseQuery,
       sort: ['publishedDate:desc'],
       start: 0,
-      limit,
+      limit: NEWEST_NEWS_COUNT,
       fields: listFields,
       populate: { ...imagesPopulate },
     });

@@ -15,12 +15,15 @@ export default {
       sans: ['Overpass', 'system-ui', 'sans-serif'],
     },
     letterSpacing,
+    lineHeight: {
+      '1': '1',
+    },
   },
   plugins: [
     plugin(({ addComponents, theme }) => {
       addComponents({
         ':root': getRoot(),
-        ...getFontComponents(theme),
+        ...getFontComponents(),
         ...getCustomComponents(theme),
       });
     }),

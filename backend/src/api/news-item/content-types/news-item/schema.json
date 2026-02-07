@@ -16,7 +16,7 @@
       "required": true
     },
     "shortDescription": {
-      "type": "string"
+      "type": "text"
     },
     "slug": {
       "type": "uid",

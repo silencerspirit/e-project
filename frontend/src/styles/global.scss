@@ -1,3 +1,23 @@
+@use "mixins.scss" as mixins;
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body,
+html {
+  color: theme('colors.black');
+}
+
+html {
+  @include mixins.custom-scroll-bar();
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+  width: 100%;
+  overflow: auto;
+}

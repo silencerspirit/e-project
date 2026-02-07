@@ -21,11 +21,25 @@ export interface SharedSeo extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedSliderItem extends Struct.ComponentSchema {
+  collectionName: 'components_shared_slider_items';
+  info: {
+    displayName: 'SliderItem';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    image: Schema.Attribute.Component<'shared.images', false> & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    url: Schema.Attribute.String;
+  };
+}
+
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'shared.images': SharedImages;
       'shared.seo': SharedSeo;
+      'shared.slider-item': SharedSliderItem;
     }
   }
 }

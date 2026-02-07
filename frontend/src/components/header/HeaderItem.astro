@@ -1,7 +1,7 @@
 ---
-import type { TNavigationItem } from '@backend/contracts';
+import type { TNavigationItem } from '@contracts';
 
-import TriangleRightIcon from '@/assets/triangle-right.svg';
+import { TriangleRightIcon } from '@/assets/icons';
 
 interface Props {
   item: TNavigationItem;
@@ -27,7 +27,7 @@ const isExternal = (url?: string) => typeof url === 'string' && /^https?:\/\//.t
     item.url ? (
       <a
         href={item.url}
-        class="focus-visible:ui-focus caption inline-flex w-full items-center transition-colors hover:text-red"
+        class="focus-visible:ui-focus h4 inline-flex w-full items-center transition-colors hover:text-red"
         class:list={{
           'px-pad-sm py-pad-xxs text-grey-soft': inner,
         }}

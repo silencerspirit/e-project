@@ -4,7 +4,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@backend/*": ["../backend/src/*"]
+      "@contracts": ["../backend/src/contracts"]
     }
   },
   "include": [".astro/types.d.ts", "**/*"],

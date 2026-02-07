@@ -17,21 +17,14 @@ export const designMap = {
       '5xl': '120px',
     },
     'media-font-size': {
-      '4xl': '48px', // hero h1 desktop
-      '3xl': '36px', // h1
-      xxl: '28px', // h2
-      xl: '22px', // h3
-      lg: '18px', // h4 / lead
-      md: '16px', // body
-      sm: '14px', // caption
-      xs: '12px', // small
-      xxs: '11px', // overline / hint
+      xl: '21px',
+      lg: '18px',
+      md: '16px',
+      sm: '14px',
+      xs: '12px',
+      xxs: '11px',
     },
     'media-line-height': {
-      '4xl': '56px',
-      '3xl': '44px',
-      xxl: '36px',
-      xl: '30px',
       lg: '26px',
       md: '24px',
       sm: '20px',
@@ -149,18 +142,29 @@ export const colors = {
 };
 
 export const getFontComponents = (): Record<string, unknown> => ({
-  '.light-title': {
-    fontWeight: 400,
-    lineHeight: 'var(--lh-md)',
+  '.h1': {
     fontSize: 'var(--font-xl)',
+    lineHeight: 'var(--lh-lg)',
   },
-  '.caption': {
-    lineHeight: 'var(--lh-xxs)',
+  '.h2': {
+    fontSize: 'var(--font-lg)',
+    lineHeight: 'var(--lh-md)',
+  },
+  '.h3': {
+    fontSize: 'var(--font-md)',
+    lineHeight: 'var(--lh-md)',
+  },
+  '.h4': {
     fontSize: 'var(--font-sm)',
+    lineHeight: 'var(--lh-sm)',
   },
-  '.description': {
-    lineHeight: 'var(--lh-xxs)',
+  '.h5': {
     fontSize: 'var(--font-xs)',
+    lineHeight: 'var(--lh-xs)',
+  },
+  '.h6': {
+    fontSize: 'var(--font-xxs)',
+    lineHeight: 'var(--lh-xxs)',
   },
 });
 

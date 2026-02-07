@@ -432,7 +432,7 @@ export interface ApiNewsItemNewsItem extends Struct.CollectionTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     publishedDate: Schema.Attribute.Date;
     seo: Schema.Attribute.Component<'shared.seo', false>;
-    shortDescription: Schema.Attribute.String;
+    shortDescription: Schema.Attribute.Text;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;

@@ -1,5 +1,5 @@
 ---
-import type { TNavigationItem } from '@backend/contracts';
+import type { TNavigationItem } from '@contracts';
 
 interface Props {
   menu: TNavigationItem[];
@@ -8,8 +8,48 @@ interface Props {
 const { menu } = Astro.props;
 ---
 
-<footer>
-  {menu}
-  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nostrum maxime, aperiam sed ullam, quidem ipsa consectetur quisquam
-  est nemo quaerat necessitatibus cumque! Fugiat perspiciatis, nulla quaerat odio porro nemo beatae?
+<footer class="footer">
+  <div class="footer__navigation flex justify-between bg-blue px-pad-sm py-pad-md text-white">
+    {
+      menu.map((item) => (
+        <ul>
+          <li>
+            <a
+              class="h4 transition-colors hover:text-red"
+              href={`${item.url}`}
+            >
+              {item.title}
+            </a>
+          </li>
+
+          {item.children.length > 0 ? (
+            <ul>
+              {item.children.map((subitem) => (
+                <li class="pl-pad-3xs">
+                  <a
+                    class="h5 transition-colors hover:text-red"
+                    href="#"
+                  >
+                    {subitem.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : undefined}
+        </ul>
+      ))
+    }
+  </div>
+
+  <div class="h4 py-pad-xs">
+    Альфа Риэлтинг © {new Date().getFullYear()}
+  </div>
 </footer>
+
+<style lang="scss">
+  .footer {
+    &__navigation {
+      margin-inline: calc(#{theme('spacing.pad-sm')} * -1);
+    }
+  }
+</style>

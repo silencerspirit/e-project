@@ -1,0 +1,18 @@
+@mixin custom-scroll-bar {
+  scrollbar-color: rgba(#C3BCB3, 0.5) transparent;
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(#C3BCB3, 0.5);
+    border-radius: 20px;
+  }
+}
