@@ -1,5 +1,5 @@
 ---
-import type { TNewsListItem } from '@contracts/news';
+import type { TNewsListItem } from '@backend/contracts';
 
 interface Props {
   list: TNewsListItem[];
@@ -30,7 +30,7 @@ const formatDate = (value?: string) =>
             >
               <div class="text-accent caption">{formatDate(item.publishedDate)}</div>
               <div class="body text-text mt-pad-xxs font-semibold">{item.title}</div>
-              {item.description ? <p class="text-text2 caption mt-pad-xxs">{item.description}</p> : null}
+              {item.shortDescription ? <p class="text-text2 caption mt-pad-xxs">{item.shortDescription}</p> : null}
             </a>
           </li>
         ))

@@ -1,16 +1,17 @@
 ---
-import type { TNavigationItem } from '@contracts/menu';
+import type { TNavigationItem, TSiteConfig } from '@backend/contracts';
 import MobileIcon from '@/assets/mobile.svg';
-
+import { formatPhone } from '@/helpers';
 import { Image } from 'astro:assets';
 import HeaderItem from './HeaderItem.astro';
 import HeaderSearch from './HeaderSearch.astro';
 
 interface Props {
   menu: TNavigationItem[];
+  config: TSiteConfig;
 }
 
-const { menu } = Astro.props as Props;
+const { menu, config } = Astro.props as Props;
 ---
 
 <header class="header flex flex-col">
@@ -28,10 +29,10 @@ const { menu } = Astro.props as Props;
       <div class="flex items-center justify-end gap-grid-3xs">
         <MobileIcon class="h-sz-20 min-w-sz-20 text-blue" />
         <a
-          href="tel:88007075192"
+          href={`tel:${config.phone}`}
           class="light-title whitespace-nowrap pt-pad-3xs text-grey-dark transition-colors hover:text-red"
         >
-          8 800 707 51 92
+          {formatPhone(config.phone)}
         </a>
       </div>
 

@@ -1,67 +1,51 @@
 import { array, parse } from 'valibot';
 import { Context } from 'koa';
-import { DEFAULT_PAGINATE_LIMIT } from '@/utils';
-import { NewsQuerySchema, NewsListItemCollectionSchema, NewsListItemSchema } from '@/contracts/news';
+import {
+  NewsQuerySchema,
+  NewsListItemCollectionSchema,
+  NewsListItemSchema,
+  NewsSlugSchema,
+  NewsFullItemSchema,
+} from '@/contracts/news';
+import { factories } from '@strapi/strapi';
 
-const baseQuery = {
-  status: 'published',
-  filters: { visible: true },
-} as const;
-
-export default {
+export default factories.createCoreController('api::news-item.news-item', ({ strapi }) => ({
   async find(context: Context) {
-    const { page } = parse(NewsQuerySchema, context.request.query);
-    const start = (Number(page) - 1) * DEFAULT_PAGINATE_LIMIT;
+    try {
+      const { page } = parse(NewsQuerySchema, context.request.query);
+      const { list, total } = await strapi.service('api::news.news').getList(page);
 
-    const [list, total] = await Promise.all([
-      strapi.documents('api::news-item.news-item').findMany({
-        ...baseQuery,
-        sort: ['publishedDate:asc'],
-        start,
-        limit: DEFAULT_PAGINATE_LIMIT,
-        fields: ['title', 'description', 'slug', 'publishedDate', 'visible'],
-        populate: {
-          seo: {
-            fields: ['metaTitle', 'metaDescription'],
-          },
-          images: {
-            populate: {
-              image: {
-                fields: ['url', 'alternativeText'],
-              },
-            },
-          },
-        },
-      }),
-      strapi.documents('api::news-item.news-item').count(baseQuery),
-    ]);
-
-    context.body = parse(NewsListItemCollectionSchema, {
-      list,
-      paginate: { page, total },
-    });
+      return parse(NewsListItemCollectionSchema, {
+        list,
+        paginate: { page, total },
+      });
+    } catch (error) {
+      return context.badRequest('Invalid NewsListItemCollectionSchema', { error });
+    }
   },
-  async findNewest(context: Context) {
-    const list = await strapi.documents('api::news-item.news-item').findMany({
-      ...baseQuery,
-      sort: ['publishedDate:desc'],
-      start: 0,
-      limit: 2,
-      fields: ['title', 'description', 'slug', 'publishedDate', 'visible'],
-      populate: {
-        images: {
-          populate: {
-            image: {
-              fields: ['url', 'alternativeText'],
-            },
-          },
-        },
-      },
-    });
 
-    context.body = {
-      list: parse(array(NewsListItemSchema), list),
-    };
+  async findNewest() {
+    const list = await strapi.service('api::news.news').getNewest();
+    try {
+      return {
+        list: parse(array(NewsListItemSchema), list),
+      };
+    } catch (error) {
+      return error;
+    }
   },
-  async findOneBySlug() {},
-};
+
+  async findOneBySlug(context: Context) {
+    try {
+      const { slug } = parse(NewsSlugSchema, context.params);
+
+      if (!slug) return context.badRequest('Slug is required');
+
+      const item = await strapi.service('api::news.news').getBySlug(slug);
+
+      return parse(NewsFullItemSchema, item);
+    } catch (error) {
+      return error;
+    }
+  },
+}));

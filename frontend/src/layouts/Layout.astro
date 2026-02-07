@@ -1,12 +1,16 @@
 ---
-import { getMenu, getNewsNewest } from '@/api';
+import { getMenu, getNewsNewest, getSiteConfig } from '@/api';
 import '@/styles/global.scss';
 import Header from '@/components/header/Header.astro';
 import Footer from '@/components/Footer.astro';
 import NewsLatest from '@/components/NewsLatest.astro';
 import Head from '@/components/head/Head.astro';
 
-const [{ header, footer }, { list: newsList }] = await Promise.all([getMenu(), getNewsNewest()]);
+const [{ header, footer }, { list: newsList }, config] = await Promise.all([
+  getMenu(),
+  getNewsNewest(),
+  getSiteConfig(),
+]);
 ---
 
 <!doctype html>
@@ -14,7 +18,10 @@ const [{ header, footer }, { list: newsList }] = await Promise.all([getMenu(), g
   <Head />
 
   <body class="ui-container">
-    <Header menu={header} />
+    <Header
+      menu={header}
+      config={config}
+    />
     <main class="my-pad-md grid grid-cols-12 gap-grid-sm rounded p-pad-sm shadow-lg">
       <NewsLatest
         class="col-span-3"
