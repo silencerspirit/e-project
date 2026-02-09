@@ -8,9 +8,12 @@ import Head from '@/components/head/Head.astro';
 
 interface Props {
   withSidebar?: boolean;
+  metaTitle?: string;
+  metaDescription?: string;
+  openGraphImage?: string;
 }
 
-const { withSidebar = true } = Astro.props as Props;
+const { withSidebar = true, metaTitle, metaDescription, openGraphImage } = Astro.props as Props;
 
 const [{ header }, config, news] = await Promise.all([
   getMenu(),
@@ -23,7 +26,11 @@ const isExistNewsList = news.list.length > 0;
 
 <!doctype html>
 <html lang="ru">
-  <Head />
+  <Head
+    title={metaTitle}
+    description={metaDescription}
+    ogImage={openGraphImage}
+  />
 
   <body class="ui-container shadow-lg">
     <Header

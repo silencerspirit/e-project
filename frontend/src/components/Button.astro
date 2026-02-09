@@ -1,0 +1,23 @@
+---
+import type { JSX } from 'astro/jsx-runtime';
+
+interface Props extends JSX.ButtonHTMLAttributes {
+  size?: 'md' | 'lg';
+}
+
+const { size = 'md', class: className, ...props } = Astro.props as Props;
+const classes = [
+  'h6 rounded bg-red uppercase text-white transition-colors hover:bg-blue',
+  size === 'lg' ? 'px-pad-sm py-pad-xxs' : 'px-pad-sm py-pad-3xs',
+  className,
+]
+  .filter(Boolean)
+  .join(' ');
+---
+
+<button
+  class={classes}
+  {...props}
+>
+  <slot />
+</button>

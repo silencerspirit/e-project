@@ -21,3 +21,15 @@ body {
   width: 100%;
   overflow: auto;
 }
+
+
+.raw-html-embed {
+  @include mixins.h();
+  @include mixins.p();
+  @include mixins.ul();
+  @include mixins.ol();
+  @include mixins.blockquote();
+  @include mixins.link();
+  @include mixins.img();
+  @include mixins.button();
+}

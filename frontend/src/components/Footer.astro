@@ -23,18 +23,20 @@ const { menu } = Astro.props;
           </li>
 
           {item.children.length > 0 ? (
-            <ul>
-              {item.children.map((subitem) => (
-                <li class="pl-pad-3xs">
-                  <a
-                    class="h5 transition-colors hover:text-red"
-                    href="#"
-                  >
-                    {subitem.title}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <li>
+              <ul>
+                {item.children.map((subitem) => (
+                  <li class="pl-pad-3xs">
+                    <a
+                      class="h5 transition-colors hover:text-red"
+                      href="#"
+                    >
+                      {subitem.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </li>
           ) : undefined}
         </ul>
       ))

@@ -1,0 +1,71 @@
+---
+import type { TImage } from '@contracts';
+import type { JSX } from 'astro/jsx-runtime';
+
+interface Props extends JSX.ImgHTMLAttributes {
+  image: TImage;
+  class?: string;
+}
+
+const { image, class: className = '', loading = 'lazy', fetchpriority = 'auto', ...rest } = Astro.props;
+
+const alt = image.alternativeText ?? '';
+const imgId = `cp_${Math.random().toString(36).slice(2)}`;
+
+const srcMobile = image.formats.small || image.formats.thumbnail;
+const srcTablet = image.formats.medium || image.formats.small || image.formats.thumbnail;
+const srcDesktop = image.formats.large || image.url;
+const srcPlaceholder = image.formats.thumbnail || image.url;
+---
+
+<div class={`common-picture relative overflow-hidden ${className}`}>
+  <picture class="block h-full w-full">
+    <source
+      media="(max-width: 768px)"
+      srcset={srcMobile}
+    />
+    <source
+      media="(max-width: 1024px)"
+      srcset={srcTablet}
+    />
+    <img
+      id={imgId}
+      class="common-picture__img absolute inset-0 h-full w-full object-cover"
+      src={srcDesktop}
+      alt={alt}
+      loading={loading}
+      decoding="async"
+      fetchpriority={fetchpriority}
+      onload={`this.classList.add('common-picture__img--visible')`}
+      {...rest}
+    />
+  </picture>
+
+  <img
+    class="common-picture__placeholder absolute inset-0 h-full w-full object-cover"
+    src={srcPlaceholder}
+    alt={alt}
+    aria-hidden="true"
+    loading={loading}
+    fetchpriority={fetchpriority}
+    decoding="async"
+    {...rest}
+  />
+</div>
+
+<style lang="scss">
+  .common-picture {
+    &__img {
+      opacity: 0;
+
+      &--visible {
+        opacity: 1;
+      }
+    }
+
+    &__placeholder {
+      filter: blur(14px);
+      z-index: -1;
+    }
+  }
+</style>

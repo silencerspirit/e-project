@@ -5,3 +5,15 @@ export function formatPhone(input: string): string {
     ' ',
   );
 }
+
+export function formatDate(value: string): string {
+  return new Date(value).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' });
+}
+
+export function isMobileUserAgent(): boolean {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(window?.navigator?.userAgent);
+}
+
+export function isHTMLElement(el: unknown): el is HTMLElement {
+  return el instanceof HTMLElement;
+}

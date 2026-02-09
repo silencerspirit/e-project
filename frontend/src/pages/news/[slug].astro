@@ -1,8 +1,52 @@
 ---
+import { getNewsBySlug } from '@/api';
+import { parse } from 'valibot';
 import Layout from '@/layouts/Layout.astro';
+import SmartImage from '@/components/smart-image/SmartImage.astro';
+import { NewsSlugSchema } from '@contracts';
+import { formatDate } from '@/helpers';
+import ShareButton from '@/components/share-button/ShareButton.astro';
+
+const { slug } = parse(NewsSlugSchema, Astro.params);
+const newsItem = await getNewsBySlug(slug);
+
+const [image] = newsItem.images;
+
+const metaTitle: string = newsItem.seo?.metaTitle ?? '';
+const metaDescription: string = newsItem.seo?.metaDescription ?? '';
+const openGraphImage: string = image?.url ?? '';
 ---
 
-<Layout withSidebar={false}>
-  Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident nobis voluptates, ipsa laborum ipsum illo totam
-  molestias recusandae, atque quasi cumque ipsam et? Iste sit totam, minus beatae quis aperiam.
+<Layout
+  withSidebar={false}
+  metaTitle={metaTitle}
+  metaDescription={metaDescription}
+  openGraphImage={openGraphImage}
+>
+  <article>
+    <div class="mb-pad-lg flex flex-col gap-grid-xs">
+      {
+        newsItem.publishedDate ? (
+          <time
+            class="h5 self-start rounded bg-red px-pad-xxs py-pad-3xs leading-1 text-white"
+            datetime={newsItem.publishedDate}
+          >
+            {formatDate(newsItem.publishedDate)}
+          </time>
+        ) : undefined
+      }
+      <h1 class="h1">{newsItem.title}</h1>
+    </div>
+
+    <SmartImage
+      class="mb-pad-lg aspect-video"
+      image={image}
+      fetchpriority={'high'}
+      loading={'eager'}
+    />
+
+    <Fragment set:html={newsItem.content} />
+
+    <ShareButton class:list={['mt-grid-md']} />
+  </article>
 </Layout>
