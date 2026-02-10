@@ -1,5 +1,5 @@
 import { DEFAULT_PAGINATE_LIMIT } from '@/contracts';
-import { imagesPopulate, seoPopulate } from '@/populate';
+import { imagePopulate, seoPopulate } from '@/populate';
 
 const baseQuery = {
   status: 'published',
@@ -20,7 +20,7 @@ export default ({ strapi }) => ({
         start,
         limit,
         fields: listFields,
-        populate: { ...seoPopulate, ...imagesPopulate },
+        populate: { ...seoPopulate, ...imagePopulate },
       }),
       strapi.documents('api::news-item.news-item').count(baseQuery),
     ]);
@@ -35,7 +35,7 @@ export default ({ strapi }) => ({
       start: 0,
       limit: NEWEST_NEWS_COUNT,
       fields: listFields,
-      populate: { ...imagesPopulate },
+      populate: { ...imagePopulate },
     });
   },
 
@@ -46,7 +46,7 @@ export default ({ strapi }) => ({
       filters: {
         slug,
       },
-      populate: { ...seoPopulate, ...imagesPopulate },
+      populate: { ...seoPopulate, ...imagePopulate },
     });
 
     return item;

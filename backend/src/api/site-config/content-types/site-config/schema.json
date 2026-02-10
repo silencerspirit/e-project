@@ -4,7 +4,7 @@
   "info": {
     "singularName": "site-config",
     "pluralName": "site-configs",
-    "displayName": "Site Config"
+    "displayName": "Config"
   },
   "options": {
     "draftAndPublish": true

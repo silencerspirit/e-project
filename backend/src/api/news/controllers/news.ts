@@ -13,6 +13,7 @@ export default factories.createCoreController('api::news-item.news-item', ({ str
   async find(context: Context) {
     try {
       const { page } = parse(NewsQuerySchema, context.request.query);
+
       const { list, total } = await strapi.service('api::news.news').getList(page);
 
       return parse(NewsListItemCollectionSchema, {
@@ -20,7 +21,7 @@ export default factories.createCoreController('api::news-item.news-item', ({ str
         paginate: { page, total },
       });
     } catch (error) {
-      return context.badRequest('Invalid NewsListItemCollectionSchema', { error });
+      return error;
     }
   },
 

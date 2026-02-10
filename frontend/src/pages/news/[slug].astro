@@ -4,17 +4,15 @@ import { parse } from 'valibot';
 import Layout from '@/layouts/Layout.astro';
 import SmartImage from '@/components/smart-image/SmartImage.astro';
 import { NewsSlugSchema } from '@contracts';
-import { formatDate } from '@/helpers';
-import ShareButton from '@/components/share-button/ShareButton.astro';
+import Datetime from '@/components/ui/datetime/Datetime.astro';
+import ShareButton from '@/components/ui/share-button/ShareButton.astro';
 
 const { slug } = parse(NewsSlugSchema, Astro.params);
 const newsItem = await getNewsBySlug(slug);
 
-const [image] = newsItem.images;
-
 const metaTitle: string = newsItem.seo?.metaTitle ?? '';
 const metaDescription: string = newsItem.seo?.metaDescription ?? '';
-const openGraphImage: string = image?.url ?? '';
+const openGraphImage: string = newsItem.image?.url ?? '';
 ---
 
 <Layout
@@ -25,22 +23,16 @@ const openGraphImage: string = image?.url ?? '';
 >
   <article>
     <div class="mb-pad-lg flex flex-col gap-grid-xs">
-      {
-        newsItem.publishedDate ? (
-          <time
-            class="h5 self-start rounded bg-red px-pad-xxs py-pad-3xs leading-1 text-white"
-            datetime={newsItem.publishedDate}
-          >
-            {formatDate(newsItem.publishedDate)}
-          </time>
-        ) : undefined
-      }
+      <Datetime
+        class="self-start"
+        datetime={newsItem.publishedDate}
+      />
       <h1 class="h1">{newsItem.title}</h1>
     </div>
 
     <SmartImage
       class="mb-pad-lg aspect-video"
-      image={image}
+      image={newsItem.image}
       fetchpriority={'high'}
       loading={'eager'}
     />

@@ -1,0 +1,74 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { getNewsList, getNewsPage } from '@/api';
+import SmartImage from '@/components/smart-image/SmartImage.astro';
+import Paginate from '@/components/ui/paginate/Paginate.astro';
+import { parse } from 'valibot';
+import { NewsQuerySchema } from '@contracts';
+import Datetime from '@/components/ui/datetime/Datetime.astro';
+
+const params = Object.fromEntries(Astro.url.searchParams.entries());
+const query = parse(NewsQuerySchema, params);
+
+const [{ list, paginate }, { seo }] = await Promise.all([getNewsList(query), getNewsPage()]);
+
+const metaTitle: string = seo?.metaTitle ?? '';
+const metaDescription: string = seo?.metaDescription ?? '';
+---
+
+<Layout
+  withSidebar={false}
+  metaTitle={metaTitle}
+  metaDescription={metaDescription}
+>
+  <section class="news flex h-full flex-col gap-grid-md">
+    <h1 class="h1 font-bold uppercase">Новости</h1>
+
+    <div class="custom-grid">
+      {
+        list.map((item) => {
+          return (
+            <a
+              href={`/news/${item.slug}`}
+              class="news__item col-span-4 flex flex-col gap-grid-xxs"
+            >
+              <figure class="aspect-video overflow-hidden rounded">
+                <SmartImage
+                  class="news__item-img h-full w-full transition-transform"
+                  image={item.image}
+                />
+              </figure>
+              <Datetime
+                class="self-start"
+                datetime={item.publishedDate}
+              />
+              <h3 class="news__item-title h3 line-clamp-2 font-bold transition-colors">{item.title}</h3>
+              <p class="h4 line-clamp-3">{item.shortDescription}</p>
+            </a>
+          );
+        })
+      }
+    </div>
+
+    <Paginate
+      class="mt-auto"
+      paginate={paginate}
+    />
+  </section>
+</Layout>
+
+<style lang="scss">
+  .news {
+    $p: &;
+
+    &__item-title {
+      #{$p}__item:hover & {
+        color: theme('colors.red');
+      }
+    }
+
+    :global(.news__item:hover .news__item-img) {
+      transform: scale(1.05);
+    }
+  }
+</style>

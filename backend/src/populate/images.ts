@@ -5,3 +5,11 @@ export const imagesPopulate = {
     },
   },
 } as const;
+
+export const imagePopulate = {
+  image: {
+    populate: {
+      image: true,
+    },
+  },
+} as const;

@@ -15,7 +15,7 @@ const NewsListItemShape = {
   slug: string(),
   visible: boolean(),
   publishedDate: optional(string()),
-  images: array(ImageTransformScheme),
+  image: ImageTransformScheme,
 } as const;
 
 export const NewsListItemSchema = object(NewsListItemShape);

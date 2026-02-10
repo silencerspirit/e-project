@@ -30,10 +30,11 @@
     "publishedDate": {
       "type": "date"
     },
-    "images": {
+    "image": {
       "type": "component",
       "component": "shared.images",
-      "repeatable": true
+      "repeatable": false,
+      "required": true
     },
     "seo": {
       "type": "component",

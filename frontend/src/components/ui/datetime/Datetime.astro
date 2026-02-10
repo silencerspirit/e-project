@@ -1,0 +1,22 @@
+---
+import { formatDate } from '@/helpers';
+import type { JSX } from 'astro/jsx-runtime';
+
+interface Props extends JSX.TimeHTMLAttributes {
+  datetime?: string;
+}
+
+const { datetime, class: className, ...attributes } = Astro.props as Props;
+---
+
+{
+  datetime ? (
+    <time
+      {...attributes}
+      class:list={['h5 rounded bg-red px-pad-xxs py-pad-3xs leading-1 text-white', className]}
+      datetime={datetime}
+    >
+      {formatDate(datetime)}
+    </time>
+  ) : undefined
+}
