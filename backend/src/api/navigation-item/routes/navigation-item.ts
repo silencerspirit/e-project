@@ -1,7 +1,17 @@
-/**
- * navigation-item router
- */
+import type { Core } from '@strapi/strapi';
 
-import { factories } from '@strapi/strapi';
+const config: Core.RouterConfig = {
+  type: 'content-api',
+  routes: [
+    {
+      method: 'GET',
+      path: '/menu',
+      handler: 'navigation-item.getMenu',
+      config: {
+        auth: false,
+      },
+    },
+  ],
+};
 
-export default factories.createCoreRouter('api::navigation-item.navigation-item');
+export default config;

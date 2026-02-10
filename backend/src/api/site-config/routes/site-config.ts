@@ -1,4 +1,7 @@
-export default {
+import { Core } from '@strapi/strapi';
+
+const config: Core.RouterConfig = {
+  type: 'content-api',
   routes: [
     {
       method: 'GET',
@@ -10,3 +13,5 @@ export default {
     },
   ],
 };
+
+export default config;
