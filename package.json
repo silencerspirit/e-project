@@ -9,7 +9,8 @@
     "install:all": "bun install && bun install --cwd backend && bun install --cwd frontend",
     "dev": "bunx concurrently -n backend,frontend -c blue,green \"bun --cwd backend develop\" \"bun --cwd frontend dev\"",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint:fix": "eslint --fix",
+    "pre-commit": "lint-staged",
     "typecheck": "tsc -p backend/tsconfig.json --noEmit && bun --cwd frontend run check",
     "prepare": "husky",
     "preinstall": "node -e \"const major=Number(process.versions.node.split('.')[0]); if (major<20){console.error('Node 20+ required. Current: '+process.versions.node); process.exit(1)}\""
@@ -23,6 +24,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-astro": "^1.2.2",
     "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
     "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
     "prettier": "^3.3.3",

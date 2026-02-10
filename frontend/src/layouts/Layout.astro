@@ -1,10 +1,12 @@
 ---
 import { getMenu, getNewsNewest, getSiteConfig } from '@/api';
-import '@/styles/global.scss';
-import Header from '@/components/header/Header.astro';
+
 import Footer from '@/components/Footer.astro';
-import NewsLatest from '@/components/NewsLatest.astro';
 import Head from '@/components/head/Head.astro';
+import Header from '@/components/header/Header.astro';
+import NewsLatest from '@/components/NewsLatest.astro';
+
+import '@/styles/global.scss';
 
 interface Props {
   withSidebar?: boolean;

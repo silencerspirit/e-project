@@ -1,7 +1,7 @@
 import { MenuSchema, SiteConfigSchema, type TMenu, type TSiteConfig } from '@contracts';
-import { parse } from 'valibot';
-import { cached, strapiFetch } from 'src/utils';
 import { BASE_CACHE_TIME_MS } from 'src/constants';
+import { cached, strapiFetch } from 'src/utils';
+import { parse } from 'valibot';
 
 export function getMenu(): Promise<TMenu> {
   return cached('/api/menu', BASE_CACHE_TIME_MS, async () => {

@@ -1,6 +1,7 @@
 import type { IPage, TNewsFullItem, TNewsListItem, TNewsListItemCollection, TNewsQuery } from '@contracts';
-import { cached, strapiFetch } from '@/utils';
+
 import { BASE_CACHE_TIME_MS } from '@/constants';
+import { cached, strapiFetch } from '@/utils';
 
 export function getNewsNewest(): Promise<{ list: TNewsListItem[] }> {
   return cached('/api/news/newest', BASE_CACHE_TIME_MS, async () => {

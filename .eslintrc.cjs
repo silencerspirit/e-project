@@ -4,7 +4,7 @@ module.exports = {
     es2022: true,
   },
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'simple-import-sort'],
   extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
   ignorePatterns: [
     '**/node_modules/**',
@@ -29,6 +29,48 @@ module.exports = {
     {
       files: ['frontend/**/*.{js,ts,astro}'],
       env: { browser: true },
+      rules: {
+        'sort-imports': 'off',
+        'simple-import-sort/imports': [
+          'error',
+          {
+            groups: [
+              ['^\\u0000'],
+              ['^node:'],
+              ['^@?\\w'],
+              ['^@/(?!.*\\.astro$).+'],
+              ['^@/.+\\.astro$'],
+              [
+                '^\\.\\.(?!/?$)(?!.*\\.astro$)',
+                '^\\./(?=.*/)(?!/?$)(?!.*\\.astro$)',
+                '^\\.(?!/?$)(?!.*\\.astro$)',
+                '^\\./?$',
+              ],
+              ['^\\.{1,2}/.+\\.astro$'],
+              ['^.+\\.s?css$'],
+            ],
+          },
+        ],
+        'simple-import-sort/exports': 'error',
+        'no-restricted-syntax': [
+          'error',
+          {
+            selector:
+              "Property[key.type='Identifier'][key.name='link'][value.type='Literal'][value.value=/^\\/(?!$).+[^\\/]$/]",
+            message: "Local 'link' values must end with a trailing slash (/). Use '/' for root.",
+          },
+          {
+            selector:
+              "JSXAttribute[name.name='href'][value.type='Literal'][value.value=/^\\/(?!$).+[^\\/]$/][value.value!=/\\.[a-zA-Z0-9]+$/]",
+            message: "Local 'href' values must end with a trailing slash (/). Use '/' for root.",
+          },
+          {
+            selector:
+              "JSXAttribute[name.name='href'][value.type='JSXExpressionContainer'][value.expression.type='TemplateLiteral'][value.expression.quasis.0.value.raw=/^\\//][value.expression.quasis.1.value.raw!=/\\/$/][value.expression.quasis.1.value.raw!=/\\.[a-zA-Z0-9]+$/]",
+            message: "Local template 'href' values must end with a trailing slash (/). Example: `/news/${slug}/`.",
+          },
+        ],
+      },
     },
     {
       files: ['frontend/**/*.astro'],
@@ -37,7 +79,7 @@ module.exports = {
         parser: '@typescript-eslint/parser',
         extraFileExtensions: ['.astro'],
       },
-      plugins: ['astro'],
+      plugins: ['astro', 'simple-import-sort'],
       extends: ['plugin:astro/recommended', 'plugin:prettier/recommended'],
       rules: {
         'prettier/prettier': [

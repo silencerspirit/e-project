@@ -1,12 +1,14 @@
 ---
-import { getNewsBySlug } from '@/api';
-import { parse } from 'valibot';
-import Layout from '@/layouts/Layout.astro';
-import SmartImage from '@/components/smart-image/SmartImage.astro';
 import { NewsSlugSchema } from '@contracts';
+import { parse } from 'valibot';
+
+import { getNewsBySlug } from '@/api';
+
+import SmartImage from '@/components/smart-image/SmartImage.astro';
+import Breadcrumbs, { type IBreadcrumbItem } from '@/components/ui/breadcrumbs/Breadcrumbs.astro';
 import Datetime from '@/components/ui/datetime/Datetime.astro';
 import ShareButton from '@/components/ui/share-button/ShareButton.astro';
-import Breadcrumbs, { type IBreadcrumbItem } from '@/components/ui/breadcrumbs/Breadcrumbs.astro';
+import Layout from '@/layouts/Layout.astro';
 
 const { slug } = parse(NewsSlugSchema, Astro.params);
 const newsItem = await getNewsBySlug(slug);

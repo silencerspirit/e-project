@@ -1,12 +1,14 @@
 ---
-import Layout from '@/layouts/Layout.astro';
-import { getNewsList, getNewsPage } from '@/api';
-import SmartImage from '@/components/smart-image/SmartImage.astro';
-import Paginate from '@/components/ui/paginate/Paginate.astro';
-import { parse } from 'valibot';
 import { NewsQuerySchema } from '@contracts';
-import Datetime from '@/components/ui/datetime/Datetime.astro';
+import { parse } from 'valibot';
+
+import { getNewsList, getNewsPage } from '@/api';
+
+import SmartImage from '@/components/smart-image/SmartImage.astro';
 import Breadcrumbs, { type IBreadcrumbItem } from '@/components/ui/breadcrumbs/Breadcrumbs.astro';
+import Datetime from '@/components/ui/datetime/Datetime.astro';
+import Paginate from '@/components/ui/paginate/Paginate.astro';
+import Layout from '@/layouts/Layout.astro';
 
 const params = Object.fromEntries(Astro.url.searchParams.entries());
 const query = parse(NewsQuerySchema, params);
@@ -37,7 +39,7 @@ const breadcrumbs: IBreadcrumbItem[] = [{ label: 'Главная', link: '/' }, 
         list.map((item, i) => {
           return (
             <a
-              href={`/news/${item.slug}`}
+              href={`/news/${item.slug}/`}
               class="news__item col-span-4 flex flex-col gap-grid-xxs"
             >
               <figure class="aspect-video overflow-hidden rounded">
