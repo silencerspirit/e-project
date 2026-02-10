@@ -8,8 +8,8 @@ interface Props {
 const { menu } = Astro.props;
 ---
 
-<footer class="footer">
-  <div class="footer__navigation flex justify-between bg-blue px-pad-sm py-pad-md text-white">
+<footer class="footer negative-x-margin shadow-lg">
+  <div class="flex justify-between bg-blue px-pad-sm py-pad-md text-white">
     {
       menu.map((item) => (
         <ul>
@@ -43,15 +43,7 @@ const { menu } = Astro.props;
     }
   </div>
 
-  <div class="h4 py-pad-xs">
+  <div class="h4 px-pad-sm py-pad-xs">
     Альфа Риэлтинг © {new Date().getFullYear()}
   </div>
 </footer>
-
-<style lang="scss">
-  .footer {
-    &__navigation {
-      margin-inline: calc(#{theme('spacing.pad-sm')} * -1);
-    }
-  }
-</style>

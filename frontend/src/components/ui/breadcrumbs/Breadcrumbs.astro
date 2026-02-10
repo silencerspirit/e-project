@@ -1,0 +1,54 @@
+---
+import type { JSX } from 'astro/jsx-runtime';
+
+export interface IBreadcrumbItem {
+  label: string;
+  link?: string;
+}
+
+interface Props extends JSX.HTMLAttributes {
+  breadcrumbs: IBreadcrumbItem[];
+  separator?: string;
+}
+
+const { breadcrumbs, separator = '/', class: className, ...attributes } = Astro.props as Props;
+---
+
+{
+  breadcrumbs.length > 0 && (
+    <nav
+      aria-label="Хлебные крошки"
+      class:list={['negative-x-margin mt-pad-md rounded px-pad-sm shadow-md', className]}
+      {...attributes}
+    >
+      <ol class="h4 flex">
+        {breadcrumbs.map((item, index) => {
+          const isLast = index === breadcrumbs.length - 1;
+          const isCurrent = !item.link || isLast;
+
+          return (
+            <li class="flex items-center gap-grid-3xs py-grid-3xs pr-grid-3xs">
+              {isCurrent ? (
+                <span
+                  class="line-clamp-1 text-grey-soft"
+                  aria-current="page"
+                >
+                  {item.label}
+                </span>
+              ) : (
+                <a
+                  href={item.link}
+                  class="py-pad-3xs text-black transition-colors hover:text-red"
+                >
+                  {item.label}
+                </a>
+              )}
+
+              {!isLast && <span aria-hidden="true">{separator}</span>}
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  )
+}

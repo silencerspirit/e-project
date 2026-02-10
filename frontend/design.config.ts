@@ -174,6 +174,9 @@ export const getCustomComponents = (theme: PluginAPI['theme']): Record<string, u
     margin: '0 auto',
     paddingInline: theme('spacing.pad-sm'),
   },
+  '.negative-x-margin': {
+    marginInline: 'calc(var(--space-sm) * -1)',
+  },
   '.custom-grid': {
     display: 'grid',
     gridTemplateColumns: 'repeat(12, minmax(0, 1fr))',

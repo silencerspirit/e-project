@@ -6,6 +6,7 @@ import Paginate from '@/components/ui/paginate/Paginate.astro';
 import { parse } from 'valibot';
 import { NewsQuerySchema } from '@contracts';
 import Datetime from '@/components/ui/datetime/Datetime.astro';
+import Breadcrumbs, { type IBreadcrumbItem } from '@/components/ui/breadcrumbs/Breadcrumbs.astro';
 
 const params = Object.fromEntries(Astro.url.searchParams.entries());
 const query = parse(NewsQuerySchema, params);
@@ -14,6 +15,8 @@ const [{ list, paginate }, { seo }] = await Promise.all([getNewsList(query), get
 
 const metaTitle: string = seo?.metaTitle ?? '';
 const metaDescription: string = seo?.metaDescription ?? '';
+
+const breadcrumbs: IBreadcrumbItem[] = [{ label: 'Главная', link: '/' }, { label: 'Новости' }];
 ---
 
 <Layout
@@ -21,12 +24,17 @@ const metaDescription: string = seo?.metaDescription ?? '';
   metaTitle={metaTitle}
   metaDescription={metaDescription}
 >
+  <Breadcrumbs
+    slot="breadcrumbs"
+    breadcrumbs={breadcrumbs}
+  />
+
   <section class="news flex h-full flex-col gap-grid-md">
     <h1 class="h1 font-bold uppercase">Новости</h1>
 
     <div class="custom-grid">
       {
-        list.map((item) => {
+        list.map((item, i) => {
           return (
             <a
               href={`/news/${item.slug}`}
@@ -36,6 +44,10 @@ const metaDescription: string = seo?.metaDescription ?? '';
                 <SmartImage
                   class="news__item-img h-full w-full transition-transform"
                   image={item.image}
+                  {...(!i && {
+                    fetchpriority: 'high',
+                    loading: 'eager',
+                  })}
                 />
               </figure>
               <Datetime

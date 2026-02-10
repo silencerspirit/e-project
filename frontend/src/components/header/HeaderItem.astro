@@ -34,6 +34,7 @@ const isExternal = (url?: string) => typeof url === 'string' && /^https?:\/\//.t
         target={isExternal(item.url) ? '_blank' : undefined}
         rel={isExternal(item.url) ? 'noopener noreferrer' : undefined}
         aria-haspopup={hasChildren ? 'menu' : undefined}
+        aria-label={item.title}
       >
         {item.title}
       </a>

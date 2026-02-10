@@ -32,12 +32,15 @@ const isExistNewsList = news.list.length > 0;
     ogImage={openGraphImage}
   />
 
-  <body class="ui-container shadow-lg">
+  <body class="ui-container overflow-x-hidden">
     <Header
       menu={header}
       config={config}
     />
-    <main class="my-pad-md grid grow grid-cols-12 gap-grid-sm rounded py-pad-sm">
+
+    <slot name="breadcrumbs" />
+
+    <main class="negative-x-margin my-pad-md grid grow grid-cols-12 gap-grid-sm rounded px-pad-sm py-pad-sm shadow-lg">
       {
         isExistNewsList && (
           <NewsLatest

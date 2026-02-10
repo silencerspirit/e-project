@@ -6,6 +6,7 @@ import SmartImage from '@/components/smart-image/SmartImage.astro';
 import { NewsSlugSchema } from '@contracts';
 import Datetime from '@/components/ui/datetime/Datetime.astro';
 import ShareButton from '@/components/ui/share-button/ShareButton.astro';
+import Breadcrumbs, { type IBreadcrumbItem } from '@/components/ui/breadcrumbs/Breadcrumbs.astro';
 
 const { slug } = parse(NewsSlugSchema, Astro.params);
 const newsItem = await getNewsBySlug(slug);
@@ -13,6 +14,12 @@ const newsItem = await getNewsBySlug(slug);
 const metaTitle: string = newsItem.seo?.metaTitle ?? '';
 const metaDescription: string = newsItem.seo?.metaDescription ?? '';
 const openGraphImage: string = newsItem.image?.url ?? '';
+
+const breadcrumbs: IBreadcrumbItem[] = [
+  { label: 'Главная', link: '/' },
+  { label: 'Новости', link: '/news/' },
+  { label: newsItem.title },
+];
 ---
 
 <Layout
@@ -21,6 +28,10 @@ const openGraphImage: string = newsItem.image?.url ?? '';
   metaDescription={metaDescription}
   openGraphImage={openGraphImage}
 >
+  <Breadcrumbs
+    slot="breadcrumbs"
+    breadcrumbs={breadcrumbs}
+  />
   <article>
     <div class="mb-pad-lg flex flex-col gap-grid-xs">
       <Datetime
