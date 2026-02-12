@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_shared_slider_items",
+  "info": {
+    "displayName": "SliderItem"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "url": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "image": {
+      "type": "component",
+      "component": "shared.images",
+      "repeatable": false,
+      "required": true
+    }
+  },
+  "config": {}
+}
