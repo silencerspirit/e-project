@@ -1,4 +1,4 @@
----
+<!-- ---
 import { NewsQuerySchema } from '@contracts';
 import { parse } from 'valibot';
 
@@ -75,14 +75,8 @@ const breadcrumbs: IBreadcrumbItem[] = [{ label: 'Главная', link: '/' }, 
   .news {
     $p: &;
 
-    &__item-title {
-      #{$p}__item:hover & {
-        color: theme('colors.red');
-      }
-    }
-
     :global(.news__item:hover .news__item-img) {
       transform: scale(1.05);
     }
   }
-</style>
+</style> -->

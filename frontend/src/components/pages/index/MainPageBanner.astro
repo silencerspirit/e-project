@@ -1,0 +1,145 @@
+---
+import { Building2, ChevronDown, House, MapPin, Search } from '@lucide/astro';
+
+import Button from '@/components/ui/button/Button.astro';
+import Input from '@/components/ui/input/Input.astro';
+
+const propertyTypes = ['Все объекты', 'Квартиры', 'Дома', 'Коммерция', 'Аренда'] as const;
+const locations = ['Все локации', 'Севастополь', 'Ялта', 'Евпатория', 'Гурзуф', 'Симферополь'] as const;
+---
+
+<section
+  class="relative flex items-center"
+  aria-labelledby="main-banner-title"
+>
+  <div class="absolute inset-0 z-0">
+    <img
+      src="/images/hero-building.jpg"
+      alt="Современный жилой комплекс"
+      class="h-full w-full object-cover"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <div class="absolute inset-0 bg-gradient-to-r from-foreground/85 via-foreground/65 to-foreground/45"></div>
+  </div>
+
+  <div class="relative z-10 mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+    <div class="max-w-3xl">
+      <h1
+        id="main-banner-title"
+        class="text-balance text-4xl font-bold leading-tight text-card sm:text-5xl lg:text-6xl"
+      >
+        Недвижимость от застройщика в Крыму
+      </h1>
+
+      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-card/80 sm:text-xl">
+        Квартиры, дома и коммерческая недвижимость в Севастополе, Ялте и других городах Крыма. Прямые продажи от
+        застройщика без посредников.
+      </p>
+
+      <form
+        action="/properties/"
+        role="search"
+        aria-label="Поиск недвижимости"
+        method="GET"
+        class="mt-10 rounded-2xl bg-card p-4 shadow-xl sm:p-6"
+      >
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div>
+            <label
+              for="property-type"
+              class="mb-2 block text-xs font-medium text-muted-foreground"
+            >
+              Тип недвижимости
+            </label>
+            <div class="relative">
+              <House
+                class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+              />
+              <select
+                id="property-type"
+                name="type"
+                class="h-12 w-full appearance-none rounded-lg border bg-secondary pl-10 pr-3 text-sm font-medium text-foreground outline-none ring-1 ring-transparent transition focus:ring-ring"
+              >
+                {propertyTypes.map((type) => <option value={type}>{type}</option>)}
+              </select>
+
+              <ChevronDown
+                class="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label
+              for="property-location"
+              class="mb-2 block text-xs font-medium text-muted-foreground"
+            >
+              Локация
+            </label>
+            <div class="relative">
+              <MapPin
+                class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+              />
+              <select
+                id="property-location"
+                name="location"
+                class="h-12 w-full appearance-none rounded-lg border bg-secondary pl-10 pr-3 text-sm font-medium text-foreground outline-none ring-1 ring-transparent transition focus:ring-ring"
+              >
+                {locations.map((location) => <option value={location}>{location}</option>)}
+              </select>
+
+              <ChevronDown
+                class="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label
+              for="property-budget"
+              class="mb-2 block text-xs font-medium text-muted-foreground"
+            >
+              Бюджет до
+            </label>
+            <div class="relative">
+              <Building2
+                class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+              />
+
+              <Input
+                placeholder="15 000 000 ₽"
+                inputmode="numeric"
+                id="property-budget"
+                name="budget"
+                class="h-auto bg-secondary py-3 pl-10 text-sm"
+              />
+            </div>
+          </div>
+
+          <div class="flex items-end">
+            <Button class="h-12 w-full gap-2 bg-primary font-medium text-primary-foreground hover:bg-primary/90">
+              <Search class="h-4 w-4" />
+              Найти
+            </Button>
+          </div>
+        </div>
+      </form>
+
+      <div class="mt-10 flex flex-wrap gap-8 lg:gap-12">
+        <div>
+          <div class="text-3xl font-bold text-card sm:text-4xl">15+</div>
+          <div class="mt-1 text-sm text-card/70">лет на рынке</div>
+        </div>
+        <div>
+          <div class="text-3xl font-bold text-card sm:text-4xl">5 000+</div>
+          <div class="mt-1 text-sm text-card/70">довольных клиентов</div>
+        </div>
+        <div>
+          <div class="text-3xl font-bold text-card sm:text-4xl">12</div>
+          <div class="mt-1 text-sm text-card/70">жилых комплексов</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

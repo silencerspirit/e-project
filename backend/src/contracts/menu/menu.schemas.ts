@@ -1,4 +1,4 @@
-import { array, GenericSchema, lazy, number, object, optional, string } from 'valibot';
+import { array, GenericSchema, lazy, number, object, string } from 'valibot';
 
 interface INavigationItem {
   title: string;
@@ -9,7 +9,7 @@ interface INavigationItem {
 
 export const NavigationItemSchema: GenericSchema<INavigationItem> = object({
   title: string(),
-  url: optional(string()),
+  url: string(),
   children: array(lazy(() => NavigationItemSchema)),
   order: number(),
 });

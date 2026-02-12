@@ -431,7 +431,7 @@ export interface ApiNavigationItemNavigationItem extends Struct.CollectionTypeSc
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
-    url: Schema.Attribute.String;
+    url: Schema.Attribute.String & Schema.Attribute.Required;
     visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
   };
 }

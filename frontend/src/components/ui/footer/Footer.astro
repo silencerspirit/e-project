@@ -1,0 +1,153 @@
+---
+import { Clock, Mail, MapPin, Phone } from '@lucide/astro';
+
+import { formatPhone } from '@/helpers';
+
+interface FooterLink {
+  label: string;
+  href: string;
+}
+
+interface FooterSection {
+  title: string;
+  links: FooterLink[];
+}
+
+const footerSections: FooterSection[] = [
+  {
+    title: 'Недвижимость',
+    links: [
+      { label: 'Квартиры', href: '/properties/apartments/' },
+      { label: 'Дома и виллы', href: '/properties/houses/' },
+      { label: 'Коммерция', href: '/properties/commercial/' },
+      { label: 'Аренда', href: '/properties/rent/' },
+    ],
+  },
+  {
+    title: 'Компания',
+    links: [
+      { label: 'О нас', href: '/about/' },
+      { label: 'Новости', href: '/news/' },
+      { label: 'Партнеры', href: '/partners/' },
+      { label: 'Фотогалерея', href: '/gallery/' },
+    ],
+  },
+  {
+    title: 'Услуги',
+    links: [
+      { label: 'Ипотека', href: '/mortgage/' },
+      { label: 'Военная ипотека', href: '/mortgage/military/' },
+      { label: 'Материнский капитал', href: '/mortgage/maternal-capital/' },
+      { label: 'Рассрочка', href: '/mortgage/installments/' },
+    ],
+  },
+  {
+    title: 'Информация',
+    links: [
+      { label: 'О городе', href: '/city/' },
+      { label: 'Вопрос-ответ', href: '/faq/' },
+      { label: 'Полезные ссылки', href: '/useful-links/' },
+      { label: 'Контакты', href: '/contacts/' },
+    ],
+  },
+];
+
+const phone = '88007075192';
+const email = 'info@alfa-realting.ru';
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-foreground text-card">
+  <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-6 lg:gap-8">
+      <div class="lg:col-span-2">
+        <a
+          href="/"
+          class="flex items-center gap-3"
+        >
+          <span
+            class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-xl font-bold text-primary-foreground"
+          >
+            А
+          </span>
+          <span>
+            <span class="block text-lg font-bold leading-tight">Альфа Риэлтинг</span>
+            <span class="block text-xs text-card/60">АльфаГруппИнвест</span>
+          </span>
+        </a>
+
+        <p class="mt-6 max-w-xs text-sm leading-relaxed text-card/70">
+          Надежный застройщик с 15-летним опытом строительства жилых комплексов в Крыму
+        </p>
+
+        <div class="mt-6 space-y-3">
+          <a
+            href={`tel:${phone}`}
+            class="flex items-center gap-3 text-card/80 transition-colors hover:text-primary"
+          >
+            <Phone class="h-4 w-4" />
+            <span class="text-sm">{formatPhone(phone)}</span>
+          </a>
+
+          <a
+            href={`mailto:${email}`}
+            class="flex items-center gap-3 text-card/80 transition-colors hover:text-primary"
+          >
+            <Mail class="h-4 w-4" />
+            <span class="text-sm">{email}</span>
+          </a>
+
+          <div class="flex items-start gap-3 text-card/80">
+            <MapPin class="mt-0.5 h-4 w-4" />
+            <span class="text-sm">г. Севастополь, Республика Крым</span>
+          </div>
+
+          <div class="flex items-center gap-3 text-card/80">
+            <Clock class="h-4 w-4" />
+            <span class="text-sm">Пн-Сб: 9:00 - 19:00</span>
+          </div>
+        </div>
+      </div>
+
+      {
+        footerSections.map((section) => (
+          <nav aria-label={section.title}>
+            <h4 class="mb-4 text-sm font-semibold">{section.title}</h4>
+            <ul class="space-y-2.5">
+              {section.links.map((link) => (
+                <li>
+                  <a
+                    href={link.href}
+                    class="text-sm text-card/70 transition-colors hover:text-primary"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))
+      }
+    </div>
+
+    <div class="mt-14 border-t border-card/10 pt-8">
+      <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
+        <p class="text-sm text-card/60">© {year} АльфаГруппИнвест. Все права защищены.</p>
+        <div class="flex items-center gap-6">
+          <a
+            href="/privacy-policy/"
+            class="text-sm text-card/60 transition-colors hover:text-card"
+          >
+            Политика конфиденциальности
+          </a>
+          <a
+            href="/personal-data-consent/"
+            class="text-sm text-card/60 transition-colors hover:text-card"
+          >
+            Согласие на обработку данных
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

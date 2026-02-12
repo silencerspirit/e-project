@@ -27,7 +27,7 @@ module.exports = {
       env: { node: true },
     },
     {
-      files: ['frontend/**/*.{js,ts,astro}'],
+      files: ['frontend/**/*.{js,jsx,ts,tsx,astro}'],
       env: { browser: true },
       rules: {
         'sort-imports': 'off',
@@ -68,6 +68,30 @@ module.exports = {
             selector:
               "JSXAttribute[name.name='href'][value.type='JSXExpressionContainer'][value.expression.type='TemplateLiteral'][value.expression.quasis.0.value.raw=/^\\//][value.expression.quasis.1.value.raw!=/\\/$/][value.expression.quasis.1.value.raw!=/\\.[a-zA-Z0-9]+$/]",
             message: "Local template 'href' values must end with a trailing slash (/). Example: `/news/${slug}/`.",
+          },
+          {
+            selector:
+              "JSXAttribute[name.name=/^(class|className)$/][value.type='Literal'][value.value=/\\[[^\\]]+\\]/]",
+            message:
+              'Tailwind JIT arbitrary syntax is forbidden. Do not use arbitrary values/variants like h-[10px] or has-[...].',
+          },
+          {
+            selector:
+              "JSXAttribute[name.name=/^(class|className)$/][value.type='JSXExpressionContainer'][value.expression.type='TemplateLiteral'] TemplateElement[value.raw=/\\[[^\\]]+\\]/]",
+            message:
+              'Tailwind JIT arbitrary syntax is forbidden. Do not use arbitrary values/variants like h-[10px] or has-[...].',
+          },
+          {
+            selector:
+              "JSXAttribute[name.type='JSXNamespacedName'][name.namespace.name='class'][name.name.name='list'] Literal[value=/\\[[^\\]]+\\]/]",
+            message:
+              'Tailwind JIT arbitrary syntax is forbidden. Do not use arbitrary values/variants like h-[10px] or has-[...].',
+          },
+          {
+            selector:
+              "JSXAttribute[name.type='JSXNamespacedName'][name.namespace.name='class'][name.name.name='list'] TemplateElement[value.raw=/\\[[^\\]]+\\]/]",
+            message:
+              'Tailwind JIT arbitrary syntax is forbidden. Do not use arbitrary values/variants like h-[10px] or has-[...].',
           },
         ],
       },

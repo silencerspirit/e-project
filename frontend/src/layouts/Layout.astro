@@ -1,10 +1,9 @@
 ---
-import { getMenu, getNewsNewest, getSiteConfig } from '@/api';
+import { getMenu, getSiteConfig } from '@/api';
 
-import Footer from '@/components/Footer.astro';
-import Head from '@/components/head/Head.astro';
-import Header from '@/components/header/Header.astro';
-import NewsLatest from '@/components/NewsLatest.astro';
+import Footer from '@/components/ui/footer/Footer.astro';
+import Head from '@/components/ui/head/Head.astro';
+import Header from '@/components/ui/header/Header.astro';
 
 import '@/styles/global.scss';
 
@@ -15,15 +14,9 @@ interface Props {
   openGraphImage?: string;
 }
 
-const { withSidebar = true, metaTitle, metaDescription, openGraphImage } = Astro.props as Props;
+const { metaTitle, metaDescription, openGraphImage } = Astro.props as Props;
 
-const [{ header }, config, news] = await Promise.all([
-  getMenu(),
-  getSiteConfig(),
-  withSidebar ? getNewsNewest() : Promise.resolve({ list: [] }),
-]);
-
-const isExistNewsList = news.list.length > 0;
+const [{ header }, config] = await Promise.all([getMenu(), getSiteConfig()]);
 ---
 
 <!doctype html>
@@ -34,28 +27,16 @@ const isExistNewsList = news.list.length > 0;
     ogImage={openGraphImage}
   />
 
-  <body class="ui-container overflow-x-hidden">
+  <body>
     <Header
       menu={header}
       config={config}
     />
 
-    <slot name="breadcrumbs" />
-
-    <main class="negative-x-margin my-pad-md grid grow grid-cols-12 gap-grid-sm rounded px-pad-sm py-pad-sm shadow-lg">
-      {
-        isExistNewsList && (
-          <NewsLatest
-            class="col-span-4"
-            list={news.list}
-          />
-        )
-      }
-      <div class={isExistNewsList ? 'col-span-8' : 'col-span-12'}>
-        <slot />
-      </div>
+    <main class="grow">
+      <slot />
     </main>
 
-    <Footer menu={header} />
+    <Footer />
   </body>
 </html>

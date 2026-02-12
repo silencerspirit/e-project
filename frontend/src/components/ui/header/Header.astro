@@ -1,0 +1,66 @@
+---
+import type { TNavigationItem, TSiteConfig } from '@contracts';
+import { Menu, X } from '@lucide/astro';
+
+import Button from '@/components/ui/button/Button.astro';
+
+import HeaderLogo from './HeaderLogo.astro';
+import HeaderNav from './HeaderNav.astro';
+import HeaderTopBar from './HeaderTopBar.astro';
+
+interface Props {
+  menu: TNavigationItem[];
+  config: TSiteConfig;
+}
+
+const { menu, config } = Astro.props as Props;
+---
+
+<header class="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur-sm">
+  <HeaderTopBar phone={config.phone} />
+
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex h-16 items-center justify-between lg:h-20">
+      <HeaderLogo />
+      <HeaderNav items={menu} />
+
+      <div class="hidden lg:block">
+        <Button type="button"> Оставить заявку </Button>
+      </div>
+
+      <button
+        type="button"
+        class="p-2 lg:hidden"
+        aria-label="Toggle menu"
+        aria-expanded="false"
+        data-mobile-menu-toggle
+      >
+        <Menu
+          class="h-6 w-6 text-foreground"
+          data-menu-icon
+        />
+        <X
+          class="hidden h-6 w-6 text-foreground"
+          data-close-icon
+        />
+      </button>
+    </div>
+
+    <div
+      class="hidden border-t border-border py-4 lg:hidden"
+      data-mobile-menu
+      hidden
+    >
+      <div class="flex flex-col gap-4">
+        <HeaderNav
+          items={menu}
+          mobile
+        />
+
+        <Button type="button"> Оставить заявку </Button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script src="./header.ts"></script>

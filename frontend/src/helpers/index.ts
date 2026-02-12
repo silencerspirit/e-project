@@ -15,5 +15,5 @@ export function isMobileUserAgent(): boolean {
 }
 
 export function isHTMLElement(el: unknown): el is HTMLElement {
-  return el instanceof HTMLElement;
+  return el instanceof HTMLElement || el instanceof SVGElement;
 }

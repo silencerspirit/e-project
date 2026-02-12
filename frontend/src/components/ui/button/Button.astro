@@ -1,21 +1,36 @@
 ---
 import type { JSX } from 'astro/jsx-runtime';
+import { twMerge } from 'tailwind-merge';
 
 interface Props extends JSX.ButtonHTMLAttributes {
-  size?: 'md' | 'lg';
+  variant?: 'default' | 'outline' | 'ghost' | 'link';
+  size?: 'default' | 'sm' | 'lg' | 'icon';
 }
 
-const { size = 'md', class: className, ...props } = Astro.props as Props;
-const classes = [
-  'h6 rounded bg-red uppercase text-white transition-colors hover:bg-blue',
-  size === 'lg' ? 'px-pad-sm py-pad-xxs' : 'px-pad-sm py-pad-3xs',
-  className,
-]
-  .filter(Boolean)
-  .join(' ');
+const { variant = 'default', size = 'default', class: className, ...props } = Astro.props as Props;
+
+const baseClasses =
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-ring';
+
+const variantClasses = {
+  default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+  outline: 'border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground',
+  ghost: 'hover:bg-accent hover:text-accent-foreground',
+  link: 'text-primary underline-offset-4 hover:underline',
+} as const;
+
+const sizeClasses = {
+  default: 'h-9 px-4 py-2',
+  sm: 'h-8 rounded-md gap-1.5 px-3',
+  lg: 'h-10 rounded-md px-6',
+  icon: 'size-9',
+} as const;
+
+const classes = twMerge(baseClasses, variantClasses[variant], sizeClasses[size], className);
 ---
 
 <button
+  data-slot="button"
   class={classes}
   {...props}
 >

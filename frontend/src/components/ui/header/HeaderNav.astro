@@ -1,0 +1,34 @@
+---
+import type { TNavigationItem } from '@contracts';
+
+interface Props {
+  items: TNavigationItem[];
+  class?: string;
+  mobile?: boolean;
+}
+
+const { items, class: className, mobile = false } = Astro.props as Props;
+
+const navClass = mobile ? 'flex flex-col gap-4' : 'hidden items-center gap-8 lg:flex';
+---
+
+<nav
+  class:list={[navClass, className]}
+  aria-label="Навигация"
+>
+  {
+    items.map((item) => (
+      <a
+        href={item.url}
+        class="font-medium text-foreground/80 transition-colors hover:text-primary"
+        class:list={{
+          'text-sm': !mobile,
+          'text-base': mobile,
+        }}
+        data-mobile-menu-link={mobile ? '' : undefined}
+      >
+        {item.title}
+      </a>
+    ))
+  }
+</nav>
