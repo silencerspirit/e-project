@@ -1,7 +1,7 @@
 {
   "collectionName": "components_shared_images",
   "info": {
-    "displayName": "image"
+    "displayName": "Image"
   },
   "options": {},
   "attributes": {
@@ -9,8 +9,10 @@
       "type": "media",
       "multiple": false,
       "allowedTypes": [
+        "images",
         "files",
-        "images"
+        "videos",
+        "audios"
       ]
     }
   },

@@ -1,15 +1,14 @@
 import { DEFAULT_PAGINATE_LIMIT } from '@/contracts';
-import { imagePopulate, seoPopulate } from '@/populate';
+import { factories } from '@strapi/strapi';
 
 const baseQuery = {
   status: 'published',
   filters: { visible: true },
 } as const;
 
-const listFields = ['title', 'shortDescription', 'slug', 'publishedDate', 'visible'] as const;
 const NEWEST_NEWS_COUNT = 2;
 
-export default ({ strapi }) => ({
+export default factories.createCoreService('api::news-item.news-item', ({ strapi }) => ({
   async getList(page: number, limit = DEFAULT_PAGINATE_LIMIT) {
     const start = (Number(page) - 1) * limit;
 
@@ -19,8 +18,15 @@ export default ({ strapi }) => ({
         sort: ['publishedDate:asc'],
         start,
         limit,
-        fields: listFields,
-        populate: { ...seoPopulate, ...imagePopulate },
+        fields: ['title', 'shortDescription', 'slug', 'publishedDate', 'visible'],
+        populate: {
+          seo: true,
+          image: {
+            populate: {
+              image: true,
+            },
+          },
+        },
       }),
       strapi.documents('api::news-item.news-item').count(baseQuery),
     ]);
@@ -34,8 +40,14 @@ export default ({ strapi }) => ({
       sort: ['publishedDate:desc'],
       start: 0,
       limit: NEWEST_NEWS_COUNT,
-      fields: listFields,
-      populate: { ...imagePopulate },
+      fields: ['title', 'shortDescription', 'slug', 'publishedDate', 'visible'],
+      populate: {
+        image: {
+          populate: {
+            image: true,
+          },
+        },
+      },
     });
   },
 
@@ -46,9 +58,16 @@ export default ({ strapi }) => ({
       filters: {
         slug,
       },
-      populate: { ...seoPopulate, ...imagePopulate },
+      populate: {
+        seo: true,
+        image: {
+          populate: {
+            image: true,
+          },
+        },
+      },
     });
 
     return item;
   },
-});
+}));

@@ -1,4 +1,4 @@
-export default ({ env }) => {
+export default ({ env }: { env: EnvFn }) => {
   const client = 'mysql';
   const connection = {
     host: env('DATABASE_HOST', '127.0.0.1'),

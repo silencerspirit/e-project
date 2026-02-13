@@ -18,7 +18,7 @@ const srcDesktop = image.formats.large || image.url;
 const srcPlaceholder = image.formats.thumbnail || image.url;
 ---
 
-<div class={`common-picture relative overflow-hidden ${className}`}>
+<div class={`smart-image relative overflow-hidden ${className}`}>
   <picture class="block h-full w-full">
     <source
       media="(max-width: 768px)"
@@ -30,19 +30,19 @@ const srcPlaceholder = image.formats.thumbnail || image.url;
     />
     <img
       id={imgId}
-      class="common-picture__img absolute inset-0 h-full w-full object-cover"
+      class="smart-image__img absolute inset-0 h-full w-full object-cover"
       src={srcDesktop}
       alt={alt}
       loading={loading}
       decoding="async"
-      fetchpriority={fetchpriority}
-      onload={`this.classList.add('common-picture__img--visible')`}
+      fetchpriority={'low'}
+      onload={`this.classList.add('smart-image__img--visible')`}
       {...rest}
     />
   </picture>
 
   <img
-    class="common-picture__placeholder absolute inset-0 h-full w-full object-cover"
+    class="smart-image__placeholder absolute inset-0 h-full w-full object-cover"
     src={srcPlaceholder}
     alt={alt}
     aria-hidden="true"
@@ -54,7 +54,7 @@ const srcPlaceholder = image.formats.thumbnail || image.url;
 </div>
 
 <style lang="scss">
-  .common-picture {
+  .smart-image {
     &__img {
       opacity: 0;
 

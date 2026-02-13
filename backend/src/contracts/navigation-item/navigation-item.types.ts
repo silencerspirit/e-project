@@ -1,5 +1,5 @@
 import { InferOutput } from 'valibot';
-import { MenuSchema, NavigationItemSchema } from './menu.schemas';
+import { MenuSchema, NavigationItemSchema } from './navigation-item.schemas';
 
 export type TNavigationItem = InferOutput<typeof NavigationItemSchema>;
 

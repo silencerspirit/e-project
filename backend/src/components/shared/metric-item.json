@@ -1,16 +1,16 @@
 {
-  "collectionName": "components_shared_seos",
+  "collectionName": "components_shared_metric_items",
   "info": {
-    "displayName": "Seo"
+    "displayName": "MetricItem"
   },
   "options": {},
   "attributes": {
-    "metaTitle": {
+    "value": {
       "type": "string",
       "required": true
     },
-    "metaDescription": {
-      "type": "text",
+    "label": {
+      "type": "string",
       "required": true
     }
   },

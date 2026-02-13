@@ -11,18 +11,16 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "slides": {
+    "heroBanner": {
       "type": "component",
-      "component": "shared.slider-item",
-      "repeatable": true
-    },
-    "content": {
-      "type": "customField",
-      "customField": "plugin::ckeditor5.CKEditor",
-      "options": {
-        "preset": "defaultHtml"
-      },
+      "component": "shared.hero-banner",
+      "repeatable": false,
       "required": true
+    },
+    "seo": {
+      "type": "component",
+      "component": "shared.seo",
+      "repeatable": false
     }
   }
 }

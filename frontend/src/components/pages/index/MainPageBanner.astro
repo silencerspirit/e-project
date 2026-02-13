@@ -1,11 +1,21 @@
 ---
+import type { THeroBanner } from '@contracts';
 import { Building2, ChevronDown, House, MapPin, Search } from '@lucide/astro';
 
 import Button from '@/components/ui/button/Button.astro';
 import Input from '@/components/ui/input/Input.astro';
+import SmartImage from '@/components/ui/smart-image/SmartImage.astro';
+
+interface Props {
+  info: THeroBanner;
+}
+
+const { info } = Astro.props as Props;
 
 const propertyTypes = ['Все объекты', 'Квартиры', 'Дома', 'Коммерция', 'Аренда'] as const;
 const locations = ['Все локации', 'Севастополь', 'Ялта', 'Евпатория', 'Гурзуф', 'Симферополь'] as const;
+
+const isExistMetrics: boolean = Boolean(info.metrics.length);
 ---
 
 <section
@@ -13,12 +23,11 @@ const locations = ['Все локации', 'Севастополь', 'Ялта'
   aria-labelledby="main-banner-title"
 >
   <div class="absolute inset-0 z-0">
-    <img
-      src="/images/hero-building.jpg"
-      alt="Современный жилой комплекс"
+    <SmartImage
       class="h-full w-full object-cover"
-      loading="eager"
-      fetchpriority="high"
+      image={info.backgroundImage}
+      fetchpriority={'high'}
+      loading={'eager'}
     />
     <div class="absolute inset-0 bg-gradient-to-r from-foreground/85 via-foreground/65 to-foreground/45"></div>
   </div>
@@ -29,12 +38,11 @@ const locations = ['Все локации', 'Севастополь', 'Ялта'
         id="main-banner-title"
         class="text-balance text-4xl font-bold leading-tight text-card sm:text-5xl lg:text-6xl"
       >
-        Недвижимость от застройщика в Крыму
+        {info.title}
       </h1>
 
       <p class="mt-6 max-w-2xl text-lg leading-relaxed text-card/80 sm:text-xl">
-        Квартиры, дома и коммерческая недвижимость в Севастополе, Ялте и других городах Крыма. Прямые продажи от
-        застройщика без посредников.
+        {info.description}
       </p>
 
       <form
@@ -54,6 +62,7 @@ const locations = ['Все локации', 'Севастополь', 'Ялта'
             </label>
             <div class="relative">
               <House
+                aria-hidden="true"
                 class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
               />
               <select
@@ -65,6 +74,7 @@ const locations = ['Все локации', 'Севастополь', 'Ялта'
               </select>
 
               <ChevronDown
+                aria-hidden="true"
                 class="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
               />
             </div>
@@ -79,6 +89,7 @@ const locations = ['Все локации', 'Севастополь', 'Ялта'
             </label>
             <div class="relative">
               <MapPin
+                aria-hidden="true"
                 class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
               />
               <select
@@ -90,6 +101,7 @@ const locations = ['Все локации', 'Севастополь', 'Ялта'
               </select>
 
               <ChevronDown
+                aria-hidden="true"
                 class="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
               />
             </div>
@@ -104,6 +116,7 @@ const locations = ['Все локации', 'Севастополь', 'Ялта'
             </label>
             <div class="relative">
               <Building2
+                aria-hidden="true"
                 class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
               />
 
@@ -119,27 +132,28 @@ const locations = ['Все локации', 'Севастополь', 'Ялта'
 
           <div class="flex items-end">
             <Button class="h-12 w-full gap-2 bg-primary font-medium text-primary-foreground hover:bg-primary/90">
-              <Search class="h-4 w-4" />
+              <Search
+                aria-hidden="true"
+                class="h-4 w-4"
+              />
               Найти
             </Button>
           </div>
         </div>
       </form>
 
-      <div class="mt-10 flex flex-wrap gap-8 lg:gap-12">
-        <div>
-          <div class="text-3xl font-bold text-card sm:text-4xl">15+</div>
-          <div class="mt-1 text-sm text-card/70">лет на рынке</div>
-        </div>
-        <div>
-          <div class="text-3xl font-bold text-card sm:text-4xl">5 000+</div>
-          <div class="mt-1 text-sm text-card/70">довольных клиентов</div>
-        </div>
-        <div>
-          <div class="text-3xl font-bold text-card sm:text-4xl">12</div>
-          <div class="mt-1 text-sm text-card/70">жилых комплексов</div>
-        </div>
-      </div>
+      {
+        isExistMetrics ? (
+          <div class="mt-10 flex flex-wrap gap-8 lg:gap-12">
+            {info.metrics.map(({ label, value }) => (
+              <div>
+                <div class="text-3xl font-bold text-card sm:text-4xl">{value}</div>
+                <div class="mt-1 text-sm text-card/70">{label}</div>
+              </div>
+            ))}
+          </div>
+        ) : undefined
+      }
     </div>
   </div>
 </section>

@@ -6,7 +6,7 @@ import {
   NewsListItemSchema,
   NewsSlugSchema,
   NewsFullItemSchema,
-} from '@/contracts/news';
+} from '@/contracts/news-item';
 import { factories } from '@strapi/strapi';
 
 export default factories.createCoreController('api::news-item.news-item', ({ strapi }) => ({

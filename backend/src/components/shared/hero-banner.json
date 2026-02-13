@@ -1,7 +1,7 @@
 {
-  "collectionName": "components_shared_slider_items",
+  "collectionName": "components_shared_hero_banners",
   "info": {
-    "displayName": "SliderItem"
+    "displayName": "HeroBanner"
   },
   "options": {},
   "attributes": {
@@ -9,17 +9,20 @@
       "type": "string",
       "required": true
     },
-    "url": {
-      "type": "string"
-    },
     "description": {
-      "type": "text"
+      "type": "text",
+      "required": true
     },
-    "image": {
+    "backgroundImage": {
       "type": "component",
       "component": "shared.images",
       "repeatable": false,
       "required": true
+    },
+    "metrics": {
+      "type": "component",
+      "component": "shared.metric-item",
+      "repeatable": true
     }
   },
   "config": {}

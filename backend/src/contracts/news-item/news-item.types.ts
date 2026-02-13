@@ -5,7 +5,7 @@ import {
   NewsListItemSchema,
   NewsQuerySchema,
   NewsSlugSchema,
-} from './news.schemas';
+} from './news-item.schemas';
 
 export type TNewsQuery = InferOutput<typeof NewsQuerySchema>;
 
