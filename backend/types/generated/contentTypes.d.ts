@@ -386,8 +386,10 @@ export interface ApiMainPageMainPage extends Struct.SingleTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    advantagesBanner: Schema.Attribute.Component<'shared.feature-banner', false> & Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
+    featureBanner: Schema.Attribute.Component<'shared.feature-banner', false> & Schema.Attribute.Required;
     heroBanner: Schema.Attribute.Component<'shared.hero-banner', false> & Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::main-page.main-page'> & Schema.Attribute.Private;

@@ -14,6 +14,16 @@ export default factories.createCoreController('api::main-page.main-page', ({ str
               backgroundImage: { populate: { image: true } },
             },
           },
+          featureBanner: {
+            populate: {
+              features: true,
+            },
+          },
+          advantagesBanner: {
+            populate: {
+              features: true,
+            },
+          },
         },
       });
 

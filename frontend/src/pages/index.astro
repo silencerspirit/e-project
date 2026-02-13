@@ -1,18 +1,24 @@
 ---
 import { getMainPage } from '@/api';
 
+import MainPageAction from '@/components/pages/index/MainPageAction.astro';
+import MainPageAdvantages from '@/components/pages/index/MainPageAdvantages.astro';
 import MainPageBanner from '@/components/pages/index/MainPageBanner.astro';
+import MainPageCategories from '@/components/pages/index/MainPageCategories.astro';
 import Layout from '@/layouts/Layout.astro';
 
-const { heroBanner, seo } = await getMainPage();
+const page = await getMainPage();
 
-const metaTitle: string = seo?.metaTitle ?? '';
-const metaDescription: string = seo?.metaDescription ?? '';
+const metaTitle: string = page.seo?.metaTitle ?? '';
+const metaDescription: string = page.seo?.metaDescription ?? '';
 ---
 
 <Layout
   metaTitle={metaTitle}
   metaDescription={metaDescription}
 >
-  <MainPageBanner info={heroBanner} />
+  <MainPageBanner info={page.heroBanner} />
+  <MainPageCategories info={page.featureBanner} />
+  <MainPageAdvantages info={page.advantagesBanner} />
+  <MainPageAction />
 </Layout>

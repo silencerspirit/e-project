@@ -17,6 +17,18 @@
       "repeatable": false,
       "required": true
     },
+    "featureBanner": {
+      "type": "component",
+      "component": "shared.feature-banner",
+      "repeatable": false,
+      "required": true
+    },
+    "advantagesBanner": {
+      "type": "component",
+      "component": "shared.feature-banner",
+      "repeatable": false,
+      "required": true
+    },
     "seo": {
       "type": "component",
       "component": "shared.seo",

@@ -1,3 +1,6 @@
+const prettierPluginAstro = require.resolve('prettier-plugin-astro');
+const prettierPluginTailwindcss = require.resolve('prettier-plugin-tailwindcss');
+
 module.exports = {
   root: true,
   env: {
@@ -118,8 +121,11 @@ module.exports = {
             tabWidth: 2,
             semi: true,
             parser: 'astro',
-            plugins: ['prettier-plugin-astro', 'prettier-plugin-tailwindcss'],
+            plugins: [prettierPluginAstro, prettierPluginTailwindcss],
             tailwindConfig: './frontend/tailwind.config.ts',
+          },
+          {
+            usePrettierrc: false,
           },
         ],
       },
@@ -137,8 +143,11 @@ module.exports = {
         singleAttributePerLine: true,
         tabWidth: 2,
         semi: true,
-        plugins: ['prettier-plugin-tailwindcss'],
+        plugins: [prettierPluginTailwindcss],
         tailwindConfig: './frontend/tailwind.config.ts',
+      },
+      {
+        usePrettierrc: false,
       },
     ],
   },

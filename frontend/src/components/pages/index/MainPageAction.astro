@@ -1,0 +1,151 @@
+---
+import { CircleCheck, Phone, SendHorizontal } from '@lucide/astro';
+
+import Button from '@/components/ui/button/Button.astro';
+import Input from '@/components/ui/input/Input.astro';
+
+const rootId = `main-page-action-${Math.random().toString(36).slice(2)}`;
+---
+
+<section
+  class="bg-background py-20 lg:py-28"
+  aria-labelledby="main-page-action-title"
+>
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-primary/80 p-8 sm:p-12 lg:p-16">
+      <div
+        class="pointer-events-none absolute inset-0 opacity-10"
+        aria-hidden="true"
+      >
+        <div class="absolute right-0 top-0 h-96 w-96 -translate-y-1/2 translate-x-1/2 rounded-full bg-card"></div>
+        <div class="absolute bottom-0 left-0 h-64 w-64 -translate-x-1/2 translate-y-1/2 rounded-full bg-card"></div>
+      </div>
+
+      <div class="relative grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+        <div>
+          <h2
+            id="main-page-action-title"
+            class="text-balance text-3xl font-bold leading-tight text-primary-foreground sm:text-4xl lg:text-5xl"
+          >
+            Готовы найти идеальную недвижимость?
+          </h2>
+          <p class="mt-6 max-w-lg text-lg text-primary-foreground/80">
+            Оставьте заявку, и наш специалист свяжется с вами в течение 15 минут для бесплатной консультации
+          </p>
+
+          <ul class="mt-8 flex flex-wrap gap-6 text-primary-foreground/90">
+            <li class="flex items-center gap-2">
+              <CircleCheck
+                aria-hidden="true"
+                class="h-5 w-5"
+              />
+              <span>Бесплатная консультация</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <CircleCheck
+                aria-hidden="true"
+                class="h-5 w-5"
+              />
+              <span>Помощь с ипотекой</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <CircleCheck
+                aria-hidden="true"
+                class="h-5 w-5"
+              />
+              <span>Показ объектов</span>
+            </li>
+          </ul>
+        </div>
+
+        <div
+          id={rootId}
+          class="rounded-2xl bg-card p-6 shadow-2xl sm:p-8"
+          data-cta-root
+        >
+          <div data-cta-form-wrap>
+            <h3 class="mb-6 text-xl font-semibold text-foreground">Оставьте ваш номер телефона</h3>
+            <form
+              class="space-y-4"
+              data-cta-form
+            >
+              <div>
+                <label
+                  for={`${rootId}-phone`}
+                  class="mb-2 block text-sm font-medium text-foreground"
+                >
+                  Телефон
+                </label>
+                <div class="relative">
+                  <Phone
+                    aria-hidden="true"
+                    class="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground"
+                  />
+                  <Input
+                    id={`${rootId}-phone`}
+                    type="tel"
+                    placeholder="+7 (___) ___-__-__"
+                    class="py-6 pl-12 text-base"
+                    required
+                    autocomplete="tel"
+                    data-cta-phone
+                  />
+                </div>
+              </div>
+              <Button
+                type="submit"
+                class="h-14 w-full bg-primary text-base font-medium text-primary-foreground hover:bg-primary/90"
+              >
+                <SendHorizontal
+                  aria-hidden="true"
+                  class="mr-2 h-5 w-5"
+                />
+                Получить консультацию
+              </Button>
+              <p class="text-center text-xs text-muted-foreground">
+                Нажимая кнопку, вы соглашаетесь с обработкой персональных данных
+              </p>
+            </form>
+          </div>
+
+          <div
+            class="hidden py-8 text-center"
+            data-cta-success
+            aria-live="polite"
+          >
+            <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+              <CircleCheck
+                aria-hidden="true"
+                class="h-8 w-8 text-green-600"
+              />
+            </div>
+            <h3 class="mb-2 text-xl font-semibold text-foreground">Заявка отправлена!</h3>
+            <p class="text-muted-foreground">Наш специалист свяжется с вами в ближайшее время</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  const section = document.currentScript?.previousElementSibling;
+  const root = section?.querySelector('[data-cta-root]');
+  const form = root?.querySelector('[data-cta-form]');
+  const phoneInput = root?.querySelector('[data-cta-phone]');
+  const formWrap = root?.querySelector('[data-cta-form-wrap]');
+  const successBlock = root?.querySelector('[data-cta-success]');
+
+  if (form && phoneInput && formWrap && successBlock) {
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const phoneValue = phoneInput instanceof HTMLInputElement ? phoneInput.value.trim() : '';
+
+      if (!phoneValue) return;
+
+      formWrap.classList.add('hidden');
+      successBlock.classList.remove('hidden');
+    });
+  }
+</script>

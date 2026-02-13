@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_shared_feature_banners",
+  "info": {
+    "displayName": "FeatureBanner"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "features": {
+      "type": "component",
+      "component": "shared.feature-item",
+      "repeatable": true,
+      "required": true
+    }
+  },
+  "config": {}
+}

@@ -1,0 +1,85 @@
+---
+import type { TFeatureBanner } from '@contracts';
+import { ArrowRight, type AstroComponent, Building, House, Key, Store } from '@lucide/astro';
+
+interface Props {
+  info: TFeatureBanner;
+}
+
+const ICONS: AstroComponent[] = [Building, House, Store, Key];
+
+const { info } = Astro.props as Props;
+
+const featuresList = info.features.map((feature, i) => ({
+  ...feature,
+  icon: ICONS[i] ?? Building,
+}));
+---
+
+<section
+  class="bg-card py-20 lg:py-28"
+  aria-labelledby="property-categories-title"
+>
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="mb-14 text-center">
+      <h2
+        id="property-categories-title"
+        class="text-balance text-3xl font-bold text-foreground sm:text-4xl"
+      >
+        {info.title}
+      </h2>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
+        {info.description}
+      </p>
+    </div>
+
+    <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        featuresList.map((category) => {
+          const Icon = category.icon;
+          const cardClass =
+            'group flex flex-col h-full relative rounded-2xl bg-secondary p-6 transition-all duration-300 hover:bg-secondary/80 hover:shadow-lg';
+
+          const getContent = (withArrow: boolean = false) => {
+            return (
+              <>
+                <div class="mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 transition-colors group-hover:bg-primary/20">
+                  <Icon
+                    aria-hidden="true"
+                    class="h-7 w-7 text-primary"
+                  />
+                </div>
+                <h3 class="mb-2 text-xl font-semibold text-foreground">{category.title}</h3>
+                <p class="mb-4 text-sm leading-relaxed text-muted-foreground">{category.description}</p>
+                <div class="mt-auto flex items-center justify-between">
+                  <span class="text-sm font-medium text-primary">{category.additional}</span>
+                  {withArrow ? (
+                    <ArrowRight
+                      aria-hidden="true"
+                      class="h-5 w-5 -translate-x-2 text-primary opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100"
+                    />
+                  ) : undefined}
+                </div>
+              </>
+            );
+          };
+
+          return (
+            <li class="list-none">
+              {category.url ? (
+                <a
+                  href={category.url}
+                  class={cardClass}
+                >
+                  {getContent(true)}
+                </a>
+              ) : (
+                <div class={cardClass}>{getContent()}</div>
+              )}
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>
+</section>
