@@ -5,9 +5,7 @@ import { parse } from 'valibot';
 export default factories.createCoreController('api::site-config.site-config', ({ strapi }) => ({
   async siteConfig() {
     try {
-      const config = await strapi.documents('api::site-config.site-config').findFirst({
-        fields: ['email', 'phone'],
-      });
+      const config = await strapi.documents('api::site-config.site-config').findFirst();
 
       return parse(SiteConfigSchema, config);
     } catch (error) {

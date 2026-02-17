@@ -1,7 +1,12 @@
 ---
+import type { TSiteConfig } from '@contracts';
 import { Clock, Mail, MapPin, Phone } from '@lucide/astro';
 
 import { formatPhone } from '@/helpers';
+
+interface Props {
+  config: TSiteConfig;
+}
 
 interface FooterLink {
   label: string;
@@ -52,8 +57,8 @@ const footerSections: FooterSection[] = [
   },
 ];
 
-const phone = '88007075192';
-const email = 'info@alfa-realting.ru';
+const { config } = Astro.props as Props;
+
 const year = new Date().getFullYear();
 ---
 
@@ -82,29 +87,29 @@ const year = new Date().getFullYear();
 
         <div class="mt-6 space-y-3">
           <a
-            href={`tel:${phone}`}
+            href={`tel:${config.phone ?? ''}`}
             class="flex items-center gap-3 text-card/80 transition-colors hover:text-primary"
           >
             <Phone class="h-4 w-4" />
-            <span class="text-sm">{formatPhone(phone)}</span>
+            <span class="text-sm">{formatPhone(config.phone ?? '')}</span>
           </a>
 
           <a
-            href={`mailto:${email}`}
+            href={`mailto:${config.email ?? ''}`}
             class="flex items-center gap-3 text-card/80 transition-colors hover:text-primary"
           >
             <Mail class="h-4 w-4" />
-            <span class="text-sm">{email}</span>
+            <span class="text-sm">{config.email ?? ''}</span>
           </a>
 
           <div class="flex items-start gap-3 text-card/80">
             <MapPin class="mt-0.5 h-4 w-4" />
-            <span class="text-sm">г. Севастополь, Республика Крым</span>
+            <span class="text-sm">{config.address ?? ''}</span>
           </div>
 
           <div class="flex items-center gap-3 text-card/80">
             <Clock class="h-4 w-4" />
-            <span class="text-sm">Пн-Сб: 9:00 - 19:00</span>
+            <span class="text-sm">{config.workTime ?? ''}</span>
           </div>
         </div>
       </div>

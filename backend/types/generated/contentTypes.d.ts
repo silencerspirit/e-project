@@ -500,6 +500,7 @@ export interface ApiSiteConfigSiteConfig extends Struct.SingleTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    address: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
     email: Schema.Attribute.String;
@@ -509,6 +510,7 @@ export interface ApiSiteConfigSiteConfig extends Struct.SingleTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
+    workTime: Schema.Attribute.String;
   };
 }
 

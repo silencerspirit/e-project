@@ -37,6 +37,6 @@ const [{ header }, config] = await Promise.all([getMenu(), getSiteConfig()]);
       <slot />
     </main>
 
-    <Footer />
+    <Footer config={config} />
   </body>
 </html>
