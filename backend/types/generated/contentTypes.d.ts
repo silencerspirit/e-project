@@ -550,12 +550,15 @@ export interface ApiPropertyProperty extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    activityTypes: Schema.Attribute.Component<'shared.badge', true>;
     address: Schema.Attribute.String & Schema.Attribute.Required;
     badges: Schema.Attribute.Component<'shared.badge', true>;
     city: Schema.Attribute.Relation<'manyToOne', 'api::city.city'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
+    description: Schema.Attribute.Text & Schema.Attribute.Required;
     images: Schema.Attribute.Component<'shared.images', true>;
+    infrastructure: Schema.Attribute.Component<'shared.badge', true>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::property.property'> & Schema.Attribute.Private;
     previewImage: Schema.Attribute.Component<'shared.images', false> & Schema.Attribute.Required;

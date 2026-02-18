@@ -17,3 +17,7 @@ export function isMobileUserAgent(): boolean {
 export function isHTMLElement(el: unknown): el is HTMLElement {
   return el instanceof HTMLElement || el instanceof SVGElement;
 }
+
+export function formatPrice(value: unknown): string {
+  return Number(value).toLocaleString('ru-RU');
+}

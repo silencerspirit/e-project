@@ -1,0 +1,113 @@
+---
+import { SpecItemType, type TPropertyListItem } from '@contracts';
+import type { AstroComponent } from '@lucide/astro';
+import {
+  ArrowRight,
+  ArrowUpDown,
+  Bath,
+  Building,
+  Car,
+  DoorOpen,
+  Hammer,
+  LayoutGrid,
+  MapPin,
+  Ruler,
+} from '@lucide/astro';
+
+import { PRICE_PER_M2_SUFFIX } from '@/constants';
+import { formatPrice } from '@/helpers';
+
+import SmartImage from '@/components/ui/smart-image/SmartImage.astro';
+
+interface Props {
+  property: TPropertyListItem;
+}
+
+const SPEC_ICON_MAP: Record<SpecItemType, AstroComponent> = {
+  [SpecItemType.Floor]: Building,
+  [SpecItemType.Area]: Ruler,
+  [SpecItemType.CeilingHeight]: ArrowUpDown,
+  [SpecItemType.Layout]: LayoutGrid,
+  [SpecItemType.Bathroom]: Bath,
+  [SpecItemType.FacilityReadiness]: Hammer,
+  [SpecItemType.Entrance]: DoorOpen,
+  [SpecItemType.Parking]: Car,
+};
+
+const { property, ...attributes } = Astro.props as Props;
+---
+
+<li
+  class="list-none"
+  data-listing-card
+  {...attributes}
+>
+  <a
+    href={`/properties/${property.slug}/`}
+    class="group flex flex-col overflow-hidden rounded-2xl bg-card shadow-md transition-all duration-300 hover:border-primary/30 hover:shadow-xl"
+  >
+    <div class="relative aspect-video overflow-hidden">
+      <SmartImage
+        image={property.previewImage}
+        class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        loading="lazy"
+        decoding="async"
+      />
+
+      <div class="absolute left-4 top-4">
+        <span class="rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground">
+          {property.badges[0].value}
+        </span>
+      </div>
+    </div>
+
+    <div class="p-6">
+      <h3 class="text-xl font-semibold text-foreground transition-colors group-hover:text-primary">
+        {property.title}
+      </h3>
+
+      <div class="mt-2 flex items-center gap-2 text-muted-foreground">
+        <MapPin
+          aria-hidden="true"
+          class="h-4 w-4"
+        />
+        <span class="text-sm">{property.address}</span>
+      </div>
+
+      <div class="mt-4 flex flex-wrap items-center gap-4 text-sm text-foreground/70">
+        {
+          property.specifications.slice(0, 2).map((spec) => {
+            const Icon = SPEC_ICON_MAP[spec.key as SpecItemType] ?? Ruler;
+
+            return (
+              <div class="flex items-center gap-1.5">
+                <Icon
+                  aria-hidden="true"
+                  class="h-4 w-4"
+                />
+                <span>
+                  {spec.label}: {spec.value}
+                </span>
+              </div>
+            );
+          })
+        }
+      </div>
+
+      <div class="mt-6 flex items-center justify-between border-t border-border pt-4">
+        <div class="text-xl font-bold text-primary">
+          {`от ${formatPrice(property.pricePerM2)} ${PRICE_PER_M2_SUFFIX}`}
+        </div>
+        <span
+          class="inline-flex h-8 items-center gap-1 rounded-md px-3 text-sm text-primary transition-colors group-hover:bg-primary/10"
+        >
+          Подробнее
+          <ArrowRight
+            aria-hidden="true"
+            class="h-4 w-4"
+          />
+        </span>
+      </div>
+    </div>
+  </a>
+</li>

@@ -5,6 +5,7 @@ import MainPageAction from '@/components/pages/index/MainPageAction.astro';
 import MainPageAdvantages from '@/components/pages/index/MainPageAdvantages.astro';
 import MainPageBanner from '@/components/pages/index/MainPageBanner.astro';
 import MainPageCategories from '@/components/pages/index/MainPageCategories.astro';
+import MainPageListing from '@/components/pages/index/MainPageListing.astro';
 import Layout from '@/layouts/Layout.astro';
 
 const page = await getMainPage();
@@ -19,6 +20,7 @@ const metaDescription: string = page.seo?.metaDescription ?? '';
 >
   <MainPageBanner info={page.heroBanner} />
   <MainPageCategories info={page.featureBanner} />
+  <MainPageListing info={page.showcaseBanner} />
   <MainPageAdvantages info={page.advantagesBanner} />
   <MainPageAction />
 </Layout>

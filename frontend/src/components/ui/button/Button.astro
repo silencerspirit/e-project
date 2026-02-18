@@ -2,15 +2,29 @@
 import type { JSX } from 'astro/jsx-runtime';
 import { twMerge } from 'tailwind-merge';
 
-interface Props extends JSX.ButtonHTMLAttributes {
+type CommonProps = {
   variant?: 'default' | 'outline' | 'ghost' | 'link';
   size?: 'default' | 'sm' | 'lg' | 'icon';
-}
+};
 
-const { variant = 'default', size = 'default', class: className, ...props } = Astro.props as Props;
+type ButtonProps = CommonProps &
+  JSX.ButtonHTMLAttributes & {
+    href?: undefined;
+  };
+
+type AnchorProps = CommonProps &
+  JSX.AnchorHTMLAttributes & {
+    href: string;
+  };
+
+type Props = ButtonProps | AnchorProps;
+
+const { variant = 'default', size = 'default', class: className, href, ...props } = Astro.props as Props;
+const anchorProps = href ? (props as Omit<JSX.AnchorHTMLAttributes, 'class' | 'href'>) : undefined;
+const buttonProps = href ? undefined : (props as Omit<JSX.ButtonHTMLAttributes, 'class'>);
 
 const baseClasses =
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-ring';
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-ring transition-colors';
 
 const variantClasses = {
   default: 'bg-primary text-primary-foreground hover:bg-primary/90',
@@ -29,10 +43,23 @@ const sizeClasses = {
 const classes = twMerge(baseClasses, variantClasses[variant], sizeClasses[size], className);
 ---
 
-<button
-  data-slot="button"
-  class={classes}
-  {...props}
->
-  <slot />
-</button>
+{
+  href ? (
+    <a
+      data-slot="button"
+      href={href}
+      class={classes}
+      {...anchorProps}
+    >
+      <slot />
+    </a>
+  ) : (
+    <button
+      data-slot="button"
+      class={classes}
+      {...buttonProps}
+    >
+      <slot />
+    </button>
+  )
+}
