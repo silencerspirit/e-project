@@ -1,5 +1,15 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
+export interface SharedBadge extends Struct.ComponentSchema {
+  collectionName: 'components_shared_badges';
+  info: {
+    displayName: 'Badge';
+  };
+  attributes: {
+    value: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface SharedFeatureBanner extends Struct.ComponentSchema {
   collectionName: 'components_shared_feature_banners';
   info: {
@@ -70,15 +80,45 @@ export interface SharedSeo extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedShowcaseBanner extends Struct.ComponentSchema {
+  collectionName: 'components_shared_showcase_banners';
+  info: {
+    displayName: 'ShowcaseBanner';
+  };
+  attributes: {
+    description: Schema.Attribute.String & Schema.Attribute.Required;
+    properties: Schema.Attribute.Relation<'oneToMany', 'api::property.property'>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface SharedSpecItem extends Struct.ComponentSchema {
+  collectionName: 'components_shared_spec_items';
+  info: {
+    displayName: 'SpecItem';
+  };
+  attributes: {
+    key: Schema.Attribute.Enumeration<
+      ['floor', 'area', 'ceiling_height', 'layout', 'bathroom', 'facility_readiness', 'entrance', 'parking']
+    > &
+      Schema.Attribute.Required;
+    label: Schema.Attribute.String & Schema.Attribute.Required;
+    value: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
+      'shared.badge': SharedBadge;
       'shared.feature-banner': SharedFeatureBanner;
       'shared.feature-item': SharedFeatureItem;
       'shared.hero-banner': SharedHeroBanner;
       'shared.images': SharedImages;
       'shared.metric-item': SharedMetricItem;
       'shared.seo': SharedSeo;
+      'shared.showcase-banner': SharedShowcaseBanner;
+      'shared.spec-item': SharedSpecItem;
     }
   }
 }

@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_shared_showcase_banners",
+  "info": {
+    "displayName": "ShowcaseBanner"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "required": true
+    },
+    "properties": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::property.property"
+    }
+  },
+  "config": {}
+}

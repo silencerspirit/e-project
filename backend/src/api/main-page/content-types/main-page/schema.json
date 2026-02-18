@@ -33,6 +33,11 @@
       "type": "component",
       "component": "shared.seo",
       "repeatable": false
+    },
+    "showcaseBanner": {
+      "type": "component",
+      "component": "shared.showcase-banner",
+      "repeatable": false
     }
   }
 }

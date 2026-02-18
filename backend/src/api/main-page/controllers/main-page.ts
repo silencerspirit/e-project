@@ -24,6 +24,31 @@ export default factories.createCoreController('api::main-page.main-page', ({ str
               features: true,
             },
           },
+          showcaseBanner: {
+            populate: {
+              properties: {
+                populate: {
+                  badges: true,
+                  specifications: true,
+                  city: {
+                    populate: {
+                      properties: true,
+                    },
+                  },
+                  propertyType: {
+                    populate: {
+                      properties: true,
+                    },
+                  },
+                  previewImage: {
+                    populate: {
+                      image: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       });
 

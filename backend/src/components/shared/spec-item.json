@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_shared_spec_items",
+  "info": {
+    "displayName": "SpecItem"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "value": {
+      "type": "string",
+      "required": true
+    },
+    "key": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "floor",
+        "area",
+        "ceiling_height",
+        "layout",
+        "bathroom",
+        "facility_readiness",
+        "entrance",
+        "parking"
+      ]
+    }
+  },
+  "config": {}
+}
