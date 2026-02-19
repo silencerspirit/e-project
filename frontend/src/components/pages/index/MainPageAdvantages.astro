@@ -8,7 +8,7 @@ interface Props {
 
 const ICONS: AstroComponent[] = [Lightbulb, Leaf, PiggyBank, Shield, Clock, Users];
 
-const { info } = Astro.props as Props;
+const { info } = Astro.props;
 
 const advantages = info.features.map((feature, i) => ({
   ...feature,

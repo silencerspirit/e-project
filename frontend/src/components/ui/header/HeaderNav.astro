@@ -7,7 +7,7 @@ interface Props {
   mobile?: boolean;
 }
 
-const { items, class: className, mobile = false } = Astro.props as Props;
+const { items, class: className, mobile = false } = Astro.props;
 
 const navClass = mobile ? 'flex flex-col gap-4' : 'hidden items-center gap-8 lg:flex';
 ---

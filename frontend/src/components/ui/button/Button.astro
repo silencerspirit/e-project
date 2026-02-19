@@ -19,7 +19,7 @@ type AnchorProps = CommonProps &
 
 type Props = ButtonProps | AnchorProps;
 
-const { variant = 'default', size = 'default', class: className, href, ...props } = Astro.props as Props;
+const { variant = 'default', size = 'default', class: className, href, ...props } = Astro.props;
 const anchorProps = href ? (props as Omit<JSX.AnchorHTMLAttributes, 'class' | 'href'>) : undefined;
 const buttonProps = href ? undefined : (props as Omit<JSX.ButtonHTMLAttributes, 'class'>);
 

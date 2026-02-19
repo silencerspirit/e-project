@@ -10,7 +10,7 @@ interface Props {
   info: THeroBanner;
 }
 
-const { info } = Astro.props as Props;
+const { info } = Astro.props;
 
 const propertyTypes = ['Все объекты', 'Квартиры', 'Дома', 'Коммерция', 'Аренда'] as const;
 const locations = ['Все локации', 'Севастополь', 'Ялта', 'Евпатория', 'Гурзуф', 'Симферополь'] as const;

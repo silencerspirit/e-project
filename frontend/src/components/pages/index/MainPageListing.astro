@@ -9,7 +9,7 @@ interface Props {
   info: TShowcaseBanner;
 }
 
-const { info } = Astro.props as Props;
+const { info } = Astro.props;
 
 const sectionId = `main-page-listings-${Math.random().toString(36).slice(2)}`;
 

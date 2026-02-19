@@ -8,7 +8,7 @@ interface Props {
   address?: string;
 }
 
-const { phone, address } = Astro.props as Props;
+const { phone, address } = Astro.props;
 const telHref = `tel:${phone?.replace(/\D/g, '')}`;
 ---
 
