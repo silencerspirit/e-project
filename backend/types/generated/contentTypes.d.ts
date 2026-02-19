@@ -556,7 +556,13 @@ export interface ApiPropertyProperty extends Struct.CollectionTypeSchema {
     city: Schema.Attribute.Relation<'manyToOne', 'api::city.city'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
-    description: Schema.Attribute.Text & Schema.Attribute.Required;
+    description: Schema.Attribute.RichText &
+      Schema.Attribute.CustomField<
+        'plugin::ckeditor5.CKEditor',
+        {
+          preset: 'defaultHtml';
+        }
+      >;
     images: Schema.Attribute.Component<'shared.images', true>;
     infrastructure: Schema.Attribute.Component<'shared.badge', true>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;

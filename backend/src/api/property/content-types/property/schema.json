@@ -34,8 +34,11 @@
       "required": true
     },
     "description": {
-      "type": "text",
-      "required": true
+      "type": "customField",
+      "customField": "plugin::ckeditor5.CKEditor",
+      "options": {
+        "preset": "defaultHtml"
+      }
     },
     "previewImage": {
       "type": "component",
