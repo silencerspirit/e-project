@@ -73,6 +73,11 @@
       "component": "shared.spec-item",
       "repeatable": true
     },
+    "techSpecifications": {
+      "type": "component",
+      "component": "shared.spec-item",
+      "repeatable": true
+    },
     "activityTypes": {
       "type": "component",
       "component": "shared.badge",

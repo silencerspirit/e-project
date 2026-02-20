@@ -24,7 +24,11 @@
         "bathroom",
         "facility_readiness",
         "entrance",
-        "parking"
+        "parking",
+        "energy",
+        "internet",
+        "ventilation",
+        "alarm_system"
       ]
     }
   },

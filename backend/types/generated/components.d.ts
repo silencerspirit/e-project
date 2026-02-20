@@ -99,7 +99,20 @@ export interface SharedSpecItem extends Struct.ComponentSchema {
   };
   attributes: {
     key: Schema.Attribute.Enumeration<
-      ['floor', 'area', 'ceiling_height', 'layout', 'bathroom', 'facility_readiness', 'entrance', 'parking']
+      [
+        'floor',
+        'area',
+        'ceiling_height',
+        'layout',
+        'bathroom',
+        'facility_readiness',
+        'entrance',
+        'parking',
+        'energy',
+        'internet',
+        'ventilation',
+        'alarm_system',
+      ]
     > &
       Schema.Attribute.Required;
     label: Schema.Attribute.String & Schema.Attribute.Required;

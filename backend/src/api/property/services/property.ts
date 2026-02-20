@@ -13,6 +13,7 @@ export default factories.createCoreService('api::property.property', ({ strapi }
         activityTypes: true,
         specifications: true,
         infrastructure: true,
+        techSpecifications: true,
         city: {
           populate: {
             properties: true,

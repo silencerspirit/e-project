@@ -574,6 +574,7 @@ export interface ApiPropertyProperty extends Struct.CollectionTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
     specifications: Schema.Attribute.Component<'shared.spec-item', true>;
+    techSpecifications: Schema.Attribute.Component<'shared.spec-item', true>;
     title: Schema.Attribute.String & Schema.Attribute.Required & Schema.Attribute.Unique;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;

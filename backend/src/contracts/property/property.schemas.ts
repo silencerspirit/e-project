@@ -29,5 +29,6 @@ export const PropertyFullItemSchema = object({
   description: string(),
   images: nullish(array(ImageTransformScheme), []),
   activityTypes: nullish(array(BadgeSchema), []),
+  techSpecifications: nullish(array(SpecItemSchema), []),
   infrastructure: nullish(array(BadgeSchema), []),
 });

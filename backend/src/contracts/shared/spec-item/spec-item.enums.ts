@@ -7,4 +7,8 @@ export enum SpecItemType {
   FacilityReadiness = 'facility_readiness',
   Entrance = 'entrance',
   Parking = 'parking',
+  Energy = 'energy',
+  Internet = 'internet',
+  Ventilation = 'ventilation',
+  AlarmSystem = 'alarm_system',
 }
