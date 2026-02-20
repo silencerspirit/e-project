@@ -14,6 +14,7 @@ export default factories.createCoreService('api::property.property', ({ strapi }
         specifications: true,
         infrastructure: true,
         techSpecifications: true,
+        seo: true,
         city: {
           populate: {
             properties: true,

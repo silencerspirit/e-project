@@ -572,6 +572,7 @@ export interface ApiPropertyProperty extends Struct.CollectionTypeSchema {
     pricePerM2: Schema.Attribute.Decimal & Schema.Attribute.Required;
     propertyType: Schema.Attribute.Relation<'manyToOne', 'api::property-type.property-type'>;
     publishedAt: Schema.Attribute.DateTime;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
     specifications: Schema.Attribute.Component<'shared.spec-item', true>;
     techSpecifications: Schema.Attribute.Component<'shared.spec-item', true>;

@@ -1,0 +1,97 @@
+---
+import { ChevronRight, House } from '@lucide/astro';
+import { array, type InferOutput, minLength, object, optional, parse, pipe, string, trim } from 'valibot';
+
+export type TBreadcrumbItem = InferOutput<typeof BreadcrumbItemSchema>;
+
+type Props = InferOutput<typeof BreadcrumbsPropsSchema>;
+
+const BreadcrumbItemSchema = object({
+  label: pipe(string(), trim(), minLength(1)),
+  href: optional(pipe(string(), trim(), minLength(1))),
+});
+
+const BreadcrumbsPropsSchema = object({
+  items: array(BreadcrumbItemSchema),
+  breadcrumbs: optional(array(BreadcrumbItemSchema)),
+  status: optional(pipe(string(), trim(), minLength(1))),
+  category: optional(pipe(string(), trim(), minLength(1))),
+  title: optional(pipe(string(), trim(), minLength(1))),
+  description: optional(pipe(string(), trim(), minLength(1))),
+});
+
+const { items, status, category, title, description } = parse(BreadcrumbsPropsSchema, Astro.props);
+---
+
+<section class="bg-foreground py-12 lg:py-16">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <nav
+      aria-label="Хлебные крошки"
+      class="text-sm text-card/70"
+    >
+      <ol class="flex flex-wrap items-center gap-1.5">
+        <li>
+          <a
+            href="/"
+            class="flex items-center gap-1 transition-colors hover:text-primary"
+          >
+            <House
+              class="h-4 w-4"
+              aria-hidden="true"
+            />
+            <span class="sr-only">Главная</span>
+          </a>
+        </li>
+
+        {
+          items.map((item, index) => {
+            const isLastItem = index === items.length - 1;
+
+            return (
+              <li class="flex items-center gap-1.5">
+                <ChevronRight
+                  class="h-4 w-4 text-border"
+                  aria-hidden="true"
+                />
+
+                {item.href && (
+                  <a
+                    href={item.href}
+                    class="transition-colors hover:text-primary"
+                  >
+                    {item.label}
+                  </a>
+                )}
+
+                {isLastItem && (
+                  <ChevronRight
+                    class="h-4 w-4 text-border"
+                    aria-hidden="true"
+                  />
+                )}
+              </li>
+            );
+          })
+        }
+      </ol>
+    </nav>
+    {
+      (status || category) && (
+        <div class="mt-6 flex flex-wrap items-center gap-3">
+          {status && (
+            <span class="rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground">{status}</span>
+          )}
+          {category && <span class="rounded-full bg-card/10 px-3 py-1 text-xs font-medium text-card">{category}</span>}
+        </div>
+      )
+    }
+
+    {
+      title && (
+        <h1 class="mt-4 text-balance text-3xl font-bold leading-tight text-card sm:text-4xl lg:text-5xl">{title}</h1>
+      )
+    }
+
+    {description && <p class="mt-3 text-lg text-card/70">{description}</p>}
+  </div>
+</section>

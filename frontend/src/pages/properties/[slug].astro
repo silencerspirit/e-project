@@ -1,0 +1,87 @@
+---
+import { PropertySlugSchema } from '@contracts';
+import { Check, MapPin } from '@lucide/astro';
+import { parse } from 'valibot';
+
+import { getSiteConfig } from '@/api';
+import { getPropertyBySlug } from '@/api/property';
+
+import PropertyDetailContact from '@/components/pages/property/PropertyDetailContact.astro';
+import PropertyDetailDescription from '@/components/pages/property/PropertyDetailDescription.astro';
+import PropertyDetailForm from '@/components/pages/property/PropertyDetailForm.astro';
+import PropertyDetailList from '@/components/pages/property/PropertyDetailList.astro';
+import PropertyDetailSlider from '@/components/pages/property/PropertyDetailSlider.astro';
+import PropertyDetailSpecification from '@/components/pages/property/PropertyDetailSpecification.astro';
+import PropertyDetailTechSpecification from '@/components/pages/property/PropertyDetailTechSpecification.astro';
+import Breadcrumbs from '@/components/ui/breadcrumbs/Breadcrumbs.astro';
+import Layout from '@/layouts/Layout.astro';
+
+const { slug } = parse(PropertySlugSchema, Astro.params);
+const [property, config] = await Promise.all([getPropertyBySlug(slug), getSiteConfig()]);
+
+const [badge = undefined] = property.badges;
+const metaTitle: string = property.seo?.metaTitle ?? '';
+const metaDescription: string = property.seo?.metaDescription ?? '';
+const openGraphImage: string = property?.previewImage?.formats?.large ?? '';
+---
+
+<Layout
+  metaTitle={metaTitle}
+  openGraphImage={openGraphImage}
+  metaDescription={metaDescription}
+>
+  <Breadcrumbs
+    items={[{ label: 'Недвижимость', href: '/' }]}
+    title={property.title}
+    status={badge?.value}
+    category={property.propertyType?.name}
+    description={property.address}
+  />
+
+  <PropertyDetailSlider images={property.images} />
+
+  <section class="py-12 lg:py-16">
+    <div class="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 sm:px-6 lg:grid-cols-3 lg:gap-12 lg:px-8">
+      <div class="flex flex-col gap-10 lg:col-span-2">
+        <PropertyDetailSpecification property={property} />
+
+        {property.description && <PropertyDetailDescription property={property} />}
+
+        {
+          Boolean(property.activityTypes.length) && (
+            <PropertyDetailList
+              list={property.activityTypes}
+              title="Возможные виды деятельности"
+              icon={Check}
+            />
+          )
+        }
+
+        {
+          Boolean(property.infrastructure.length) && (
+            <PropertyDetailList
+              list={property.infrastructure}
+              title="Инфраструктура"
+              icon={MapPin}
+              inverse
+            />
+          )
+        }
+      </div>
+
+      <div class="lg:col-span-1">
+        <div class="sticky top-36">
+          <PropertyDetailForm title={property.title} />
+
+          {
+            Boolean(property.techSpecifications.length) && (
+              <PropertyDetailTechSpecification techSpecification={property.techSpecifications} />
+            )
+          }
+
+          <PropertyDetailContact config={config} />
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

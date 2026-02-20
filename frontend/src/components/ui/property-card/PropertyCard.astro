@@ -1,40 +1,19 @@
 ---
 import { SpecItemType, type TPropertyListItem } from '@contracts';
-import type { AstroComponent } from '@lucide/astro';
-import {
-  ArrowRight,
-  ArrowUpDown,
-  Bath,
-  Building,
-  Car,
-  DoorOpen,
-  Hammer,
-  LayoutGrid,
-  MapPin,
-  Ruler,
-} from '@lucide/astro';
+import { ArrowRight, CircleAlert, MapPin } from '@lucide/astro';
 
 import { PRICE_PER_M2_SUFFIX } from '@/constants';
 import { formatPrice } from '@/helpers';
 
 import SmartImage from '@/components/ui/smart-image/SmartImage.astro';
 
+import { SPEC_ICON_MAP } from './property-card.consts';
+
 interface Props {
   property: TPropertyListItem;
 }
 
-const SPEC_ICON_MAP: Record<SpecItemType, AstroComponent> = {
-  [SpecItemType.Floor]: Building,
-  [SpecItemType.Area]: Ruler,
-  [SpecItemType.CeilingHeight]: ArrowUpDown,
-  [SpecItemType.Layout]: LayoutGrid,
-  [SpecItemType.Bathroom]: Bath,
-  [SpecItemType.FacilityReadiness]: Hammer,
-  [SpecItemType.Entrance]: DoorOpen,
-  [SpecItemType.Parking]: Car,
-};
-
-const { property, ...attributes } = Astro.props as Props;
+const { property, ...attributes } = Astro.props;
 ---
 
 <li
@@ -44,7 +23,7 @@ const { property, ...attributes } = Astro.props as Props;
 >
   <a
     href={`/properties/${property.slug}/`}
-    class="group flex flex-col overflow-hidden rounded-2xl bg-card shadow-md transition-all duration-300 hover:border-primary/30 hover:shadow-xl"
+    class="group flex h-full flex-col overflow-hidden rounded-2xl bg-card shadow-md transition-all duration-300 hover:border-primary/30 hover:shadow-xl"
   >
     <div class="relative aspect-video overflow-hidden">
       <SmartImage
@@ -56,12 +35,12 @@ const { property, ...attributes } = Astro.props as Props;
 
       <div class="absolute left-4 top-4">
         <span class="rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground">
-          {property.badges[0].value}
+          {property.badges[0]?.value ?? ''}
         </span>
       </div>
     </div>
 
-    <div class="p-6">
+    <div class="flex grow flex-col p-6">
       <h3 class="text-xl font-semibold text-foreground transition-colors group-hover:text-primary">
         {property.title}
       </h3>
@@ -74,10 +53,10 @@ const { property, ...attributes } = Astro.props as Props;
         <span class="text-sm">{property.address}</span>
       </div>
 
-      <div class="mt-4 flex flex-wrap items-center gap-4 text-sm text-foreground/70">
+      <div class="mt-4 flex flex-wrap items-center gap-4 pb-6 text-sm text-foreground/70">
         {
           property.specifications.slice(0, 2).map((spec) => {
-            const Icon = SPEC_ICON_MAP[spec.key as SpecItemType] ?? Ruler;
+            const Icon = SPEC_ICON_MAP[spec.key as SpecItemType] ?? CircleAlert;
 
             return (
               <div class="flex items-center gap-1.5">
@@ -94,7 +73,7 @@ const { property, ...attributes } = Astro.props as Props;
         }
       </div>
 
-      <div class="mt-6 flex items-center justify-between border-t border-border pt-4">
+      <div class="mt-auto flex items-center justify-between border-t border-border pt-4">
         <div class="text-xl font-bold text-primary">
           {`от ${formatPrice(property.pricePerM2)} ${PRICE_PER_M2_SUFFIX}`}
         </div>

@@ -4,18 +4,27 @@ import type { JSX } from 'astro/jsx-runtime';
 
 interface Props extends JSX.ImgHTMLAttributes {
   image: TImage;
+  thumbnail?: boolean;
   class?: string;
 }
 
-const { image, class: className = '', loading = 'lazy', fetchpriority = 'auto', ...rest } = Astro.props;
+const {
+  image,
+  class: className = '',
+  loading = 'lazy',
+  fetchpriority = 'auto',
+  thumbnail = false,
+  decoding = 'async',
+  ...rest
+} = Astro.props;
 
 const alt = image.alternativeText ?? '';
 const imgId = `cp_${Math.random().toString(36).slice(2)}`;
 
-const srcMobile = image.formats.small || image.formats.thumbnail;
-const srcTablet = image.formats.medium || image.formats.small || image.formats.thumbnail;
-const srcDesktop = image.formats.large || image.url;
 const srcPlaceholder = image.formats.thumbnail || image.url;
+const srcMobile = thumbnail ? srcPlaceholder : image.formats.small || image.formats.thumbnail;
+const srcTablet = thumbnail ? srcPlaceholder : image.formats.medium || image.formats.small || image.formats.thumbnail;
+const srcDesktop = thumbnail ? srcPlaceholder : image.formats.large || image.url;
 ---
 
 <div class={`smart-image relative overflow-hidden ${className}`}>
@@ -34,8 +43,8 @@ const srcPlaceholder = image.formats.thumbnail || image.url;
       src={srcDesktop}
       alt={alt}
       loading={loading}
-      decoding="async"
-      fetchpriority={'low'}
+      fetchpriority={fetchpriority}
+      decoding={decoding}
       onload={`this.classList.add('smart-image__img--visible')`}
       {...rest}
     />
@@ -48,7 +57,7 @@ const srcPlaceholder = image.formats.thumbnail || image.url;
     aria-hidden="true"
     loading={loading}
     fetchpriority={fetchpriority}
-    decoding="async"
+    decoding={decoding}
     {...rest}
   />
 </div>

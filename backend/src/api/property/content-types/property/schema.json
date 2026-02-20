@@ -87,6 +87,11 @@
       "type": "component",
       "component": "shared.badge",
       "repeatable": true
+    },
+    "seo": {
+      "type": "component",
+      "component": "shared.seo",
+      "repeatable": false
     }
   }
 }

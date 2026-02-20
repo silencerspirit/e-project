@@ -1,0 +1,51 @@
+---
+import type { SpecItemType, TPropertyFullItem } from '@contracts';
+import { CircleAlert } from '@lucide/astro';
+
+import { SPEC_ICON_MAP } from '@/components/ui/property-card/property-card.consts';
+import { PRICE_PER_M2_SUFFIX } from '@/constants';
+import { formatPrice } from '@/helpers';
+
+interface Props {
+  property: TPropertyFullItem;
+}
+
+const { property } = Astro.props;
+---
+
+<div class="rounded-2xl border border-border bg-card p-6 lg:p-8">
+  <div class="mb-6 flex flex-col gap-4 border-b border-border pb-6 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <p class="text-sm text-muted-foreground">Стоимость</p>
+      <p class="text-3xl font-bold text-primary">от {formatPrice(property.priceFrom)} ₽</p>
+    </div>
+    <div class="sm:text-right">
+      <p class="text-sm text-muted-foreground">Цена за м²</p>
+      <p class="text-xl font-semibold text-foreground">
+        {`${formatPrice(property.pricePerM2)} ${PRICE_PER_M2_SUFFIX}`}
+      </p>
+    </div>
+  </div>
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:gap-6">
+    {
+      property.specifications.map((spec) => {
+        const Icon = SPEC_ICON_MAP[spec.key as SpecItemType] ?? CircleAlert;
+
+        return (
+          <div class="flex items-start gap-3">
+            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+              <Icon
+                class="h-5 w-5 text-primary"
+                aria-hidden="true"
+              />
+            </div>
+            <div>
+              <p class="text-xs text-muted-foreground">{spec.label}</p>
+              <p class="mt-0.5 text-sm font-semibold text-foreground">{spec.value}</p>
+            </div>
+          </div>
+        );
+      })
+    }
+  </div>
+</div>

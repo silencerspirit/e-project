@@ -1,0 +1,15 @@
+---
+import type { TPropertyFullItem } from '@contracts';
+
+interface Props {
+  property: TPropertyFullItem;
+}
+
+const { property } = Astro.props;
+---
+
+<div class="paragraph">
+  <h2 class="mb-6 text-2xl font-bold text-foreground">Описание</h2>
+
+  <Fragment set:html={property.description} />
+</div>
