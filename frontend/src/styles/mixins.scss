@@ -44,18 +44,12 @@
 //     padding-bottom: theme('spacing.pad-xs');
 //   }
 // }
-//
-// @mixin p($small: false) {
-//   > p {
-//     @if $small == true {
-//       @apply h5;
-//     } @else {
-//       @apply h4;
-//     }
-//
-//     padding-bottom: theme('spacing.pad-xs');
-//   }
-// }
+
+@mixin p() {
+  > p {
+    @apply text-foreground/85 leading-relaxed mb-4;
+  }
+}
 
 // @mixin ul() {
 //   > ul {
