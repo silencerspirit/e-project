@@ -8,11 +8,8 @@ import svgr from 'vite-plugin-svgr';
 export default defineConfig({
   output: 'server',
   adapter: node({ mode: 'standalone' }),
-  integrations: [tailwind()],
+  integrations: [tailwind({ applyBaseStyles: false })],
   compressHTML: true,
-  // build: {
-  //   inlineStylesheets: 'always',
-  // },
   vite: {
     plugins: [svgr()],
     resolve: {

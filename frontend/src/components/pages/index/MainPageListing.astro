@@ -1,6 +1,6 @@
 ---
 import type { TShowcaseBanner } from '@contracts';
-import { ArrowRight } from '@lucide/astro';
+import { ArrowLeft, ArrowRight } from '@lucide/astro';
 
 import Button from '@/components/ui/button/Button.astro';
 import PropertyCard from '@/components/ui/property-card/PropertyCard.astro';
@@ -11,7 +11,7 @@ interface Props {
 
 const { info } = Astro.props;
 
-const sectionId = `main-page-listings-${Math.random().toString(36).slice(2)}`;
+const sectionId = `main-page-listing-${Math.random().toString(36).slice(2)}`;
 
 const propertyTypes: string[] = [
   ...new Set(info.properties.map((property) => property.propertyType?.name ?? '').filter(Boolean)),
@@ -22,16 +22,16 @@ const filters = [DEFAULT_FILTER_VALUE, ...propertyTypes] as const;
 
 <section
   id={sectionId}
-  class="bg-background py-20 lg:py-28"
-  aria-labelledby="main-page-listings-title"
+  class="main-page-listing bg-background py-20 lg:py-28"
+  aria-labelledby="main-page-listing-title"
   data-main-page-listing
   data-default-filter-value={DEFAULT_FILTER_VALUE}
 >
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+    <div class="flex flex-col gap-6">
       <div class="w-full">
         <h2
-          id="main-page-listings-title"
+          id="main-page-listing-title"
           class="text-balance text-3xl font-bold text-foreground sm:text-4xl"
         >
           {info.title}
@@ -39,44 +39,79 @@ const filters = [DEFAULT_FILTER_VALUE, ...propertyTypes] as const;
         <p class="mt-4 text-lg text-muted-foreground">{info.description}</p>
       </div>
 
+      <div class="flex items-start gap-6">
+        <div
+          class="flex w-full flex-wrap gap-2"
+          role="group"
+          aria-label="Фильтр объектов по типу"
+        >
+          {
+            filters.map((filter) => (
+              <Button
+                data-listing-filter
+                data-filter={filter}
+                aria-pressed={filter === DEFAULT_FILTER_VALUE ? 'true' : 'false'}
+                class:list={[
+                  'rounded-full',
+                  { 'bg-primary text-primary-foreground': filter === DEFAULT_FILTER_VALUE },
+                  { 'bg-secondary text-foreground hover:bg-secondary': filter !== DEFAULT_FILTER_VALUE },
+                ]}
+              >
+                {filter}
+              </Button>
+            ))
+          }
+        </div>
+
+        <div class="hidden gap-4 lg:flex">
+          <Button
+            variant="link"
+            aria-label="Предыдущей слайд"
+            id="slider-prev-button"
+            class="text-primary transition-colors hover:bg-primary/10"
+          >
+            <ArrowLeft
+              aria-hidden="true"
+              class="h-4 w-4"
+            />
+          </Button>
+          <Button
+            variant="link"
+            aria-label="Следующий слайд"
+            id="slider-next-button"
+            class="text-primary transition-colors hover:bg-primary/10"
+          >
+            <ArrowRight
+              aria-hidden="true"
+              class="h-4 w-4"
+            />
+          </Button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="swiper main-page-listing__slider"
+      data-listing-slider
+    >
       <div
-        class="flex w-full flex-wrap justify-end gap-2"
-        role="group"
-        aria-label="Фильтр объектов по типу"
+        class="swiper-wrapper items-stretch"
+        data-listing-swiper-wrapper
       >
         {
-          filters.map((filter) => (
-            <Button
-              data-listing-filter
-              data-filter={filter}
-              data-active={DEFAULT_FILTER_VALUE}
-              aria-pressed={filter === DEFAULT_FILTER_VALUE ? 'true' : 'false'}
-              data-all={filter === DEFAULT_FILTER_VALUE ? '' : undefined}
-              class:list={[
-                'rounded-full',
-                { 'bg-primary text-primary-foreground': filter === DEFAULT_FILTER_VALUE },
-                { 'bg-secondary text-foreground hover:bg-secondary': filter !== DEFAULT_FILTER_VALUE },
-              ]}
+          info.properties.map((property) => (
+            <div
+              class="swiper-slide flex h-auto"
+              data-type={property.propertyType?.name ?? ''}
             >
-              {filter}
-            </Button>
+              <PropertyCard property={property} />
+            </div>
           ))
         }
       </div>
     </div>
 
-    <ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {
-        info.properties.map((property) => (
-          <PropertyCard
-            property={property}
-            data-type={property.propertyType?.name}
-          />
-        ))
-      }
-    </ul>
-
-    <div class="mt-12 text-center">
+    <div class="text-center">
       <Button
         href="/properties/"
         variant="outline"
@@ -92,5 +127,32 @@ const filters = [DEFAULT_FILTER_VALUE, ...propertyTypes] as const;
     </div>
   </div>
 </section>
+
+<style lang="scss">
+  .main-page-listing {
+    &__slider {
+      @apply px-4 py-10;
+
+      margin-inline: calc(#{theme('size.4')} * -1);
+      width: calc(100% + #{theme('size.4')} * 2);
+
+      .swiper-slide {
+        max-width: calc((100% - #{theme('size.6')} * 2) / 3);
+
+        @media (max-width: theme('screens.lg')) {
+          max-width: calc((100% - #{theme('size.4')}));
+        }
+
+        &:not(:last-child) {
+          margin-right: theme('size.6');
+
+          @media (max-width: theme('screens.lg')) {
+            margin-right: theme('size.4');
+          }
+        }
+      }
+    }
+  }
+</style>
 
 <script src="./main-page-listing.ts"></script>

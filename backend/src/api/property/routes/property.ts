@@ -11,6 +11,14 @@ const config: Core.RouterConfig = {
         auth: false,
       },
     },
+    {
+      method: 'GET',
+      path: '/property/similar/:slug((?!page$)[a-z0-9-]+)',
+      handler: 'property.findSimilarBySlug',
+      config: {
+        auth: false,
+      },
+    },
   ],
 };
 

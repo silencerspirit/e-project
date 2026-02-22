@@ -4,12 +4,13 @@ import { Check, MapPin } from '@lucide/astro';
 import { parse } from 'valibot';
 
 import { getSiteConfig } from '@/api';
-import { getPropertyBySlug } from '@/api/property';
+import { getPropertyBySlug, getPropertySimilarBySlug } from '@/api/property';
 
 import PropertyDetailContact from '@/components/pages/property/PropertyDetailContact.astro';
 import PropertyDetailDescription from '@/components/pages/property/PropertyDetailDescription.astro';
 import PropertyDetailForm from '@/components/pages/property/PropertyDetailForm.astro';
 import PropertyDetailList from '@/components/pages/property/PropertyDetailList.astro';
+import PropertyDetailSimilar from '@/components/pages/property/PropertyDetailSimilar.astro';
 import PropertyDetailSlider from '@/components/pages/property/PropertyDetailSlider.astro';
 import PropertyDetailSpecification from '@/components/pages/property/PropertyDetailSpecification.astro';
 import PropertyDetailTechSpecification from '@/components/pages/property/PropertyDetailTechSpecification.astro';
@@ -17,7 +18,11 @@ import Breadcrumbs from '@/components/ui/breadcrumbs/Breadcrumbs.astro';
 import Layout from '@/layouts/Layout.astro';
 
 const { slug } = parse(PropertySlugSchema, Astro.params);
-const [property, config] = await Promise.all([getPropertyBySlug(slug), getSiteConfig()]);
+const [property, { list: similarList }, config] = await Promise.all([
+  getPropertyBySlug(slug),
+  getPropertySimilarBySlug(slug),
+  getSiteConfig(),
+]);
 
 const [badge = undefined] = property.badges;
 const metaTitle: string = property.seo?.metaTitle ?? '';
@@ -84,4 +89,6 @@ const openGraphImage: string = property?.previewImage?.formats?.large ?? '';
       </div>
     </div>
   </section>
+
+  {Boolean(similarList.length) && <PropertyDetailSimilar similarList={similarList} />}
 </Layout>

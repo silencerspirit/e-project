@@ -1,5 +1,27 @@
 import { factories } from '@strapi/strapi';
 
+const SIMILAR_PROPERTIES_COUNT = 3;
+
+const cardPopulate = {
+  badges: true,
+  specifications: true,
+  city: {
+    populate: {
+      properties: true,
+    },
+  },
+  propertyType: {
+    populate: {
+      properties: true,
+    },
+  },
+  previewImage: {
+    populate: {
+      image: true,
+    },
+  },
+} as const;
+
 export default factories.createCoreService('api::property.property', ({ strapi }) => ({
   async getBySlug(slug: string) {
     const item = await strapi.documents('api::property.property').findFirst({
@@ -9,27 +31,11 @@ export default factories.createCoreService('api::property.property', ({ strapi }
         slug,
       },
       populate: {
-        badges: true,
+        ...cardPopulate,
         activityTypes: true,
-        specifications: true,
         infrastructure: true,
         techSpecifications: true,
         seo: true,
-        city: {
-          populate: {
-            properties: true,
-          },
-        },
-        propertyType: {
-          populate: {
-            properties: true,
-          },
-        },
-        previewImage: {
-          populate: {
-            image: true,
-          },
-        },
         images: {
           populate: {
             image: true,
@@ -39,5 +45,45 @@ export default factories.createCoreService('api::property.property', ({ strapi }
     });
 
     return item;
+  },
+
+  async getSimilarBySlug(slug: string, limit = SIMILAR_PROPERTIES_COUNT) {
+    const baseQuery = {
+      status: 'published',
+      filters: {
+        slug: {
+          $ne: slug,
+        },
+      },
+    } as const;
+
+    const total = await strapi.documents('api::property.property').count(baseQuery);
+
+    if (!total) return [];
+
+    const queryCount = Math.min(limit, total);
+    const randomOffsets = new Set<number>();
+
+    while (randomOffsets.size < queryCount) {
+      randomOffsets.add(Math.floor(Math.random() * total));
+    }
+
+    const list = await Promise.all(
+      [...randomOffsets].map((start) =>
+        strapi
+          .documents('api::property.property')
+          .findMany({
+            ...baseQuery,
+            sort: ['slug:asc'],
+            start,
+            limit: 1,
+            fields: ['title', 'slug', 'address', 'priceFrom', 'pricePerM2'],
+            populate: cardPopulate,
+          })
+          .then(([item]) => item),
+      ),
+    );
+
+    return list.filter(Boolean);
   },
 }));

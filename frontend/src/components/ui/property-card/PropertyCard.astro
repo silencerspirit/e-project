@@ -11,13 +11,14 @@ import { SPEC_ICON_MAP } from './property-card.consts';
 
 interface Props {
   property: TPropertyListItem;
+  hideDetails?: boolean;
 }
 
-const { property, ...attributes } = Astro.props;
+const { property, hideDetails = false, ...attributes } = Astro.props;
 ---
 
-<li
-  class="list-none"
+<div
+  class="h-full w-full"
   data-listing-card
   {...attributes}
 >
@@ -77,16 +78,19 @@ const { property, ...attributes } = Astro.props;
         <div class="text-xl font-bold text-primary">
           {`от ${formatPrice(property.pricePerM2)} ${PRICE_PER_M2_SUFFIX}`}
         </div>
-        <span
-          class="inline-flex h-8 items-center gap-1 rounded-md px-3 text-sm text-primary transition-colors group-hover:bg-primary/10"
-        >
-          Подробнее
-          <ArrowRight
-            aria-hidden="true"
-            class="h-4 w-4"
-          />
-        </span>
+
+        {
+          !hideDetails && (
+            <span class="inline-flex h-8 items-center gap-1 rounded-md px-3 text-sm text-primary transition-colors group-hover:bg-primary/10">
+              Подробнее
+              <ArrowRight
+                aria-hidden="true"
+                class="h-4 w-4"
+              />
+            </span>
+          )
+        }
       </div>
     </div>
   </a>
-</li>
+</div>

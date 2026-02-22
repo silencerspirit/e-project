@@ -1,34 +1,87 @@
+import { Navigation, Swiper } from '@/components/ui/swiper';
+
 (() => {
-  const filterButtons: HTMLButtonElement[] = Array.from(document.querySelectorAll('[data-listing-filter]'));
-  const cards: HTMLLIElement[] = Array.from(document.querySelectorAll('[data-listing-card]'));
+  interface IStoredSlide {
+    type: string;
+    node: Node;
+  }
+
+  const sliderPrevButtonId = 'slider-prev-button';
+  const sliderNextButtonId = 'slider-next-button';
 
   const activeClasses = ['bg-primary', 'text-primary-foreground'];
   const inactiveClasses = ['bg-secondary', 'text-foreground', 'hover:bg-secondary'];
 
-  function setActiveFilter(button: HTMLButtonElement) {
-    if (button.dataset.active === button.dataset.filter) return;
+  const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-main-page-listing]'));
 
-    filterButtons.forEach((b) => {
-      b.classList.remove(...activeClasses);
-      b.classList.add(...inactiveClasses);
-      b.dataset.active = button.dataset.filter;
-      b.setAttribute('aria-pressed', 'false');
+  sections.forEach((section) => {
+    const filterButtons = Array.from(section.querySelectorAll<HTMLButtonElement>('[data-listing-filter]'));
+    const slider = section.querySelector<HTMLElement>('[data-listing-slider]');
+    const wrapper = section.querySelector<HTMLElement>('[data-listing-swiper-wrapper]');
+
+    if (!filterButtons.length || !slider || !wrapper) return;
+
+    const defaultFilter = section.dataset.defaultFilterValue ?? 'Все';
+    const sourceSlides: IStoredSlide[] = Array.from(wrapper.querySelectorAll<HTMLElement>('.swiper-slide')).map(
+      (slide) => ({
+        type: slide.dataset.type ?? '',
+        node: slide.cloneNode(true),
+      }),
+    );
+
+    const defaultButton = filterButtons.find((button) => button.dataset.filter === defaultFilter) ?? filterButtons[0];
+    const initialFilter = defaultButton?.dataset.filter ?? defaultFilter;
+
+    if (defaultButton) setActiveFilter(filterButtons, defaultButton);
+
+    renderSlides(wrapper, sourceSlides, initialFilter, defaultFilter);
+
+    const sliderInstance = new Swiper(slider, {
+      modules: [Navigation],
+      slidesPerView: 'auto',
+      navigation: {
+        prevEl: `#${sliderPrevButtonId}`,
+        nextEl: `#${sliderNextButtonId}`,
+      },
     });
 
-    button.classList.add(...activeClasses);
-    button.classList.remove(...inactiveClasses);
-    button.setAttribute('aria-pressed', 'true');
+    filterButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const nextFilter = button.dataset.filter ?? defaultFilter;
 
-    if (typeof button.dataset.all !== 'undefined') {
-      cards.forEach((card) => card.classList.remove('hidden'));
-      return;
-    }
+        setActiveFilter(filterButtons, button);
+        renderSlides(wrapper, sourceSlides, nextFilter, defaultFilter);
 
-    cards.forEach((card) => {
-      const isMatch = card.dataset.type === button.dataset.filter;
-      card.classList.toggle('hidden', !isMatch);
+        sliderInstance.update();
+        sliderInstance.slideTo(0, 0);
+        toggleNavigationVisibility(sliderInstance.isEnd);
+      });
     });
+  });
+
+  function setActiveFilter(filterButtons: HTMLButtonElement[], activeButton: HTMLButtonElement) {
+    filterButtons.forEach((button) => {
+      button.classList.remove(...activeClasses);
+      button.classList.add(...inactiveClasses);
+      button.setAttribute('aria-pressed', 'false');
+    });
+
+    activeButton.classList.add(...activeClasses);
+    activeButton.classList.remove(...inactiveClasses);
+    activeButton.setAttribute('aria-pressed', 'true');
   }
 
-  filterButtons.forEach((filterButton) => filterButton.addEventListener('click', () => setActiveFilter(filterButton)));
+  function renderSlides(wrapper: HTMLElement, sourceSlides: IStoredSlide[], filter: string, defaultFilter: string) {
+    const filteredSlides =
+      filter === defaultFilter ? sourceSlides : sourceSlides.filter((slide) => slide.type === filter);
+
+    const nextSlides = filteredSlides.map((slide) => slide.node.cloneNode(true));
+    wrapper.replaceChildren(...nextSlides);
+  }
+
+  function toggleNavigationVisibility(hide: boolean) {
+    const method = hide ? 'add' : 'remove';
+    document.getElementById(sliderPrevButtonId)?.classList[method]('hidden');
+    document.getElementById(sliderNextButtonId)?.classList[method]('hidden');
+  }
 })();

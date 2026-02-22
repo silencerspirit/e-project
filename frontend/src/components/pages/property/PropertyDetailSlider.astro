@@ -33,7 +33,7 @@ const { images } = Astro.props;
       </div>
 
       <button
-        class="property-detail-slider__main-prev absolute left-4 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-card/80 backdrop-blur-sm transition-colors hover:bg-card"
+        class="property-detail-slider__main-prev absolute left-4 top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-card/80 backdrop-blur-sm transition-colors hover:bg-card lg:flex"
         type="button"
         aria-label="Предыдущее фото"
       >
@@ -43,7 +43,7 @@ const { images } = Astro.props;
         />
       </button>
       <button
-        class="property-detail-slider__main-next absolute right-4 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-card/80 backdrop-blur-sm transition-colors hover:bg-card"
+        class="property-detail-slider__main-next absolute right-4 top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-card/80 backdrop-blur-sm transition-colors hover:bg-card lg:flex"
         type="button"
         aria-label="Следующее фото"
       >
@@ -88,9 +88,10 @@ const { images } = Astro.props;
 <style lang="scss">
   .property-detail-slider {
     &__thumb {
-      padding: theme('size.4');
+      @apply p-4;
+
       margin-inline: calc(#{theme('size.4')} * -1);
-      width: calc(100% + #{theme('size.4')});
+      width: calc(100% + #{theme('size.4')} * 2);
 
       .swiper-slide-thumb-active {
         @apply ring-2 ring-primary ring-offset-2 ring-offset-background;

@@ -1,10 +1,4 @@
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-
-import Swiper from 'swiper';
-import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
-
+import { FreeMode, Navigation, Swiper, Thumbs } from '@/components/ui/swiper';
 import { isHTMLElement } from '@/helpers';
 
 (() => {
@@ -24,11 +18,10 @@ import { isHTMLElement } from '@/helpers';
     watchSlidesProgress: true,
   });
 
-  const mainSwiper = new Swiper(mainSlider, {
+  new Swiper(mainSlider, {
     modules: [Thumbs, Navigation],
     thumbs: {
       swiper: thumbSwiper,
-      autoScrollOffset: 1,
     },
     navigation: {
       prevEl: '.property-detail-slider__main-prev',
@@ -39,11 +32,5 @@ import { isHTMLElement } from '@/helpers';
         mainSliderCounter.textContent = `${swiper.realIndex + 1} / ${swiper.slides.length}`;
       },
     },
-  });
-
-  thumbSwiper.on('tap', () => {
-    if (typeof thumbSwiper.clickedIndex === 'number' && thumbSwiper.clickedIndex >= 0) {
-      mainSwiper.slideTo(thumbSwiper.clickedIndex);
-    }
   });
 })();
