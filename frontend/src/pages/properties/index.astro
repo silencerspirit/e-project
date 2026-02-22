@@ -1,9 +1,17 @@
 ---
+import { getPropertyListingPage } from '@/api';
+
+import Breadcrumbs from '@/components/ui/breadcrumbs/Breadcrumbs.astro';
 import Layout from '@/layouts/Layout.astro';
+
+const { title, description } = await getPropertyListingPage();
 ---
 
 <Layout>
-  <h1>Properties index page</h1>
+  <Breadcrumbs
+    title={title}
+    description={description}
+  />
   <p>
     Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa sed voluptas nemo quo nisi! Ea illo commodi, deserunt
     eum molestiae recusandae blanditiis libero repudiandae, est enim quos explicabo eligendi eos!

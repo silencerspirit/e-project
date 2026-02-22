@@ -514,6 +514,30 @@ export interface ApiNewsPageNewsPage extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiPropertyListingPagePropertyListingPage extends Struct.SingleTypeSchema {
+  collectionName: 'property_listing_pages';
+  info: {
+    displayName: 'PropertyListingPage';
+    pluralName: 'property-listing-pages';
+    singularName: 'property-listing-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
+    description: Schema.Attribute.Text & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::property-listing-page.property-listing-page'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
+  };
+}
+
 export interface ApiPropertyTypePropertyType extends Struct.CollectionTypeSchema {
   collectionName: 'property_types';
   info: {
@@ -1022,6 +1046,7 @@ declare module '@strapi/strapi' {
       'api::navigation-item.navigation-item': ApiNavigationItemNavigationItem;
       'api::news-item.news-item': ApiNewsItemNewsItem;
       'api::news-page.news-page': ApiNewsPageNewsPage;
+      'api::property-listing-page.property-listing-page': ApiPropertyListingPagePropertyListingPage;
       'api::property-type.property-type': ApiPropertyTypePropertyType;
       'api::property.property': ApiPropertyProperty;
       'api::site-config.site-config': ApiSiteConfigSiteConfig;

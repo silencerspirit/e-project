@@ -1,0 +1,23 @@
+{
+  "kind": "singleType",
+  "collectionName": "property_listing_pages",
+  "info": {
+    "singularName": "property-listing-page",
+    "pluralName": "property-listing-pages",
+    "displayName": "PropertyListingPage"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    }
+  }
+}

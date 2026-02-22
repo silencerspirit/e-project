@@ -6,6 +6,7 @@ export default factories.createCoreController('api::main-page.main-page', ({ str
   async getMainPage() {
     try {
       const mainPage = await strapi.documents('api::main-page.main-page').findFirst({
+        status: 'published',
         populate: {
           seo: true,
           heroBanner: {

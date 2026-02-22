@@ -1,10 +1,21 @@
 ---
 import { ChevronRight, House } from '@lucide/astro';
-import { array, type InferOutput, minLength, object, optional, parse, pipe, string, trim } from 'valibot';
+import {
+  array,
+  type InferInput,
+  type InferOutput,
+  minLength,
+  object,
+  optional,
+  parse,
+  pipe,
+  string,
+  trim,
+} from 'valibot';
 
 export type TBreadcrumbItem = InferOutput<typeof BreadcrumbItemSchema>;
 
-type Props = InferOutput<typeof BreadcrumbsPropsSchema>;
+type Props = InferInput<typeof BreadcrumbsPropsSchema>;
 
 const BreadcrumbItemSchema = object({
   label: pipe(string(), trim(), minLength(1)),
@@ -12,15 +23,16 @@ const BreadcrumbItemSchema = object({
 });
 
 const BreadcrumbsPropsSchema = object({
-  items: array(BreadcrumbItemSchema),
-  breadcrumbs: optional(array(BreadcrumbItemSchema)),
+  items: optional(array(BreadcrumbItemSchema), []),
   status: optional(pipe(string(), trim(), minLength(1))),
   category: optional(pipe(string(), trim(), minLength(1))),
   title: optional(pipe(string(), trim(), minLength(1))),
   description: optional(pipe(string(), trim(), minLength(1))),
 });
 
-const { items, status, category, title, description } = parse(BreadcrumbsPropsSchema, Astro.props);
+const { items = [], status, category, title, description } = parse(BreadcrumbsPropsSchema, Astro.props);
+
+const isEmptyItems: boolean = !items.length;
 ---
 
 <section class="bg-foreground py-12 lg:py-16">
@@ -30,7 +42,7 @@ const { items, status, category, title, description } = parse(BreadcrumbsPropsSc
       class="text-sm text-card/70"
     >
       <ol class="flex flex-wrap items-center gap-1.5">
-        <li>
+        <li class="flex items-center gap-1.5">
           <a
             href="/"
             class="flex items-center gap-1 transition-colors hover:text-primary"
@@ -41,6 +53,15 @@ const { items, status, category, title, description } = parse(BreadcrumbsPropsSc
             />
             <span class="sr-only">Главная</span>
           </a>
+
+          {
+            isEmptyItems && (
+              <ChevronRight
+                class="h-4 w-4 text-border"
+                aria-hidden="true"
+              />
+            )
+          }
         </li>
 
         {
