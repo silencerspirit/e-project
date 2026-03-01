@@ -33,6 +33,10 @@
       "type": "string",
       "required": true
     },
+    "shortDescription": {
+      "type": "text",
+      "required": true
+    },
     "description": {
       "type": "customField",
       "customField": "plugin::ckeditor5.CKEditor",

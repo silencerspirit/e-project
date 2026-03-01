@@ -2,7 +2,7 @@ import { DEFAULT_PAGINATE_LIMIT } from '../../contracts.constants';
 
 import { minValue, number, object, optional, pipe, string, transform } from 'valibot';
 
-export const PaginateSchema = pipe(
+export const PaginateSchema = /*#__PURE__*/ pipe(
   object({
     page: optional(string()),
     total: pipe(number(), minValue(0)),

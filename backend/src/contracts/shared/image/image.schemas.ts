@@ -1,6 +1,6 @@
 import { nullish, object, pipe, string, transform } from 'valibot';
 
-export const ImageScheme = pipe(
+export const ImageScheme = /*#__PURE__*/ pipe(
   object({
     url: string(),
     alternativeText: nullish(string(), ''),
@@ -26,7 +26,7 @@ export const ImageScheme = pipe(
   })),
 );
 
-export const ImageTransformScheme = pipe(
+export const ImageTransformScheme = /*#__PURE__*/ pipe(
   object({
     image: ImageScheme,
   }),

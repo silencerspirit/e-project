@@ -1,6 +1,6 @@
 import { nullish, object, string } from 'valibot';
 
-export const SiteConfigSchema = object({
+export const SiteConfigSchema = /*#__PURE__*/ object({
   email: nullish(string(), undefined),
   phone: nullish(string(), undefined),
   address: nullish(string(), undefined),

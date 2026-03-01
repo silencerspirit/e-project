@@ -532,6 +532,7 @@ export interface ApiPropertyListingPagePropertyListingPage extends Struct.Single
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::property-listing-page.property-listing-page'> &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
@@ -597,6 +598,7 @@ export interface ApiPropertyProperty extends Struct.CollectionTypeSchema {
     propertyType: Schema.Attribute.Relation<'manyToOne', 'api::property-type.property-type'>;
     publishedAt: Schema.Attribute.DateTime;
     seo: Schema.Attribute.Component<'shared.seo', false>;
+    shortDescription: Schema.Attribute.Text & Schema.Attribute.Required;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
     specifications: Schema.Attribute.Component<'shared.spec-item', true>;
     techSpecifications: Schema.Attribute.Component<'shared.spec-item', true>;

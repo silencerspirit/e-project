@@ -1,5 +1,9 @@
 export default ({ env }: { env: EnvFn }) => ({
   auth: {
+    sessions: {
+      maxRefreshTokenLifespan: 2592000, // 30 дней
+      maxSessionLifespan: 604800, // 7 дней
+    },
     secret: env('ADMIN_JWT_SECRET'),
   },
   apiToken: {

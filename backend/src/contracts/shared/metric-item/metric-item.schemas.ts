@@ -1,6 +1,6 @@
 import { object, string } from 'valibot';
 
-export const MetricItemScheme = object({
+export const MetricItemScheme = /*#__PURE__*/ object({
   value: string(),
   label: string(),
 });

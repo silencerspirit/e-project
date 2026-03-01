@@ -18,6 +18,11 @@
     "description": {
       "type": "text",
       "required": true
+    },
+    "seo": {
+      "type": "component",
+      "component": "shared.seo",
+      "repeatable": false
     }
   }
 }

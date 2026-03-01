@@ -1,6 +1,6 @@
 import { object, string } from 'valibot';
 
-export const PropertyTypeSchema = object({
+export const PropertyTypeSchema = /*#__PURE__*/ object({
   name: string(),
   slug: string(),
 });

@@ -12,6 +12,13 @@ export default defineConfig({
   compressHTML: true,
   vite: {
     plugins: [svgr()],
+    build: {
+      rollupOptions: {
+        treeshake: {
+          moduleSideEffects: (id) => !id.includes('/backend/src/contracts/'),
+        },
+      },
+    },
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
