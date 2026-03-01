@@ -10,6 +10,7 @@
     "dev": "bunx concurrently -n backend,frontend -c blue,green \"bun --cwd backend develop\" \"bun --cwd frontend dev\"",
     "build": "bun --cwd backend run build && bun --cwd frontend run build",
     "start": "bunx concurrently -n backend,frontend -c blue,green \"bun --cwd backend run start\" \"bun --cwd frontend run start\"",
+    "db:backup": "./scripts/backup-db.sh",
     "lint": "eslint .",
     "lint:fix": "eslint --fix",
     "pre-commit": "lint-staged",
