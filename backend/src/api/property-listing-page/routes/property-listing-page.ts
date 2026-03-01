@@ -5,6 +5,22 @@ const config: Core.RouterConfig = {
   routes: [
     {
       method: 'GET',
+      path: '/property-listing-page/list',
+      handler: 'property-listing-page.getPropertyListingPageList',
+      config: {
+        auth: false,
+      },
+    },
+    {
+      method: 'GET',
+      path: '/property-listing-page/count',
+      handler: 'property-listing-page.getPropertyListingPageCount',
+      config: {
+        auth: false,
+      },
+    },
+    {
+      method: 'GET',
       path: '/property-listing-page',
       handler: 'property-listing-page.getPropertyListingPage',
       config: {
