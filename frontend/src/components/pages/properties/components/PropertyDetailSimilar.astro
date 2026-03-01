@@ -18,7 +18,7 @@ const { similarList } = Astro.props;
 
       <a
         href="/properties/"
-        class="inline-flex h-8 items-center gap-1 rounded-md text-sm text-primary transition-colors hover:bg-primary/10"
+        class="inline-flex h-8 items-center gap-1 rounded-md px-3 text-sm text-primary transition-colors hover:bg-primary/10"
       >
         Все объекты
         <ArrowRight
@@ -35,12 +35,12 @@ const { similarList } = Astro.props;
       <div class="swiper-wrapper items-stretch">
         {
           similarList.map((property) => (
-            <div class="swiper-slide flex h-auto">
+            <ul class="swiper-slide flex h-auto">
               <PropertyCard
                 hideDetails
                 property={property}
               />
-            </div>
+            </ul>
           ))
         }
       </div>

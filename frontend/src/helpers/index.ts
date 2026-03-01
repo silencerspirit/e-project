@@ -14,10 +14,29 @@ export function isMobileUserAgent(): boolean {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(window?.navigator?.userAgent);
 }
 
-export function isHTMLElement(el: unknown): el is HTMLElement {
-  return el instanceof HTMLElement || el instanceof SVGElement;
+export function isHTMLElement<T = HTMLElement>(el: unknown): el is T {
+  return el instanceof Element && Boolean(el);
 }
 
 export function formatPrice(value: unknown): string {
   return Number(value).toLocaleString('ru-RU');
+}
+
+export const declOfNum = (number: number, titles: string[]): string => {
+  const cases: number[] = [2, 0, 1, 1, 1, 2];
+
+  return titles[number % 100 > 4 && number % 100 < 20 ? 2 : cases[number % 10 < 5 ? number % 10 : 5]];
+};
+
+export function assertNever(x: never): never {
+  throw new Error(`Неожиданное значение: ${x}`);
+}
+
+export function getCookie<T extends string>(name: string, cookieString: string, defaultValue: T): T;
+export function getCookie<T extends string>(name: string, cookieString: string, defaultValue?: undefined): T | null;
+export function getCookie<T extends string>(name: string, cookieString: string, defaultValue?: T): T | null {
+  const match = cookieString.match(new RegExp('(^|;\\s*)' + name + '=([^;]+)'));
+  const value = match ? decodeURIComponent(match[2].trim()) : null;
+
+  return (value ?? defaultValue) as T | null;
 }

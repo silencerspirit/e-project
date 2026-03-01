@@ -4,7 +4,10 @@ import { parsePropertyListingPageRequest } from '@/components/pages/properties';
 
 import PropertyListingPageView from '@/components/pages/properties/components/PropertyListingPageView.astro';
 
-const { parsedSegments, query, request } = parsePropertyListingPageRequest(Astro.url.searchParams);
+const { parsedSegments, query, request } = parsePropertyListingPageRequest(
+  Astro.url.searchParams,
+  Astro.params.segments,
+);
 
 const [info, listing] = await Promise.all([getPropertyListingPage(), getPropertyListingPageList(request)]);
 ---

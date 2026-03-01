@@ -1,4 +1,4 @@
-const STRAPI_URL = import.meta.env.STRAPI_URL;
+const STRAPI_URL = import.meta.env.PUBLIC_STRAPI_URL;
 const STRAPI_TOKEN = import.meta.env.STRAPI_TOKEN;
 const ENDPOINT_WAITING_TIMEOUT_MS = 10_000;
 

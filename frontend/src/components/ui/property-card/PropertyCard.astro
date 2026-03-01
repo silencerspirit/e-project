@@ -2,31 +2,37 @@
 import { SpecItemType, type TPropertyListItem } from '@contracts';
 import { ArrowRight, CircleAlert, MapPin } from '@lucide/astro';
 
-import { PRICE_PER_M2_SUFFIX } from '@/constants';
+import { PRICE_PER_M2_SUFFIX, PRICE_SUFFIX } from '@/constants';
 import { formatPrice } from '@/helpers';
 
 import SmartImage from '@/components/ui/smart-image/SmartImage.astro';
 
-import { SPEC_ICON_MAP } from './property-card.consts';
+import { PROPERTY_MODIFY_SELECTOR } from './property-card.consts';
+import { SPEC_ICON_MAP } from './property-card.icons';
 
 interface Props {
   property: TPropertyListItem;
   hideDetails?: boolean;
+  fullPrice?: boolean;
+  row?: boolean;
 }
 
-const { property, hideDetails = false, ...attributes } = Astro.props;
+const { property, hideDetails = false, fullPrice = false, row = false, ...attributes } = Astro.props;
 ---
 
-<div
-  class="h-full w-full"
+<li
+  class="property-card h-full w-full"
+  class:list={{
+    [PROPERTY_MODIFY_SELECTOR]: row,
+  }}
   data-listing-card
   {...attributes}
 >
   <a
     href={`/properties/${property.slug}/`}
-    class="group flex h-full flex-col overflow-hidden rounded-2xl bg-card shadow-md transition-all duration-300 hover:border-primary/30 hover:shadow-xl"
+    class="property-card__item group flex h-full overflow-hidden rounded-2xl bg-card shadow-md transition-all duration-300 hover:border-primary/30 hover:shadow-xl"
   >
-    <div class="relative aspect-video overflow-hidden">
+    <div class="property-card__image-container relative shrink-0 overflow-hidden">
       <SmartImage
         image={property.previewImage}
         class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -72,11 +78,19 @@ const { property, hideDetails = false, ...attributes } = Astro.props;
             );
           })
         }
+
+        <p class="property-card__short-description line-clamp-2">
+          {property.shortDescription}
+        </p>
       </div>
 
       <div class="mt-auto flex items-center justify-between border-t border-border pt-4">
         <div class="text-xl font-bold text-primary">
-          {`от ${formatPrice(property.pricePerM2)} ${PRICE_PER_M2_SUFFIX}`}
+          {
+            fullPrice
+              ? `от ${formatPrice(property.priceFrom)} ${PRICE_SUFFIX}`
+              : `от ${formatPrice(property.pricePerM2)} ${PRICE_PER_M2_SUFFIX}`
+          }
         </div>
 
         {
@@ -93,4 +107,36 @@ const { property, hideDetails = false, ...attributes } = Astro.props;
       </div>
     </div>
   </a>
-</div>
+</li>
+
+<style lang="scss">
+  .property-card {
+    $p: &;
+
+    &--row {
+      min-height: 256px;
+    }
+
+    &__image-container {
+      @apply aspect-video;
+
+      #{$p}--row & {
+        @apply aspect-square;
+      }
+    }
+
+    &__item {
+      @apply flex-col;
+
+      #{$p}--row & {
+        @apply flex-row;
+      }
+    }
+
+    &__short-description {
+      &:not(#{$p}--row &) {
+        @apply hidden;
+      }
+    }
+  }
+</style>

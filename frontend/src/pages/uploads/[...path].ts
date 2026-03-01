@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 
 const getStrapiBaseUrl = (): string => {
-  const base = import.meta.env.STRAPI_URL;
+  const base = import.meta.env.PUBLIC_STRAPI_URL;
 
   if (!base) {
     throw new Error('STRAPI_URL is not set');

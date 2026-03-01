@@ -1,0 +1,164 @@
+---
+import {
+  PropertyListingPageSort,
+  type TPropertyListingPage,
+  type TPropertyListingPageList,
+  type TPropertyListingPageQuery,
+} from '@contracts';
+import { LayoutGrid, List, X } from '@lucide/astro';
+
+import { getCookie } from '@/helpers';
+
+import PropertyListingFilters from '@/components/pages/properties/components/PropertyListingFilters.astro';
+import Breadcrumbs from '@/components/ui/breadcrumbs/Breadcrumbs.astro';
+import Button from '@/components/ui/button/Button.astro';
+import PropertyCard from '@/components/ui/property-card/PropertyCard.astro';
+import Layout from '@/layouts/Layout.astro';
+
+import { VIEW_COOKIE_NAME, VIEW_COOKIE_VALUES } from '../properties.consts';
+import type { TParsedSegments } from '../properties.types';
+import { getPropertyTotalItemsText } from '../properties.utils';
+
+interface Props {
+  info: TPropertyListingPage;
+  listing: TPropertyListingPageList;
+  parsedSegments?: TParsedSegments;
+  query: TPropertyListingPageQuery;
+}
+
+const { info, listing, parsedSegments = {}, query } = Astro.props;
+const { list, paginate, filters } = listing;
+
+const metaTitle: string = info.seo?.metaTitle ?? '';
+const metaDescription: string = info.seo?.metaDescription ?? '';
+
+const isEmptyList: boolean = !list.length;
+const existFilters: boolean = Object.values(parsedSegments).filter(Boolean).length > 0;
+const totalItemsText: string = getPropertyTotalItemsText(paginate.totalItems);
+
+const SORT_LIST = [
+  {
+    value: PropertyListingPageSort.Default,
+    label: 'По умолчанию',
+  },
+  {
+    value: PropertyListingPageSort.PriceAsc,
+    label: 'Сначала дешевле',
+  },
+  {
+    value: PropertyListingPageSort.PriceDesc,
+    label: 'Сначала дороже',
+  },
+] as const;
+
+const [DEFAULT_VIEW] = VIEW_COOKIE_VALUES;
+const initialView = getCookie<(typeof VIEW_COOKIE_VALUES)[number]>(
+  VIEW_COOKIE_NAME,
+  Astro.request.headers.get('cookie') ?? '',
+  DEFAULT_VIEW,
+);
+---
+
+<Layout
+  metaTitle={metaTitle}
+  metaDescription={metaDescription}
+>
+  <Breadcrumbs
+    title={info.title}
+    description={info.description}
+  />
+
+  <section class="py-12 lg:py-16">
+    <div class="mx-auto flex max-w-7xl flex-col gap-8 px-4 sm:px-6 lg:flex-row lg:gap-10 lg:px-8">
+      {
+        isEmptyList ? (
+          <div class="flex w-full flex-col items-center gap-6">
+            <p class="text-center text-sm text-muted-foreground">Ничего не найдено, попробуйте:</p>
+
+            <Button
+              variant="outline"
+              href="/properties/"
+            >
+              <X
+                aria-hidden="true"
+                class="h-4 w-4 text-foreground"
+              />
+              Сбросить фильтры
+            </Button>
+          </div>
+        ) : (
+          <>
+            <PropertyListingFilters
+              filters={filters}
+              existFilters={existFilters}
+              parsedSegments={parsedSegments}
+            />
+
+            <div class="min-w-0 flex-1">
+              <div class="mb-8 flex flex-wrap items-center gap-4">
+                <p class="mr-auto text-sm text-muted-foreground">{totalItemsText}</p>
+
+                <div class="flex items-center gap-3">
+                  <select
+                    id="property-sort-select"
+                    name="sort"
+                    aria-label="Сортировка объектов"
+                    class="rounded-lg border-none bg-secondary px-3 py-2 text-sm text-foreground outline-none focus:ring-2 focus:ring-primary/30"
+                  >
+                    {SORT_LIST.map((sort) => (
+                      <option
+                        value={sort.value}
+                        selected={query.sort === sort.value}
+                      >
+                        {sort.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div class="hidden items-center rounded-lg bg-secondary p-1 sm:flex">
+                  {VIEW_COOKIE_VALUES.map((view) => {
+                    const Icon = view === 'grid' ? LayoutGrid : List;
+                    const ariaLabel = view === 'grid' ? 'Плиточный вид' : 'Сеточный вид';
+                    return (
+                      <button
+                        data-view={view}
+                        id={`button-view-${view}`}
+                        type="button"
+                        class="rounded-md p-1.5 transition-colors"
+                        class:list={{
+                          'bg-card text-primary shadow-sm': initialView === view,
+                          'text-muted-foreground hover:text-foreground': initialView !== view,
+                        }}
+                        aria-label={ariaLabel}
+                      >
+                        <Icon class="h-4 w-4" />
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+              <ul
+                id="property-listing"
+                class="grid grid-cols-1 gap-6"
+                class:list={{
+                  'md:grid-cols-2': initialView === 'grid',
+                }}
+              >
+                {list.map((property) => (
+                  <PropertyCard
+                    row={initialView === 'list'}
+                    property={property}
+                    fullPrice
+                  />
+                ))}
+              </ul>
+            </div>
+          </>
+        )
+      }
+    </div>
+  </section>
+</Layout>
+
+<script src="./property-listing-page-view.ts"></script>

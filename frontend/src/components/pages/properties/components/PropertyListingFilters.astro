@@ -1,0 +1,168 @@
+---
+import type { TPropertyListingPageFilters } from '@contracts';
+import { Search, X } from '@lucide/astro';
+
+import Button from '@/components/ui/button/Button.astro';
+import Input from '@/components/ui/input/Input.astro';
+
+import { FilterCode } from '../properties.enums';
+import type { TParsedSegments } from '../properties.types';
+
+interface Props {
+  filters: TPropertyListingPageFilters;
+  existFilters?: boolean;
+  parsedSegments?: TParsedSegments;
+}
+
+const { filters, existFilters = false, parsedSegments = {} } = Astro.props;
+---
+
+<aside
+  id="filters"
+  class="sticky top-36 flex w-72 shrink-0 flex-col gap-6 self-start rounded-2xl border border-border bg-card p-6"
+  data-exist-filters={JSON.stringify(parsedSegments)}
+>
+  <h3 class="text-lg font-semibold text-foreground">Фильтры</h3>
+
+  <div>
+    <label
+      for="search-input"
+      class="mb-2 block text-sm font-medium text-foreground"
+    >
+      Поиск
+    </label>
+    <div class="relative">
+      <Search class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+      <Input
+        id="search-input"
+        placeholder="Название..."
+        class="pl-10"
+      />
+    </div>
+  </div>
+
+  <div>
+    <span class="mb-2 block text-sm font-medium text-foreground">Тип недвижимости</span>
+    <div class="flex flex-wrap gap-2">
+      <Button
+        variant={parsedSegments[FilterCode.PropertyType] ? 'outline' : 'default'}
+        data-filter-button
+        data-filter-all
+        data-type={FilterCode.PropertyType}
+      >
+        Все
+      </Button>
+
+      {
+        filters.propertyTypes.map((type) => (
+          <Button
+            variant={parsedSegments[FilterCode.PropertyType] === type.slug ? 'default' : 'outline'}
+            disabled={type.disabled}
+            data-filter-button
+            data-value={type.slug}
+            data-type={FilterCode.PropertyType}
+          >
+            {type.name}
+          </Button>
+        ))
+      }
+    </div>
+  </div>
+  <div>
+    <span class="mb-2 block text-sm font-medium text-foreground">Город</span>
+    <div class="flex flex-wrap gap-2">
+      <Button
+        variant={parsedSegments[FilterCode.City] ? 'outline' : 'default'}
+        data-filter-button
+        data-filter-all
+        data-type={FilterCode.City}
+      >
+        Все города
+      </Button>
+
+      {
+        filters.cities.map((city) => (
+          <Button
+            variant={parsedSegments[FilterCode.City] === city.slug ? 'default' : 'outline'}
+            disabled={city.disabled}
+            data-filter-button
+            data-value={city.slug}
+            data-type={FilterCode.City}
+          >
+            {city.name}
+          </Button>
+        ))
+      }
+    </div>
+  </div>
+  <div>
+    <span class="mb-2 block text-sm font-medium text-foreground">Бюджет</span>
+    <div class="flex flex-wrap gap-2">
+      <Button
+        variant={parsedSegments[FilterCode.PriceFrom] || parsedSegments[FilterCode.PriceTo] ? 'outline' : 'default'}
+        data-filter-button
+        data-filter-all
+        data-type={FilterCode.PriceFrom}
+      >
+        Любая цена
+      </Button>
+
+      {
+        filters.prices.map((price, i) => {
+          const textMap = {
+            0: `до ${price.to}`,
+            1: `от ${price.from} до ${price.to}`,
+            2: `от ${price.from}`,
+          };
+
+          const priceForm = Number(parsedSegments[FilterCode.PriceFrom]);
+          const priceTo = Number(parsedSegments[FilterCode.PriceTo]);
+
+          const buttonVariant = () => {
+            if (price.disabled) return 'outline';
+
+            if (price.from === priceForm && price.to === priceTo) return 'default';
+
+            return 'outline';
+          };
+
+          return (
+            <Button
+              variant={buttonVariant()}
+              data-filter-button
+              disabled={price.disabled}
+              data-from={price.from}
+              data-to={price.to}
+              data-type={FilterCode.PriceFrom}
+            >
+              {textMap[i as keyof typeof textMap]}
+            </Button>
+          );
+        })
+      }
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <Button
+      id="submit-filters"
+      type="button"
+      class="hidden"
+    />
+
+    <Button
+      id="reset-filters"
+      variant="outline"
+      href="/properties/"
+      class:list={{
+        hidden: !existFilters,
+      }}
+    >
+      <X
+        aria-hidden="true"
+        class="h-4 w-4 text-foreground"
+      />
+      Сбросить фильтры
+    </Button>
+  </div>
+</aside>

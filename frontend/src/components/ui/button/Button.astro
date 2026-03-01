@@ -2,8 +2,10 @@
 import type { JSX } from 'astro/jsx-runtime';
 import { twMerge } from 'tailwind-merge';
 
+import { BUTTON_VARIANTS } from './button.consts';
+
 type CommonProps = {
-  variant?: 'default' | 'outline' | 'ghost' | 'link';
+  variant?: keyof typeof BUTTON_VARIANTS;
   size?: 'default' | 'sm' | 'lg' | 'icon';
 };
 
@@ -26,13 +28,6 @@ const buttonProps = href ? undefined : (props as Omit<JSX.ButtonHTMLAttributes, 
 const baseClasses =
   'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-ring transition-colors';
 
-const variantClasses = {
-  default: 'bg-primary text-primary-foreground hover:bg-primary/90',
-  outline: 'border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground',
-  ghost: 'hover:bg-accent hover:text-accent-foreground',
-  link: 'text-primary underline-offset-4 hover:underline',
-} as const;
-
 const sizeClasses = {
   default: 'h-9 px-4 py-2',
   sm: 'h-8 rounded-md gap-1.5 px-3',
@@ -40,7 +35,7 @@ const sizeClasses = {
   icon: 'size-9',
 } as const;
 
-const classes = twMerge(baseClasses, variantClasses[variant], sizeClasses[size], className);
+const classes = twMerge(baseClasses, BUTTON_VARIANTS[variant], sizeClasses[size], className);
 ---
 
 {

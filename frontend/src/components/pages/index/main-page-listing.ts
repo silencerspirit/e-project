@@ -1,3 +1,4 @@
+import { BUTTON_VARIANTS } from '@/components/ui/button/button.consts';
 import { Navigation, Swiper } from '@/components/ui/swiper';
 
 (() => {
@@ -9,8 +10,8 @@ import { Navigation, Swiper } from '@/components/ui/swiper';
   const sliderPrevButtonId = 'slider-prev-button';
   const sliderNextButtonId = 'slider-next-button';
 
-  const activeClasses = ['bg-primary', 'text-primary-foreground'];
-  const inactiveClasses = ['bg-secondary', 'text-foreground', 'hover:bg-secondary'];
+  const activeClasses = BUTTON_VARIANTS.default.split(' ');
+  const inactiveClasses = BUTTON_VARIANTS.outline.split(' ');
 
   const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-main-page-listing]'));
 

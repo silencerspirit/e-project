@@ -50,12 +50,9 @@ const filters = [DEFAULT_FILTER_VALUE, ...propertyTypes] as const;
               <Button
                 data-listing-filter
                 data-filter={filter}
+                class="rounded-full"
                 aria-pressed={filter === DEFAULT_FILTER_VALUE ? 'true' : 'false'}
-                class:list={[
-                  'rounded-full',
-                  { 'bg-primary text-primary-foreground': filter === DEFAULT_FILTER_VALUE },
-                  { 'bg-secondary text-foreground hover:bg-secondary': filter !== DEFAULT_FILTER_VALUE },
-                ]}
+                variant={filter === DEFAULT_FILTER_VALUE ? 'default' : 'outline'}
               >
                 {filter}
               </Button>
@@ -100,12 +97,12 @@ const filters = [DEFAULT_FILTER_VALUE, ...propertyTypes] as const;
       >
         {
           info.properties.map((property) => (
-            <div
-              class="swiper-slide flex h-auto"
+            <ul
+              class="swiper-slide flex"
               data-type={property.propertyType?.name ?? ''}
             >
               <PropertyCard property={property} />
-            </div>
+            </ul>
           ))
         }
       </div>
@@ -138,6 +135,7 @@ const filters = [DEFAULT_FILTER_VALUE, ...propertyTypes] as const;
 
       .swiper-slide {
         max-width: calc((100% - #{theme('size.6')} * 2) / 3);
+        height: auto;
 
         @media (max-width: theme('screens.lg')) {
           max-width: calc((100% - #{theme('size.4')}));
