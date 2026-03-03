@@ -77,7 +77,7 @@ export default factories.createCoreService('api::property.property', ({ strapi }
             sort: ['slug:asc'],
             start,
             limit: 1,
-            fields: ['title', 'slug', 'address', 'priceFrom', 'pricePerM2'],
+            fields: ['title', 'slug', 'address', 'shortDescription', 'priceFrom', 'pricePerM2'],
             populate: cardPopulate,
           })
           .then(([item]) => item),

@@ -18,6 +18,8 @@ const INACTIVE_CLASSES = BUTTON_VARIANTS.outline.split(' ');
 
 const ACTIVE_BUTTON_VIEW_CLASSES = ['text-primary', 'bg-card', 'shadow-sm'];
 const INACTIVE_BUTTON_VIEW_CLASSES = ['text-muted-foreground', 'hover:text-foreground'];
+const MOBILE_FILTERS_MEDIA_QUERY = '(max-width: 1279px)';
+const FILTERS_ACTIVE_CLASS = 'property-listing-filters--active';
 
 const FILTER_GROUP_CONFIG: Record<
   TFilterGroup,
@@ -48,9 +50,11 @@ const FILTER_GROUP_CONFIG: Record<
 };
 
 function getElements(): TElements | null {
-  const filtersAside = document.getElementById('filters');
-  const submitFiltersButton = document.getElementById('submit-filters');
-  const sortSelect = document.getElementById('property-sort-select');
+  const filtersAside = document.getElementById('property-listing-filters');
+  const filterButtonOpen = document.getElementById('property-listing-filters-open');
+  const filterButtonClose = document.getElementById('property-listing-filters-close');
+  const submitFiltersButton = document.getElementById('property-listing-filters-submit');
+  const sortSelect = document.getElementById('property-listing-sort');
   const buttonViewList = document.getElementById('button-view-list');
   const buttonViewGrid = document.getElementById('button-view-grid');
   const listingContainer = document.getElementById('property-listing');
@@ -59,6 +63,8 @@ function getElements(): TElements | null {
     !isHTMLElement<HTMLSelectElement>(sortSelect) ||
     !isHTMLElement<HTMLDivElement>(filtersAside) ||
     !isHTMLElement<HTMLButtonElement>(submitFiltersButton) ||
+    !isHTMLElement<HTMLButtonElement>(filterButtonOpen) ||
+    !isHTMLElement<HTMLButtonElement>(filterButtonClose) ||
     !isHTMLElement<HTMLButtonElement>(buttonViewList) ||
     !isHTMLElement<HTMLButtonElement>(buttonViewGrid) ||
     !isHTMLElement<HTMLDivElement>(listingContainer)
@@ -70,6 +76,8 @@ function getElements(): TElements | null {
   const listingCards = Array.from<HTMLDivElement>(document.querySelectorAll('[data-listing-card]'));
 
   return {
+    filterButtonOpen,
+    filterButtonClose,
     listingCards,
     listingContainer,
     buttonViewList,
@@ -95,7 +103,32 @@ function createState(elements: TElements): TState {
 function onChangeSort(elements: TElements, state: TState) {
   const value = elements.sortSelect.value as PropertyListingPageSort;
   updateParams(state, 'sort', value !== PropertyListingPageSort.Default ? value : undefined);
+  updateParams(state, 'page');
   navigate(state);
+}
+
+function isMobileFiltersViewport(): boolean {
+  return window.matchMedia(MOBILE_FILTERS_MEDIA_QUERY).matches;
+}
+
+function syncFiltersDrawerState(elements: TElements, show: boolean, moveFocus = false) {
+  if (!isMobileFiltersViewport()) {
+    elements.filtersAside.classList.remove(FILTERS_ACTIVE_CLASS);
+    elements.filtersAside.removeAttribute('aria-hidden');
+    elements.filtersAside.removeAttribute('inert');
+    elements.filterButtonOpen.setAttribute('aria-expanded', 'false');
+    return;
+  }
+
+  elements.filtersAside.classList.toggle(FILTERS_ACTIVE_CLASS, show);
+  elements.filtersAside.setAttribute('aria-hidden', String(!show));
+  elements.filtersAside.toggleAttribute('inert', !show);
+  elements.filterButtonOpen.setAttribute('aria-expanded', String(show));
+
+  if (!moveFocus) return;
+
+  if (show) elements.filterButtonClose.focus();
+  else elements.filterButtonOpen.focus();
 }
 
 function bindEvents(elements: TElements, state: TState) {
@@ -107,6 +140,11 @@ function bindEvents(elements: TElements, state: TState) {
   );
   elements.submitFiltersButton.addEventListener('click', () => navigate(state));
   elements.sortSelect.addEventListener('change', () => onChangeSort(elements, state));
+  elements.filterButtonOpen.addEventListener('click', () => syncFiltersDrawerState(elements, true, true));
+  elements.filterButtonClose.addEventListener('click', () => syncFiltersDrawerState(elements, false, true));
+  window
+    .matchMedia(MOBILE_FILTERS_MEDIA_QUERY)
+    .addEventListener('change', () => syncFiltersDrawerState(elements, false));
 }
 
 async function handleFilterClick(button: HTMLButtonElement, elements: TElements, state: TState) {
@@ -224,12 +262,13 @@ function onChangeView(button: HTMLButtonElement, elements: TElements) {
   [elements.buttonViewGrid, elements.buttonViewList].forEach((b) => {
     b.classList.remove(...ACTIVE_BUTTON_VIEW_CLASSES);
     b.classList.add(...INACTIVE_BUTTON_VIEW_CLASSES);
+    b.setAttribute('aria-pressed', String(b === button));
   });
 
   button.classList.add(...ACTIVE_BUTTON_VIEW_CLASSES);
   button.classList.remove(...INACTIVE_BUTTON_VIEW_CLASSES);
 
-  elements.listingContainer.classList[button.dataset.view === 'grid' ? 'add' : 'remove']('md:grid-cols-2');
+  elements.listingContainer.classList[button.dataset.view === 'list' ? 'add' : 'remove']('lg:grid-cols-1');
   elements.listingCards.forEach((card) =>
     card.classList[button.dataset.view === 'list' ? 'add' : 'remove'](PROPERTY_MODIFY_SELECTOR),
   );
@@ -242,5 +281,6 @@ function onChangeView(button: HTMLButtonElement, elements: TElements) {
   if (!elements) return;
 
   const state = createState(elements);
+  syncFiltersDrawerState(elements, false);
   bindEvents(elements, state);
 })();

@@ -3,13 +3,20 @@ interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  canonical?: string;
 }
 
 const DEFAULT_TITLE = 'Default title';
 const DEFAULT_DESCRIPTION = 'Default description';
 const DEFAULT_OG_IMAGE = '';
+const DEFAULT_CANONICAL = '';
 
-const { title = DEFAULT_TITLE, description = DEFAULT_DESCRIPTION, ogImage = DEFAULT_OG_IMAGE } = Astro.props;
+const {
+  title = DEFAULT_TITLE,
+  description = DEFAULT_DESCRIPTION,
+  ogImage = DEFAULT_OG_IMAGE,
+  canonical = DEFAULT_CANONICAL,
+} = Astro.props;
 ---
 
 <head>
@@ -36,6 +43,14 @@ const { title = DEFAULT_TITLE, description = DEFAULT_DESCRIPTION, ogImage = DEFA
     name="description"
     content={description}
   />
+  {
+    canonical && (
+      <link
+        rel="canonical"
+        href={canonical}
+      />
+    )
+  }
 
   <meta
     property="og:title"

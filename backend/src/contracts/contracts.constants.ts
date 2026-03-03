@@ -1,1 +1,1 @@
-export const DEFAULT_PAGINATE_LIMIT = 12;
+export const DEFAULT_PAGINATE_LIMIT = 6;

@@ -1,4 +1,4 @@
-@use "mixins.scss" as mixins;
+@use "mixins.scss" as *;
 
 @tailwind base;
 @tailwind components;
@@ -38,6 +38,12 @@
   --sidebar-accent-foreground: 26, 34, 43;
   --sidebar-border: 224, 222, 215;
   --sidebar-ring: 204, 39, 46;
+
+  --header-height: 101px;
+
+  @media (min-width: theme('screens.lg')) {
+    --header-height: 117px;
+  }
 }
 
 @layer base {
@@ -47,7 +53,7 @@
 
 
   html {
-    @include mixins.custom-scroll-bar();
+    @include custom-scroll-bar();
   }
 
   body {
@@ -63,7 +69,7 @@
 }
 
 .paragraph {
-  @include mixins.p();
+  @include p();
 }
 
 

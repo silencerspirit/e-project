@@ -17,7 +17,6 @@ const PropertyListingPageSegmentsEntries = {
 } as const;
 
 const PropertyListingPageQueryEntries = {
-  title: nullish(string(), ''),
   page: nullish(string(), '1'),
   sort: nullish(
     union([
@@ -47,7 +46,6 @@ export const PropertyListingPageFacetSchema = /*#__PURE__*/ object({
 export const PropertyListingPageFiltersSchema = /*#__PURE__*/ object({
   propertyTypes: array(PropertyListingPageFacetSchema),
   cities: array(PropertyListingPageFacetSchema),
-  title: string(),
   prices: array(
     object({
       from: number(),

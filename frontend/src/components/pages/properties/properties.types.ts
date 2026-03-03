@@ -12,6 +12,8 @@ export type TElements = {
   submitFiltersButton: HTMLButtonElement;
   buttonViewGrid: HTMLButtonElement;
   buttonViewList: HTMLButtonElement;
+  filterButtonOpen: HTMLButtonElement;
+  filterButtonClose: HTMLButtonElement;
   sortSelect: HTMLSelectElement;
   filterButtons: HTMLButtonElement[];
   listingCards: HTMLDivElement[];

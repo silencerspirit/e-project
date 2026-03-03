@@ -31,12 +31,3 @@ export const declOfNum = (number: number, titles: string[]): string => {
 export function assertNever(x: never): never {
   throw new Error(`Неожиданное значение: ${x}`);
 }
-
-export function getCookie<T extends string>(name: string, cookieString: string, defaultValue: T): T;
-export function getCookie<T extends string>(name: string, cookieString: string, defaultValue?: undefined): T | null;
-export function getCookie<T extends string>(name: string, cookieString: string, defaultValue?: T): T | null {
-  const match = cookieString.match(new RegExp('(^|;\\s*)' + name + '=([^;]+)'));
-  const value = match ? decodeURIComponent(match[2].trim()) : null;
-
-  return (value ?? defaultValue) as T | null;
-}

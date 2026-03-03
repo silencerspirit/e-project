@@ -16,7 +16,6 @@ type TPriceFacet = { from: number; to: number; disabled: boolean };
 type TFacetGroup = keyof TPropertyListingPageFilters;
 type TPropertySortNotation = 'publishedAt:desc' | 'priceFrom:asc' | 'priceFrom:desc';
 type TPropertyFacetSourceItem = {
-  title: string;
   priceFrom: number | null;
   city: TCity | null;
   propertyType: TPropertyType | null;
@@ -38,7 +37,6 @@ function parseFiniteNumber(value: unknown): number | null {
 }
 
 function buildFiltersQuery(request: TPropertyListingPageRequest): Record<string, unknown> {
-  const normalizedTitle = request.title.trim();
   const minPrice = parseFiniteNumber(request['price-from']);
   const maxPrice = parseFiniteNumber(request['price-to']);
 
@@ -53,7 +51,6 @@ function buildFiltersQuery(request: TPropertyListingPageRequest): Record<string,
           },
         }
       : {}),
-    ...(normalizedTitle ? { title: { $containsi: normalizedTitle } } : {}),
   };
 }
 
@@ -71,7 +68,6 @@ function buildSortQuery(sort: PropertyListingPageSort): TPropertySortNotation[] 
 
 function normalizeFacetItem(item: Record<string, unknown>): TPropertyFacetSourceItem {
   return {
-    title: typeof item.title === 'string' ? item.title : '',
     priceFrom: parseFiniteNumber(item.priceFrom),
     city: item.city ? parse(CitySchema, item.city) : null,
     propertyType: item.propertyType ? parse(PropertyTypeSchema, item.propertyType) : null,
@@ -83,13 +79,8 @@ function matchesFacetItem(
   request: TPropertyListingPageRequest,
   excludedGroup?: TFacetGroup,
 ): boolean {
-  const normalizedTitle = request.title.trim().toLowerCase();
   const minPrice = parseFiniteNumber(request['price-from']);
   const maxPrice = parseFiniteNumber(request['price-to']);
-
-  if (normalizedTitle && !item.title.toLowerCase().includes(normalizedTitle)) {
-    return false;
-  }
 
   if (excludedGroup !== 'propertyTypes' && request.type && item.propertyType?.slug !== request.type) {
     return false;
@@ -182,9 +173,7 @@ export default factories.createCoreService('api::property-listing-page.property-
         },
       },
     });
-    const allPublishedFacetItems = allPublishedFacetItemsRaw.map((item) =>
-      normalizeFacetItem(item as Record<string, unknown>),
-    );
+    const allPublishedFacetItems = allPublishedFacetItemsRaw.map((item) => normalizeFacetItem(item));
 
     const propertyTypeFacetMap: TPropertyFacetMap = new Map();
     const cityFacetMap: TPropertyFacetMap = new Map();
@@ -226,7 +215,6 @@ export default factories.createCoreService('api::property-listing-page.property-
         cities: [...cityFacetMap.values()],
         propertyTypes: [...propertyTypeFacetMap.values()],
         prices,
-        title: request.title,
       },
     };
   },

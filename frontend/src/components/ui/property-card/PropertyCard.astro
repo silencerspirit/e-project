@@ -114,27 +114,39 @@ const { property, hideDetails = false, fullPrice = false, row = false, ...attrib
     $p: &;
 
     &--row {
-      min-height: 256px;
+      @media (min-width: theme('screens.lg')) {
+        min-height: 256px;
+      }
     }
 
     &__image-container {
       @apply aspect-video;
 
-      #{$p}--row & {
-        @apply aspect-square;
+      @media (min-width: theme('screens.lg')) {
+        #{$p}--row & {
+          @apply aspect-square;
+        }
       }
     }
 
     &__item {
       @apply flex-col;
 
-      #{$p}--row & {
-        @apply flex-row;
+      @media (min-width: theme('screens.lg')) {
+        #{$p}--row & {
+          @apply flex-row;
+        }
       }
     }
 
     &__short-description {
-      &:not(#{$p}--row &) {
+      @media (min-width: theme('screens.lg')) {
+        &:not(#{$p}--row &) {
+          @apply hidden;
+        }
+      }
+
+      @media (max-width: calc(#{theme('screens.lg')} - 1px)) {
         @apply hidden;
       }
     }

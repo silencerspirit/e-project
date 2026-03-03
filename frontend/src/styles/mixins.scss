@@ -17,6 +17,17 @@
   }
 }
 
+@mixin hide-scrollbar-but-scrolling {
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: auto;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar-track,
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @mixin hover() {
   @media (hover: hover) and (pointer: fine) {
     @content;
