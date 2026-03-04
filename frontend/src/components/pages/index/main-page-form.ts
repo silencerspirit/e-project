@@ -6,7 +6,7 @@ import { buildSegmentsUrl } from '@/components/pages/properties/properties.utils
 import { isHTMLElement } from '@/helpers';
 
 (() => {
-  new MaskInput('[data-maska-number]');
+  new MaskInput('[data-maska]');
 
   const ALL_VALUE = 'all';
 
