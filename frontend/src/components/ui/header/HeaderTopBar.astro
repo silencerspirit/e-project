@@ -1,11 +1,12 @@
 ---
+import type { TSiteConfig } from '@contracts';
 import { MapPin, Phone } from '@lucide/astro';
 
 import { formatPhone } from '@/helpers';
 
 interface Props {
-  phone?: string;
-  address?: string;
+  phone?: TSiteConfig['phone'];
+  address?: TSiteConfig['address'];
 }
 
 const { phone, address } = Astro.props;

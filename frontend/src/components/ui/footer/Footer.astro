@@ -4,6 +4,8 @@ import { Clock, Mail, MapPin, Phone } from '@lucide/astro';
 
 import { formatPhone } from '@/helpers';
 
+import HeaderLogo from '@/components/ui/header/HeaderLogo.astro';
+
 interface Props {
   config: TSiteConfig;
 }
@@ -66,7 +68,7 @@ const year = new Date().getFullYear();
   <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
     <div class="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-6 lg:gap-8">
       <div class="lg:col-span-2">
-        <a
+        <!-- <a
           href="/"
           class="flex items-center gap-3"
         >
@@ -79,7 +81,9 @@ const year = new Date().getFullYear();
             <span class="block text-lg font-bold leading-tight">Альфа Риэлтинг</span>
             <span class="block text-xs text-card/60">АльфаГруппИнвест</span>
           </span>
-        </a>
+        </a> -->
+
+        <HeaderLogo invert />
 
         <p class="mt-6 max-w-xs text-sm leading-relaxed text-card/70">
           Надежный застройщик с 15-летним опытом строительства жилых комплексов в Крыму

@@ -1,5 +1,11 @@
 ---
+import LogoIcon from '@/assets/logo.svg';
 
+interface Props {
+  invert?: boolean;
+}
+
+const { invert = false } = Astro.props;
 ---
 
 <a
@@ -9,11 +15,26 @@
   <span
     class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-xl font-bold text-primary-foreground"
   >
-    А
+    <LogoIcon class="h-6 w-6" />
   </span>
 
   <span class="hidden sm:block">
-    <span class="block text-lg font-bold leading-tight text-foreground">Альфа Риэлтинг</span>
-    <span class="block text-xs text-muted-foreground">АльфаГруппИнвест</span>
+    <span
+      class="block text-lg font-bold"
+      class:list={{
+        'leading-tight': invert,
+        'text-foreground': !invert,
+      }}
+      >Альфа Риэлтинг</span
+    >
+    <span
+      class="block text-xs"
+      class:list={{
+        'text-card/60': invert,
+        'text-muted-foreground': !invert,
+      }}
+    >
+      АльфаГруппИнвест
+    </span>
   </span>
 </a>
