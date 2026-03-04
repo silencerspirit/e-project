@@ -84,6 +84,7 @@ backend/public/uploads/*
 .env
 .env.*
 !.env.example
+.dockerhub-release.env
 
 ############################
 # IDEs
@@ -118,3 +119,5 @@ nbproject/
 *.out
 *.pid
 *.sql
+*.md
+!AGENT.md

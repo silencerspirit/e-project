@@ -11,8 +11,8 @@
     "develop": "strapi develop",
     "start": "strapi start",
     "strapi": "strapi",
-    "upgrade": "bunx @strapi/upgrade latest",
-    "upgrade:dry": "bunx @strapi/upgrade latest --dry"
+    "upgrade": "npx @strapi/upgrade@latest latest",
+    "upgrade:dry": "npx @strapi/upgrade@latest latest --dry"
   },
   "dependencies": {
     "@_sh/strapi-plugin-ckeditor": "^7.0.0",
@@ -26,7 +26,8 @@
     "react-router-dom": "^6.0.0",
     "sharp": "0.33.5",
     "strapi-plugin-webp-converter": "^1.0.4",
-    "styled-components": "^6.0.0"
+    "styled-components": "^6.0.0",
+    "valibot": "^1.2.0"
   },
   "devDependencies": {
     "@types/koa": "^3.0.1",

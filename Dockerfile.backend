@@ -1,0 +1,23 @@
+FROM node:20-bookworm
+
+WORKDIR /app/backend
+
+COPY backend/package.json backend/package-lock.json ./
+
+RUN npm ci
+
+WORKDIR /app
+
+COPY tsconfig.json tsconfig.base.json ./
+
+COPY backend ./backend
+
+WORKDIR /app/backend
+
+RUN npm run build
+
+ENV NODE_ENV=production
+
+EXPOSE 1337
+
+CMD ["npm", "run", "start"]

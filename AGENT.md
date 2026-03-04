@@ -3,26 +3,28 @@
 ## Архитектура
 - **Монорепо**: `backend/` (Strapi v5), `frontend/` (Astro SSR), `backend/src/contracts/` (контракты/валидаторы).
 - **Backend**: Strapi v5 (CJS runtime). Контракты и валидаторы лежат в `backend/src/contracts/`.
-- **Frontend**: Astro SSR с адаптером Node (запуск через Bun). Tailwind + SCSS.
+- **Frontend**: Astro SSR с адаптером Node (запуск через Node.js). Tailwind + SCSS.
 - **Plugins**: локальные плагины в `backend/src/plugins/*`.
 
 ## Команды
 ### Root
-- `bun run install:all` — установка зависимостей (root + backend + frontend)
-- `bun run dev` — параллельно `backend develop` и `frontend dev`
-- `bun run lint` / `bun run lint:fix`
-- `bun run typecheck`
-- `bun run build:ts` / `bun run build:ts:watch`
+- `npm run install:all` — установка зависимостей root, `backend/` и `frontend/`
+- `npm run dev` — параллельно `backend develop` и `frontend dev`
+- `npm run lint` / `npm run lint:fix`
+- `npm run typecheck`
+- `npm run build`
 
 ### Backend
-- `bun develop`
-- `bun build`
+- `npm install --prefix backend`
+- `npm run develop --prefix backend`
+- `npm run build --prefix backend`
 
 ### Frontend
-- `bun dev`
-- `bun build`
-- `bun preview`
-- `bun start` — SSR (Bun) после build
+- `npm install --prefix frontend`
+- `npm run dev --prefix frontend`
+- `npm run build --prefix frontend`
+- `npm run preview --prefix frontend`
+- `npm run start --prefix frontend` — SSR (Node.js) после build
 
 ## ENV
 - Root: `.env` (docker/compose, mysql)
@@ -39,13 +41,6 @@
 - **Дизайн**: ориентируемся на `frontend/design.config.ts`.
 - **Кастомные размеры** (например `381px`) выносить в отдельные селекторы и соблюдать **БЭМ**.
 - **Декомпозиция**: дробим компоненты на логические части.
-
-## Эндпоинты (ожидаемо)
-- Backend API:
-  - `GET /api/menu`
-  - `GET /api/news`
-  - `GET /api/news/:slug`
-- Локальные plugin endpoints могут иметь префикс `/api/<plugin>/...` (если не проксируются на core API).
 
 ## Стиль кода
 - Строгая типизация, без `any`.

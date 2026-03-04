@@ -6,7 +6,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "start": "bun ./dist/server/entry.mjs",
+    "start": "node ./dist/server/entry.mjs",
     "astro": "astro",
     "check": "astro check"
   },
@@ -29,6 +29,7 @@
     "maska": "^3.2.0",
     "swiper": "^12.1.2",
     "tailwind-merge": "^3.4.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "valibot": "^1.2.0"
   }
 }
