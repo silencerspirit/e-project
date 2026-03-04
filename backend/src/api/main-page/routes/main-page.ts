@@ -11,6 +11,14 @@ const config: Core.RouterConfig = {
         auth: false,
       },
     },
+    {
+      method: 'GET',
+      path: '/main-page-form',
+      handler: 'main-page.getMainPageForm',
+      config: {
+        auth: false,
+      },
+    },
   ],
 };
 

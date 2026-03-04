@@ -1,5 +1,5 @@
 ---
-import { getMainPage } from '@/api';
+import { getMainPage, getMainPageForm } from '@/api';
 
 import MainPageAction from '@/components/pages/index/MainPageAction.astro';
 import MainPageAdvantages from '@/components/pages/index/MainPageAdvantages.astro';
@@ -8,7 +8,7 @@ import MainPageCategories from '@/components/pages/index/MainPageCategories.astr
 import MainPageListing from '@/components/pages/index/MainPageListing.astro';
 import Layout from '@/layouts/Layout.astro';
 
-const page = await getMainPage();
+const [page, form] = await Promise.all([getMainPage(), getMainPageForm()]);
 
 const metaTitle: string = page.seo?.metaTitle ?? '';
 const metaDescription: string = page.seo?.metaDescription ?? '';
@@ -18,7 +18,10 @@ const metaDescription: string = page.seo?.metaDescription ?? '';
   metaTitle={metaTitle}
   metaDescription={metaDescription}
 >
-  <MainPageBanner info={page.heroBanner} />
+  <MainPageBanner
+    info={page.heroBanner}
+    form={form}
+  />
   <MainPageCategories info={page.featureBanner} />
   <MainPageListing info={page.showcaseBanner} />
   <MainPageAdvantages info={page.advantagesBanner} />

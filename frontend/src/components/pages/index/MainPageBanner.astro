@@ -1,19 +1,15 @@
 ---
-import type { THeroBanner } from '@contracts';
-import { Building2, ChevronDown, House, MapPin, Search } from '@lucide/astro';
+import type { THeroBanner, TMainPageForm } from '@contracts';
 
-import Button from '@/components/ui/button/Button.astro';
-import Input from '@/components/ui/input/Input.astro';
+import MainPageForm from '@/components/pages/index/MainPageForm.astro';
 import SmartImage from '@/components/ui/smart-image/SmartImage.astro';
 
 interface Props {
   info: THeroBanner;
+  form: TMainPageForm;
 }
 
-const { info } = Astro.props;
-
-const propertyTypes = ['Все объекты', 'Квартиры', 'Дома', 'Коммерция', 'Аренда'] as const;
-const locations = ['Все локации', 'Севастополь', 'Ялта', 'Евпатория', 'Гурзуф', 'Симферополь'] as const;
+const { info, form } = Astro.props;
 
 const isExistMetrics: boolean = Boolean(info.metrics.length);
 ---
@@ -45,102 +41,7 @@ const isExistMetrics: boolean = Boolean(info.metrics.length);
         {info.description}
       </p>
 
-      <form
-        action="/properties/"
-        role="search"
-        aria-label="Поиск недвижимости"
-        method="GET"
-        class="mt-10 rounded-2xl bg-card p-4 shadow-xl sm:p-6"
-      >
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <div>
-            <label
-              for="property-type"
-              class="mb-2 block text-xs font-medium text-muted-foreground"
-            >
-              Тип недвижимости
-            </label>
-            <div class="relative">
-              <House
-                aria-hidden="true"
-                class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
-              />
-              <select
-                id="property-type"
-                name="type"
-                class="h-12 w-full appearance-none rounded-lg border bg-secondary pl-10 pr-3 text-sm font-medium text-foreground outline-none ring-1 ring-transparent transition focus:ring-ring"
-              >
-                {propertyTypes.map((type) => <option value={type}>{type}</option>)}
-              </select>
-
-              <ChevronDown
-                aria-hidden="true"
-                class="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label
-              for="property-location"
-              class="mb-2 block text-xs font-medium text-muted-foreground"
-            >
-              Локация
-            </label>
-            <div class="relative">
-              <MapPin
-                aria-hidden="true"
-                class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
-              />
-              <select
-                id="property-location"
-                name="location"
-                class="h-12 w-full appearance-none rounded-lg border bg-secondary pl-10 pr-3 text-sm font-medium text-foreground outline-none ring-1 ring-transparent transition focus:ring-ring"
-              >
-                {locations.map((location) => <option value={location}>{location}</option>)}
-              </select>
-
-              <ChevronDown
-                aria-hidden="true"
-                class="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label
-              for="property-budget"
-              class="mb-2 block text-xs font-medium text-muted-foreground"
-            >
-              Бюджет до
-            </label>
-            <div class="relative">
-              <Building2
-                aria-hidden="true"
-                class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
-              />
-
-              <Input
-                placeholder="15 000 000 ₽"
-                inputmode="numeric"
-                id="property-budget"
-                name="budget"
-                class="h-auto bg-secondary py-3 pl-10 text-sm"
-              />
-            </div>
-          </div>
-
-          <div class="flex items-end">
-            <Button class="h-12 w-full gap-2 bg-primary font-medium text-primary-foreground hover:bg-primary/90">
-              <Search
-                aria-hidden="true"
-                class="h-4 w-4"
-              />
-              Найти
-            </Button>
-          </div>
-        </div>
-      </form>
+      <MainPageForm form={form} />
 
       {
         isExistMetrics ? (

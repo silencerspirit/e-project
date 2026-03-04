@@ -44,19 +44,22 @@ export const PropertyListingPageFacetSchema = /*#__PURE__*/ object({
 });
 
 export const PropertyListingPageFiltersSchema = /*#__PURE__*/ object({
-  propertyTypes: array(PropertyListingPageFacetSchema),
-  cities: array(PropertyListingPageFacetSchema),
-  prices: array(
-    object({
-      from: number(),
-      to: number(),
-      disabled: boolean(),
-    }),
+  propertyTypes: nullish(array(PropertyListingPageFacetSchema), []),
+  cities: nullish(array(PropertyListingPageFacetSchema), []),
+  prices: nullish(
+    array(
+      object({
+        from: number(),
+        to: number(),
+        disabled: boolean(),
+      }),
+    ),
+    [],
   ),
 });
 
 export const PropertyListingPageListSchema = /*#__PURE__*/ object({
-  list: array(PropertyListItemSchema),
+  list: nullish(array(PropertyListItemSchema), []),
   filters: PropertyListingPageFiltersSchema,
   paginate: PaginateSchema,
 });

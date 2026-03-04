@@ -1,59 +1,27 @@
 import { parse } from 'valibot';
 import { factories } from '@strapi/strapi';
-import { MainPageSchema } from '@/contracts';
+import { MainPagePageFormSchema, MainPageSchema } from '@/contracts';
 
 export default factories.createCoreController('api::main-page.main-page', ({ strapi }) => ({
   async getMainPage() {
     try {
-      const mainPage = await strapi.documents('api::main-page.main-page').findFirst({
-        status: 'published',
-        populate: {
-          seo: true,
-          heroBanner: {
-            populate: {
-              metrics: true,
-              backgroundImage: { populate: { image: true } },
-            },
-          },
-          featureBanner: {
-            populate: {
-              features: true,
-            },
-          },
-          advantagesBanner: {
-            populate: {
-              features: true,
-            },
-          },
-          showcaseBanner: {
-            populate: {
-              properties: {
-                populate: {
-                  badges: true,
-                  specifications: true,
-                  city: {
-                    populate: {
-                      properties: true,
-                    },
-                  },
-                  propertyType: {
-                    populate: {
-                      properties: true,
-                    },
-                  },
-                  previewImage: {
-                    populate: {
-                      image: true,
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-      });
+      const mainPage = await strapi.service('api::main-page.main-page').getMainPage();
 
       return parse(MainPageSchema, mainPage);
+    } catch (error) {
+      return error;
+    }
+  },
+
+  async getMainPageForm() {
+    try {
+      const { maxPrice, cities, propertyTypes } = await strapi.service('api::main-page.main-page').getMainPageForm();
+
+      return parse(MainPagePageFormSchema, {
+        maxPrice,
+        cities,
+        propertyTypes,
+      });
     } catch (error) {
       return error;
     }
