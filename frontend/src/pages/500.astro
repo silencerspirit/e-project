@@ -1,0 +1,20 @@
+---
+import { House, RefreshCw, TriangleAlert } from '@lucide/astro';
+
+import ErrorPage from '@/components/pages/error/ErrorPage.astro';
+import Layout from '@/layouts/Layout.astro';
+---
+
+<Layout
+  metaTitle="500 - Внутренняя ошибка сервера"
+  metaDescription="На сервере произошла временная ошибка. Попробуйте обновить страницу позже."
+>
+  <ErrorPage
+    status="500"
+    title="Временная ошибка сервера"
+    description="Мы уже работаем над восстановлением сервиса. Попробуйте обновить страницу через несколько минут."
+    icon={TriangleAlert}
+    primaryAction={{ href: '/', label: 'На главную', icon: House }}
+    secondaryAction={{ href: Astro.url.pathname, label: 'Обновить страницу', icon: RefreshCw }}
+  />
+</Layout>

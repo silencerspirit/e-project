@@ -1,0 +1,21 @@
+---
+import { House, Search } from '@lucide/astro';
+
+import ErrorPage from '@/components/pages/error/ErrorPage.astro';
+import Layout from '@/layouts/Layout.astro';
+---
+
+<Layout
+  metaTitle="404 - Страница не найдена"
+  metaDescription="Запрашиваемая страница не существует или была перемещена."
+>
+  <ErrorPage
+    status="404"
+    title="Страница не найдена"
+    description="К сожалению, запрашиваемая страница не существует или была перемещена. Воспользуйтесь навигацией ниже."
+    icon={Search}
+    primaryAction={{ href: '/', label: 'На главную', icon: House }}
+    secondaryAction={{ href: '/properties/', label: 'Каталог объектов', icon: Search }}
+    availablePages
+  />
+</Layout>

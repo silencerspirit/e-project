@@ -1,0 +1,96 @@
+---
+import type { AstroComponent } from '@lucide/astro';
+import { ArrowLeft } from '@lucide/astro';
+
+import { AVAILABLE_PAGES } from '@/constants';
+
+import Button from '@/components/ui/button/Button.astro';
+
+interface Props {
+  status: string;
+  title: string;
+  description: string;
+  availablePages?: boolean;
+  icon: AstroComponent;
+  primaryAction: {
+    href: string;
+    label: string;
+    icon: AstroComponent;
+  };
+  secondaryAction?: {
+    href: string;
+    label: string;
+    icon: AstroComponent;
+  };
+}
+
+const { status, title, description, icon: Icon, primaryAction, secondaryAction, availablePages = false } = Astro.props;
+const PrimaryActionIcon = primaryAction.icon;
+const SecondaryActionIcon = secondaryAction?.icon;
+---
+
+<section class="bg-background py-16 lg:py-24">
+  <div class="mx-auto max-w-2xl px-4 text-center sm:px-6 lg:px-8">
+    <div class="relative mb-8">
+      <span
+        aria-hidden="true"
+        class="inline-block select-none font-mono text-8xl font-bold tabular-nums leading-none text-primary/10 sm:text-9xl"
+      >
+        {status}
+      </span>
+
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div class="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+          <Icon class="h-8 w-8 text-primary" />
+        </div>
+      </div>
+    </div>
+
+    <h1 class="mb-4 text-3xl font-bold text-foreground sm:text-4xl">{title}</h1>
+    <p class="mx-auto mb-10 max-w-xl text-lg leading-relaxed text-muted-foreground">{description}</p>
+
+    <div class="mb-14 flex flex-col items-center justify-center gap-4 sm:flex-row">
+      <Button
+        href={primaryAction.href}
+        size="lg"
+      >
+        <PrimaryActionIcon class="h-4 w-4" />
+        {primaryAction.label}
+      </Button>
+
+      {
+        secondaryAction && (
+          <Button
+            href={secondaryAction.href}
+            size="lg"
+            variant="outline"
+            class="bg-transparent"
+          >
+            {SecondaryActionIcon && <SecondaryActionIcon class="h-4 w-4" />}
+            {secondaryAction.label}
+          </Button>
+        )
+      }
+    </div>
+
+    {
+      availablePages && (
+        <div class="border-t border-border pt-10">
+          <p class="mb-5 text-sm text-muted-foreground">Возможно, вы искали:</p>
+
+          <div class="flex flex-wrap items-center justify-center gap-3">
+            {AVAILABLE_PAGES.map((link) => (
+              <a
+                href={link.href}
+                class="flex items-center gap-1.5 rounded-full bg-secondary px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+              >
+                <ArrowLeft class="h-3.5 w-3.5" />
+                {link.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      )
+    }
+  </div>
+</section>

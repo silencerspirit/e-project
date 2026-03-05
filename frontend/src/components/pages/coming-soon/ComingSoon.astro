@@ -1,0 +1,129 @@
+---
+import { ArrowLeft, Construction, House } from '@lucide/astro';
+
+import { AVAILABLE_PAGES } from '@/constants';
+
+import Button from '@/components/ui/button/Button.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Раздел в разработке',
+  description = 'Мы работаем над этой страницей. Совсем скоро здесь появится полезный контент. Следите за обновлениями!',
+} = Astro.props;
+---
+
+<section class="coming-soon bg-background">
+  <div class="mx-auto max-w-2xl px-4 py-20 text-center sm:px-6 lg:px-8">
+    <div class="relative mb-16">
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div class="coming-soon__pulse-ring animate-ping rounded-full border-2 border-primary/10"></div>
+      </div>
+
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div class="coming-soon__ring rounded-full border border-primary/5"></div>
+      </div>
+
+      <div class="relative flex items-center justify-center">
+        <div class="flex h-24 w-24 rotate-3 items-center justify-center rounded-2xl bg-primary/10">
+          <div class="flex h-20 w-20 -rotate-6 items-center justify-center rounded-xl bg-primary/15">
+            <Construction class="h-10 w-10 text-primary" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h1 class="mb-4 text-3xl font-bold text-foreground sm:text-4xl">{title}</h1>
+    <p class="mx-auto mb-10 max-w-lg text-lg leading-relaxed text-muted-foreground">{description}</p>
+
+    <div class="mx-auto mb-10 max-w-xs">
+      <div class="mb-2 flex items-center justify-between text-xs text-muted-foreground">
+        <span>Прогресс</span>
+        <span>Скоро</span>
+      </div>
+
+      <div class="h-2 overflow-hidden rounded-full bg-secondary">
+        <div class="relative h-full w-2/3 rounded-full bg-primary">
+          <div class="absolute inset-0 animate-pulse bg-primary-foreground/20"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-14 flex flex-col items-center justify-center gap-4 sm:flex-row">
+      <Button
+        href="/"
+        size="lg"
+      >
+        <House class="h-4 w-4" />
+        На главную
+      </Button>
+
+      <Button
+        type="button"
+        size="lg"
+        variant="outline"
+        class="bg-transparent"
+        data-coming-soon-back
+      >
+        <ArrowLeft class="h-4 w-4" />
+        Вернуться назад
+      </Button>
+    </div>
+
+    <div class="border-t border-border pt-10">
+      <p class="mb-5 text-sm text-muted-foreground">Доступные разделы:</p>
+
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        {
+          AVAILABLE_PAGES.map((link) => (
+            <a
+              href={link.href}
+              class="rounded-full bg-secondary px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+            >
+              {link.label}
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const backButtons = document.querySelectorAll('[data-coming-soon-back]');
+
+  for (const backButton of backButtons) {
+    if (!(backButton instanceof HTMLElement)) continue;
+
+    backButton.addEventListener('click', () => {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.assign('/');
+      }
+    });
+  }
+</script>
+
+<style lang="scss">
+  .coming-soon {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .coming-soon__pulse-ring {
+    width: 10rem;
+    height: 10rem;
+    animation-duration: 3s;
+  }
+
+  .coming-soon__ring {
+    width: 13rem;
+    height: 13rem;
+  }
+</style>
