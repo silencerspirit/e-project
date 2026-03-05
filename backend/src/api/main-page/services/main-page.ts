@@ -77,8 +77,8 @@ export default factories.createCoreService('api::main-page.main-page', ({ strapi
       const propertyType = parse(PropertyTypeSchema, property.propertyType);
       maxPrice = Math.max(maxPrice, Number(property.priceFrom));
 
-      if (!cityMap.get(city.slug)) cityMap.set(city.slug, city);
-      if (!propertyMap.get(propertyType.slug)) propertyMap.set(propertyType.slug, propertyType);
+      if (city && !cityMap.get(city.slug)) cityMap.set(city.slug, city);
+      if (propertyType && !propertyMap.get(propertyType.slug)) propertyMap.set(propertyType.slug, propertyType);
     });
 
     return {

@@ -104,8 +104,8 @@ function matchesFacetItem(
 }
 
 function setFacetMap(map: TPropertyFacetMap, facet: TCity | TPropertyType) {
-  const existing = map.get(facet.slug);
-  if (existing) {
+  const existing = facet && map.get(facet.slug);
+  if (existing || !facet) {
     return;
   }
 
@@ -117,8 +117,8 @@ function setFacetMap(map: TPropertyFacetMap, facet: TCity | TPropertyType) {
 }
 
 function enableFacetMap(map: TPropertyFacetMap, facet: TCity | TPropertyType) {
-  const existing = map.get(facet.slug);
-  if (!existing) {
+  const existing = facet && map.get(facet.slug);
+  if (!existing || !facet) {
     return;
   }
 
