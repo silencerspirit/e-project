@@ -8,7 +8,7 @@ const rootId = `main-page-action-${Math.random().toString(36).slice(2)}`;
 ---
 
 <section
-  class="bg-background py-20 lg:py-28"
+  class="main-page-action bg-background py-20 lg:py-28"
   aria-labelledby="main-page-action-title"
 >
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -60,7 +60,7 @@ const rootId = `main-page-action-${Math.random().toString(36).slice(2)}`;
 
         <div
           id={rootId}
-          class="rounded-2xl bg-card p-6 shadow-2xl sm:p-8"
+          class="main-page-action__form rounded-2xl bg-card p-6 shadow-2xl sm:p-8"
           data-cta-root
         >
           <div data-cta-form-wrap>
@@ -95,7 +95,8 @@ const rootId = `main-page-action-${Math.random().toString(36).slice(2)}`;
               </div>
               <Button
                 type="submit"
-                class="h-14 w-full bg-primary text-base font-medium text-primary-foreground hover:bg-primary/90"
+                class="main-page-action__form-submit h-14 w-full bg-primary text-base font-medium text-primary-foreground hover:bg-primary/90"
+                data-mobile-text="Отправить"
               >
                 <SendHorizontal
                   aria-hidden="true"
@@ -128,6 +129,20 @@ const rootId = `main-page-action-${Math.random().toString(36).slice(2)}`;
     </div>
   </div>
 </section>
+
+<style lang="scss">
+  .main-page-action {
+    &__form-submit {
+      @media (max-width: calc(#{theme('screens.sm')} - 1px)) {
+        font-size: 0;
+        &:before {
+          @apply text-sm;
+          content: attr(data-mobile-text);
+        }
+      }
+    }
+  }
+</style>
 
 <script is:inline>
   const section = document.currentScript?.previousElementSibling;
