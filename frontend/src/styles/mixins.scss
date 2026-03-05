@@ -34,133 +34,165 @@
   }
 }
 
-// @mixin h() {
-//   > h1 {
-//     @apply h1;
-//     padding-bottom: theme('spacing.pad-md');
-//   }
-//
-//   > h2 {
-//     @apply h2;
-//     padding-bottom: theme('spacing.pad-md');
-//   }
-//
-//   > h3 {
-//     @apply h3;
-//     padding-bottom: theme('spacing.pad-xs');
-//   }
-//
-//   > h4, h5, h6 {
-//     @apply h4;
-//     padding-bottom: theme('spacing.pad-xs');
-//   }
-// }
+@mixin content() {
+  color: var(--foreground);
+  line-height: 1.7;
+  font-size: theme('spacing.4');
 
-@mixin p() {
-  > p {
-    @apply text-foreground/85 leading-relaxed mb-4;
+  img {
+    @apply aspect-video rounded;
+    margin-bottom: theme('spacing.2');
+  }
+
+  h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-top: 2.5rem;
+    margin-bottom: theme('spacing.4');
+    color: var(--foreground);
+    letter-spacing: -0.025em;
+  }
+
+  h2 {
+    font-size: theme('spacing.7');
+    font-weight: 700;
+    line-height: 1.25;
+    margin-top: 2rem;
+    margin-bottom: 0.875rem;
+    color: var(--foreground);
+    letter-spacing: -0.02em;
+  }
+
+  h3 {
+    font-size: 1.375rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-top: theme('spacing.7');
+    margin-bottom: 0.75rem;
+    color: var(--foreground);
+  }
+
+  h4 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.35;
+    margin-top: theme('spacing.6');
+    margin-bottom: theme('spacing.7');
+    color: var(--foreground);
+  }
+
+  h5 {
+    font-size: theme('spacing.4');
+    font-weight: 600;
+    line-height: 1.4;
+    margin-top: theme('spacing.5');
+    margin-bottom: theme('spacing.2');
+    color: var(--foreground);
+  }
+
+  h6 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-top: theme('spacing.5');
+    margin-bottom: theme('spacing.2');
+    color: var(--muted-foreground);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  p {
+    margin-top: 0;
+    margin-bottom: theme('spacing.5');
+    color: var(--foreground);
+    opacity: 0.85;
+  }
+
+  a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    font-weight: 500;
+    transition: color 0.15s, text-decoration-color 0.15s;
+  }
+
+  a:hover {
+    color: var(--primary);
+    opacity: 0.8;
+    text-decoration-thickness: 2px;
+  }
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: theme('spacing.2') theme('spacing.6');
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: var(--radius);
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+
+  button:hover {
+    opacity: 0.9;
+  }
+
+  ol {
+    list-style-type: decimal;
+    padding-left: theme('spacing.7');
+    margin-top: 0;
+    margin-bottom: theme('spacing.5');
+  }
+
+  ul {
+    list-style-type: disc;
+    padding-left: theme('spacing.7');
+    margin-top: 0;
+    margin-bottom: theme('spacing.5');
+  }
+
+  ol li,
+  ul li {
+    margin-bottom: theme('spacing.2');
+    padding-left: theme('spacing.1');
+    color: var(--foreground);
+    opacity: 0.85;
+  }
+
+  ol ol,
+  ul ul,
+  ol ul,
+  ul ol {
+    margin-top: theme('spacing.2');
+    margin-bottom: theme('spacing.2');
+  }
+
+  blockquote {
+    border-left: 4px solid var(--primary);
+    padding: theme('spacing.4') theme('spacing.6');
+    margin: theme('spacing.6') 0;
+    background-color: var(--secondary);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-style: italic;
+    color: var(--foreground);
+    opacity: 0.9;
+  }
+
+  blockquote p {
+    margin-bottom: 0;
+  }
+
+  > *:first-child {
+    margin-top: 0;
+  }
+
+  > *:last-child {
+    margin-bottom: 0;
   }
 }
-
-// @mixin ul() {
-//   > ul {
-//     display: flex;
-//     flex-direction: column;
-//
-//     li {
-//       @apply h4;
-//
-//       display: inline-flex;
-//       padding-bottom: theme('spacing.pad-xs');
-//       gap: theme('spacing.grid-3xs');
-//
-//       &:before {
-//         content: '';
-//         width: theme('size.sz-16');
-//         height: theme('size.sz-16');
-//         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20' fill='none'%3E%3Ccircle cx='10' cy='10' r='3' fill='%23A49E94'/%3E%3C/svg%3E");
-//         background-position: center;
-//         background-repeat: no-repeat;
-//         background-size: contain;
-//         flex-shrink: 0;
-//       }
-//     }
-//   }
-// }
-//
-// @mixin ol() {
-//   > ol {
-//     display: flex;
-//     flex-direction: column;
-//     counter-reset: item;
-//
-//     li {
-//       @apply h4;
-//
-//       display: inline-flex;
-//       padding-bottom: theme('spacing.pad-xs');
-//       gap: theme('spacing.grid-3xs');
-//       counter-increment: item;
-//
-//       &:before {
-//         content: counter(item)".";
-//         text-align: center;
-//         width: theme('size.sz-16');
-//         height: theme('size.sz-16');
-//         flex-shrink: 0;
-//       }
-//     }
-//   }
-// }
-//
-// @mixin blockquote() {
-//   > blockquote {
-//     @apply h4 rounded;
-//     position: relative;
-//     padding: theme('spacing.pad-md') theme('spacing.pad-xl');
-//     color: theme('colors.grey-dark');
-//     background-color: theme('colors.grey-light');
-//     font-style: italic;
-//     margin-bottom: theme('spacing.grid-md');
-//
-//     &:before,
-//     &:after {
-//       display: inline-flex;
-//       position: absolute;
-//       font-size: 34px;
-//       font-weight: 400;
-//     }
-//
-//     &:before {
-//       top: 12px;
-//       left: 2px;
-//       content: '“';
-//     }
-//
-//     &:after {
-//       content: '”';
-//       bottom: -10px;
-//       right: 10px;
-//     }
-//   }
-// }
-
-// @mixin link() {
-//   a {
-//     @apply h4 transition-colors hover:text-red;
-//     text-decoration: underline;
-//   }
-// }
-//
-// @mixin img() {
-//   img {
-//     @apply aspect-video rounded;
-//     margin-bottom: theme('spacing.grid-md');
-//   }
-// }
-//
-// @mixin button() {
-//   button {
-//     @apply h6 uppercase bg-red px-pad-sm rounded text-white py-pad-3xs transition-colors hover:bg-blue;
-//   }
-// }

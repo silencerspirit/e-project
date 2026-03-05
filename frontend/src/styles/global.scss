@@ -72,18 +72,6 @@
   }
 }
 
-.paragraph {
-  @include p();
+.html-content {
+  @include content()
 }
-
-
-// .raw-html-embed {
-//   @include mixins.h();
-//   @include mixins.p();
-//   @include mixins.ul();
-//   @include mixins.ol();
-//   @include mixins.blockquote();
-//   @include mixins.link();
-//   @include mixins.img();
-//   @include mixins.button();
-// }
