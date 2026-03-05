@@ -5,6 +5,8 @@ import { parse } from 'valibot';
 
 import { getSiteConfig } from '@/api';
 import { getPropertyBySlug, getPropertySimilarBySlug } from '@/api/property';
+import type { TBreadcrumbItem } from '@/components/ui/breadcrumbs/Breadcrumbs.astro';
+import { createBreadcrumbListSchema, createRealEstateListingSchema, getPublicSiteUrl } from '@/helpers';
 
 import PropertyDetailContact from '@/components/pages/properties/components/PropertyDetailContact.astro';
 import PropertyDetailDescription from '@/components/pages/properties/components/PropertyDetailDescription.astro';
@@ -28,15 +30,44 @@ const [badge = undefined] = property.badges;
 const metaTitle: string = property.seo?.metaTitle ?? '';
 const metaDescription: string = property.seo?.metaDescription ?? '';
 const openGraphImage: string = property?.previewImage?.formats?.large ?? '';
+const siteUrl = getPublicSiteUrl(Astro.url);
+const pageUrl = new URL(Astro.url.pathname, `${siteUrl}/`).toString();
+
+const realEstateListingSchema = createRealEstateListingSchema(siteUrl, {
+  property,
+  pageUrl,
+  metaDescription,
+});
+
+const breadcrumb: Required<TBreadcrumbItem> = { label: 'Недвижимость', href: '/properties/' };
+
+const breadcrumbSchema = createBreadcrumbListSchema(siteUrl, [
+  {
+    position: 1,
+    name: 'Главная',
+    item: '/',
+  },
+  {
+    position: 2,
+    name: breadcrumb.label,
+    item: breadcrumb.href,
+  },
+  {
+    position: 3,
+    name: property.title,
+    item: pageUrl,
+  },
+]);
 ---
 
 <Layout
   metaTitle={metaTitle}
   openGraphImage={openGraphImage}
   metaDescription={metaDescription}
+  structuredData={[realEstateListingSchema, breadcrumbSchema]}
 >
   <Breadcrumbs
-    items={[{ label: 'Недвижимость', href: '/properties/' }]}
+    items={[breadcrumb]}
     title={property.title}
     status={badge?.value}
     category={property.propertyType?.name}

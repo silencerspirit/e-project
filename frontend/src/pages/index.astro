@@ -1,5 +1,6 @@
 ---
 import { getMainPage, getMainPageForm } from '@/api';
+import { createOrganizationSchema, createWebSiteSchema, getPublicSiteUrl } from '@/helpers';
 
 import MainPageAction from '@/components/pages/index/MainPageAction.astro';
 import MainPageAdvantages from '@/components/pages/index/MainPageAdvantages.astro';
@@ -12,11 +13,15 @@ const [page, form] = await Promise.all([getMainPage(), getMainPageForm()]);
 
 const metaTitle: string = page.seo?.metaTitle ?? '';
 const metaDescription: string = page.seo?.metaDescription ?? '';
+const siteUrl = getPublicSiteUrl(Astro.url);
+const organizationSchema = createOrganizationSchema(siteUrl);
+const webSiteSchema = createWebSiteSchema(siteUrl);
 ---
 
 <Layout
   metaTitle={metaTitle}
   metaDescription={metaDescription}
+  structuredData={[organizationSchema, webSiteSchema]}
 >
   <MainPageBanner
     info={page.heroBanner}

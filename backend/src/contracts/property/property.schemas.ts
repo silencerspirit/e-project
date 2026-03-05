@@ -7,6 +7,15 @@ export const PropertySlugSchema = /*#__PURE__*/ object({
   slug: string(),
 });
 
+export const PropertySlugListItemSchema = /*#__PURE__*/ object({
+  slug: string(),
+  lastModified: nullish(string(), ''),
+});
+
+export const PropertySlugListSchema = /*#__PURE__*/ object({
+  list: nullish(array(PropertySlugListItemSchema), []),
+});
+
 const PropertyShape = {
   title: string(),
   slug: string(),

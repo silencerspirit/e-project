@@ -23,6 +23,24 @@ const cardPopulate = {
 } as const;
 
 export default factories.createCoreService('api::property.property', ({ strapi }) => ({
+  async getSlugs() {
+    const list = await strapi.documents('api::property.property').findMany({
+      status: 'published',
+      sort: ['slug:asc'],
+      fields: ['slug', 'updatedAt', 'publishedAt'],
+    });
+
+    return list
+      .map((item) => ({
+        slug: item.slug,
+        lastModified:
+          (typeof item.updatedAt === 'string' && item.updatedAt) ||
+          (typeof item.publishedAt === 'string' && item.publishedAt) ||
+          '',
+      }))
+      .filter((item): item is { slug: string; lastModified: string } => Boolean(item.slug));
+  },
+
   async getBySlug(slug: string) {
     const item = await strapi.documents('api::property.property').findFirst({
       status: 'published',

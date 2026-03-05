@@ -18,9 +18,11 @@ interface Props {
   metaDescription?: string;
   openGraphImage?: string;
   canonicalUrl?: string;
+  robots?: string;
+  structuredData?: unknown[];
 }
 
-const { metaTitle, metaDescription, openGraphImage, canonicalUrl } = Astro.props;
+const { metaTitle, metaDescription, openGraphImage, canonicalUrl, robots, structuredData } = Astro.props;
 
 const [{ header }, config] = await Promise.all([getMenu(), getSiteConfig()]);
 const hasCookieConsent = Astro.cookies.get(COOKIE_CONSENT_COOKIE_NAME)?.value === COOKIE_CONSENT_COOKIE_VALUE;
@@ -33,6 +35,8 @@ const hasCookieConsent = Astro.cookies.get(COOKIE_CONSENT_COOKIE_NAME)?.value ==
     description={metaDescription}
     ogImage={openGraphImage}
     canonical={canonicalUrl}
+    robots={robots}
+    structuredData={structuredData}
   />
 
   <body>

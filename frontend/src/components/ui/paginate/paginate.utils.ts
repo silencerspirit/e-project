@@ -7,8 +7,9 @@ export function buildPaginatedDescription(description: string, page: number): st
   return `${description} Страница ${page}.`;
 }
 
-export function buildCanonicalUrl(url: URL, page: number): string {
-  const canonicalUrl = new URL(url.pathname, url);
+export function buildCanonicalUrl(url: URL, page: number, siteUrl?: string): string {
+  const base = siteUrl ? new URL(siteUrl) : url;
+  const canonicalUrl = new URL(url.pathname, base);
 
   canonicalUrl.search = url.search;
   if (page <= 1) canonicalUrl.searchParams.delete('page');

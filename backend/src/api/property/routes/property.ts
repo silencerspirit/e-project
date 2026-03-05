@@ -5,7 +5,15 @@ const config: Core.RouterConfig = {
   routes: [
     {
       method: 'GET',
-      path: '/property/:slug((?!page$)[a-z0-9-]+)',
+      path: '/property/slugs',
+      handler: 'property.findSlugs',
+      config: {
+        auth: false,
+      },
+    },
+    {
+      method: 'GET',
+      path: '/property/:slug((?!page$|slugs$)[a-z0-9-]+)',
       handler: 'property.findOneBySlug',
       config: {
         auth: false,

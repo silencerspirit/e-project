@@ -7,6 +7,7 @@ import {
   buildPaginatedDescription,
   buildPaginatedTitle,
 } from '@/components/ui/paginate/paginate.utils';
+import { getPublicSiteUrl } from '@/helpers';
 
 import PropertyListingFilters from '@/components/pages/properties/components/PropertyListingFilters.astro';
 import Breadcrumbs from '@/components/ui/breadcrumbs/Breadcrumbs.astro';
@@ -29,10 +30,11 @@ const { list, paginate, filters } = listing;
 
 const isEmptyList: boolean = !list.length;
 const existFilters: boolean = Object.values(parsedSegments).filter(Boolean).length > 0;
+const siteUrl = getPublicSiteUrl(Astro.url);
 
 const metaTitle: string = buildPaginatedTitle(info.seo?.metaTitle ?? info.title, paginate.page);
 const metaDescription: string = buildPaginatedDescription(info.seo?.metaDescription ?? info.description, paginate.page);
-const canonicalUrl: string = buildCanonicalUrl(Astro.url, paginate.page);
+const canonicalUrl: string = buildCanonicalUrl(Astro.url, paginate.page, siteUrl);
 ---
 
 <Layout

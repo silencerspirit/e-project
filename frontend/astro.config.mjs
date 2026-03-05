@@ -4,7 +4,6 @@ import { defineConfig } from 'astro/config';
 import { fileURLToPath } from 'url';
 import svgr from 'vite-plugin-svgr';
 
-// https://astro.build/config
 export default defineConfig({
   output: 'server',
   adapter: node({ mode: 'standalone' }),
