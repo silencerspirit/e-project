@@ -24,7 +24,7 @@ interface Props {
 
 const { metaTitle, metaDescription, openGraphImage, canonicalUrl, robots, structuredData } = Astro.props;
 
-const [{ header }, config] = await Promise.all([getMenu(), getSiteConfig()]);
+const [menu, config] = await Promise.all([getMenu(), getSiteConfig()]);
 const hasCookieConsent = Astro.cookies.get(COOKIE_CONSENT_COOKIE_NAME)?.value === COOKIE_CONSENT_COOKIE_VALUE;
 ---
 
@@ -41,7 +41,7 @@ const hasCookieConsent = Astro.cookies.get(COOKIE_CONSENT_COOKIE_NAME)?.value ==
 
   <body>
     <Header
-      menu={header}
+      menu={menu.header}
       config={config}
     />
 
@@ -49,7 +49,10 @@ const hasCookieConsent = Astro.cookies.get(COOKIE_CONSENT_COOKIE_NAME)?.value ==
       <slot />
     </main>
 
-    <Footer config={config} />
+    <Footer
+      config={config}
+      menu={menu}
+    />
     {!hasCookieConsent && <CookieConsent />}
   </body>
 </html>

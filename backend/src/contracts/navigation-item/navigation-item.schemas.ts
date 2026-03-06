@@ -1,20 +1,20 @@
-import { array, GenericSchema, lazy, number, object, string } from 'valibot';
+import { array, GenericSchema, nullish, number, object, string } from 'valibot';
+import { MenuPosition } from './navigation-item.enums';
 
 interface INavigationItem {
   title: string;
-  url?: string;
-  children: INavigationItem[];
+  url: string;
   order: number;
 }
 
 export const NavigationItemSchema: GenericSchema<INavigationItem> = /*#__PURE__*/ object({
   title: string(),
   url: string(),
-  children: array(lazy(() => NavigationItemSchema)),
   order: number(),
 });
 
 export const MenuSchema = /*#__PURE__*/ object({
-  header: array(NavigationItemSchema),
-  footer: array(NavigationItemSchema),
+  [MenuPosition.Header]: nullish(array(NavigationItemSchema), []),
+  [MenuPosition.FooterFirstColumn]: nullish(array(NavigationItemSchema), []),
+  [MenuPosition.FooterSecondColumn]: nullish(array(NavigationItemSchema), []),
 });

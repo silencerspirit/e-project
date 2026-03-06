@@ -1,13 +1,26 @@
 export function formatPhone(input: string): string {
   const digits = input.replace(/\D/g, '');
+  const hasLeadingPlus = input.trim().startsWith('+');
 
-  return [digits.slice(0, 1), digits.slice(1, 4), digits.slice(4, 7), digits.slice(7, 9), digits.slice(9, 11)].join(
-    ' ',
-  );
+  return [
+    hasLeadingPlus ? `+${digits.slice(0, 1)}` : digits.slice(0, 1),
+    digits.slice(1, 4),
+    digits.slice(4, 7),
+    digits.slice(7, 9),
+    digits.slice(9, 11),
+  ]
+    .filter(Boolean)
+    .join(' ');
 }
 
 export function formatDate(value: string): string {
   return new Date(value).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' });
+}
+
+export function isExternalLink(value: string): boolean {
+  const normalizedValue = value.trim();
+
+  return /^https?:\/\//i.test(normalizedValue) || normalizedValue.startsWith('//');
 }
 
 export function isMobileUserAgent(): boolean {

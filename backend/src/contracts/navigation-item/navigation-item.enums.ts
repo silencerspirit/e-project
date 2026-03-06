@@ -1,4 +1,5 @@
 export const enum MenuPosition {
   Header = 'header',
-  Footer = 'footer',
+  FooterFirstColumn = 'footer-first-column',
+  FooterSecondColumn = 'footer-second-column',
 }
