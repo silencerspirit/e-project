@@ -1,0 +1,17 @@
+---
+import type { JSX } from 'astro/jsx-runtime';
+import { twMerge } from 'tailwind-merge';
+
+interface Props extends JSX.HTMLAttributes {
+  content: string;
+}
+
+const { content, ...attributes } = Astro.props;
+const classes = twMerge('html-content', attributes.class);
+---
+
+<div
+  class:list={classes}
+  set:html={content}
+  {...attributes}
+/>

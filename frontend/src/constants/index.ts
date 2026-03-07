@@ -4,4 +4,4 @@ export const PRICE_SUFFIX = '₽';
 
 export const PRICE_PER_M2_SUFFIX = `${PRICE_SUFFIX}/м²`;
 
-export const AVAILABLE_PAGES = [{ label: 'Недвижимость', href: '/properties/' }] as const;
+export const AVAILABLE_PAGES = [{ label: 'Аренда', href: '/properties/' }] as const;

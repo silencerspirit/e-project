@@ -4,7 +4,7 @@ import { Check, MapPin } from '@lucide/astro';
 import { parse } from 'valibot';
 
 import { getSiteConfig } from '@/api';
-import { getPropertyBySlug, getPropertySimilarBySlug } from '@/api/property';
+import { getPropertyBySlug, getPropertySimilarBySlug } from '@/api';
 import type { TBreadcrumbItem } from '@/components/ui/breadcrumbs/Breadcrumbs.astro';
 import { createBreadcrumbListSchema, createRealEstateListingSchema, getPublicSiteUrl } from '@/helpers';
 
@@ -39,7 +39,7 @@ const realEstateListingSchema = createRealEstateListingSchema(siteUrl, {
   metaDescription,
 });
 
-const breadcrumb: Required<TBreadcrumbItem> = { label: 'Недвижимость', href: '/properties/' };
+const breadcrumb: Required<TBreadcrumbItem> = { label: 'Аренда', href: '/properties/' };
 
 const breadcrumbSchema = createBreadcrumbListSchema(siteUrl, [
   {

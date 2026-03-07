@@ -1,0 +1,26 @@
+---
+import { getPrivacyPolicyPage } from '@/api';
+
+import Breadcrumbs from '@/components/ui/breadcrumbs/Breadcrumbs.astro';
+import Content from '@/components/ui/content/Content.astro';
+import Layout from '@/layouts/Layout.astro';
+
+const page = await getPrivacyPolicyPage();
+
+const metaTitle: string = page.seo?.metaTitle ?? '';
+const metaDescription: string = page.seo?.metaDescription ?? '';
+---
+
+<Layout
+  metaTitle={metaTitle}
+  metaDescription={metaDescription}
+>
+  <Breadcrumbs title={page.title} />
+
+  <section class="py-12 lg:py-16">
+    <Content
+      class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8"
+      content={page.content}
+    />
+  </section>
+</Layout>

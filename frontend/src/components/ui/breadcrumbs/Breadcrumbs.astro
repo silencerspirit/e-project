@@ -5,6 +5,7 @@ import {
   type InferInput,
   type InferOutput,
   minLength,
+  nullish,
   object,
   optional,
   parse,
@@ -23,11 +24,11 @@ const BreadcrumbItemSchema = object({
 });
 
 const BreadcrumbsPropsSchema = object({
-  items: optional(array(BreadcrumbItemSchema), []),
-  status: optional(pipe(string(), trim(), minLength(1))),
-  category: optional(pipe(string(), trim(), minLength(1))),
-  title: optional(pipe(string(), trim(), minLength(1))),
-  description: optional(pipe(string(), trim(), minLength(1))),
+  items: nullish(array(BreadcrumbItemSchema), []),
+  status: nullish(pipe(string(), trim()), ''),
+  category: nullish(pipe(string(), trim()), ''),
+  title: pipe(string(), trim(), minLength(1)),
+  description: nullish(pipe(string(), trim()), ''),
 });
 
 const { items = [], status, category, title, description } = parse(BreadcrumbsPropsSchema, Astro.props);
