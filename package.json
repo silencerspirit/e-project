@@ -15,7 +15,7 @@
     "pre-commit": "lint-staged",
     "typecheck": "tsc -p backend/tsconfig.json --noEmit && npm run check --prefix frontend",
     "prepare": "husky",
-    "preinstall": "node -e \"const major=Number(process.versions.node.split('.')[0]); if (major<20){console.error('Node 20+ required. Current: '+process.versions.node); process.exit(1)}\""
+    "preinstall": "node -e \"const major=Number(process.versions.node.split('.')[0]); if (major<22){console.error('Node 22+ required. Current: '+process.versions.node); process.exit(1)}\""
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^7.18.0",
@@ -35,7 +35,7 @@
     "typescript": "5.5.4"
   },
   "engines": {
-    "node": "20.20.0"
+    "node": "22.x"
   },
   "packageManager": "npm@10.8.2",
   "overrides": {
