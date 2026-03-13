@@ -454,64 +454,6 @@ export interface ApiNavigationItemNavigationItem extends Struct.CollectionTypeSc
   };
 }
 
-export interface ApiNewsItemNewsItem extends Struct.CollectionTypeSchema {
-  collectionName: 'news_items';
-  info: {
-    displayName: 'News';
-    pluralName: 'news-items';
-    singularName: 'news-item';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    content: Schema.Attribute.RichText &
-      Schema.Attribute.CustomField<
-        'plugin::ckeditor5.CKEditor',
-        {
-          preset: 'defaultHtml';
-        }
-      >;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
-    image: Schema.Attribute.Component<'shared.images', false> & Schema.Attribute.Required;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<'oneToMany', 'api::news-item.news-item'> & Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    publishedDate: Schema.Attribute.Date;
-    seo: Schema.Attribute.Component<'shared.seo', false>;
-    shortDescription: Schema.Attribute.Text;
-    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
-    title: Schema.Attribute.String & Schema.Attribute.Required;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
-    visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-  };
-}
-
-export interface ApiNewsPageNewsPage extends Struct.SingleTypeSchema {
-  collectionName: 'news_pages';
-  info: {
-    displayName: 'NewsPage';
-    pluralName: 'news-pages';
-    singularName: 'news-page';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<'oneToMany', 'api::news-page.news-page'> & Schema.Attribute.Private;
-    navigation_item: Schema.Attribute.Relation<'oneToOne', 'api::navigation-item.navigation-item'>;
-    publishedAt: Schema.Attribute.DateTime;
-    seo: Schema.Attribute.Component<'shared.seo', false>;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
-  };
-}
-
 export interface ApiPersonalDataPagePersonalDataPage extends Struct.SingleTypeSchema {
   collectionName: 'personal_data_pages';
   info: {
@@ -1112,8 +1054,6 @@ declare module '@strapi/strapi' {
       'api::city.city': ApiCityCity;
       'api::main-page.main-page': ApiMainPageMainPage;
       'api::navigation-item.navigation-item': ApiNavigationItemNavigationItem;
-      'api::news-item.news-item': ApiNewsItemNewsItem;
-      'api::news-page.news-page': ApiNewsPageNewsPage;
       'api::personal-data-page.personal-data-page': ApiPersonalDataPagePersonalDataPage;
       'api::privacy-policy-page.privacy-policy-page': ApiPrivacyPolicyPagePrivacyPolicyPage;
       'api::property-listing-page.property-listing-page': ApiPropertyListingPagePropertyListingPage;
