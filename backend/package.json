@@ -5,6 +5,8 @@
   "description": "A Strapi application",
   "scripts": {
     "build": "strapi build",
+    "cleanup:media:s3": "node scripts/cleanup-missing-s3-assets.js",
+    "cleanup:media:s3:apply": "node scripts/cleanup-missing-s3-assets.js --apply",
     "console": "strapi console",
     "deploy": "strapi deploy",
     "dev": "strapi develop",
