@@ -57,7 +57,7 @@ export default ({ env }: { env: EnvFn }) => {
       config: {
         provider: 'nodemailer',
         providerOptions: {
-          host: env('SMTP_HOST', 'mail.hosting.reg.ru'),
+          host: env('SMTP_HOST', 'smtp.yandex.ru'),
           port: env.int('SMTP_PORT', 465),
           secure: env.bool('SMTP_SECURE', true),
           auth: {
@@ -67,8 +67,8 @@ export default ({ env }: { env: EnvFn }) => {
           connectionTimeout: env.int('SMTP_CONNECTION_TIMEOUT', 10_000),
         },
         settings: {
-          defaultFrom: env('SMTP_DEFAULT_FROM', env('SMTP_USERNAME')),
-          defaultReplyTo: env('SMTP_DEFAULT_REPLY_TO', env('SMTP_USERNAME')),
+          defaultFrom: env('SMTP_USERNAME'),
+          defaultReplyTo: env('SMTP_USERNAME'),
         },
       },
     },
