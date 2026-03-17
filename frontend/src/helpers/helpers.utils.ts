@@ -44,3 +44,9 @@ export const declOfNum = (number: number, titles: string[]): string => {
 export function assertNever(x: never): never {
   throw new Error(`Неожиданное значение: ${x}`);
 }
+
+export function wait(time = 0): Promise<void> {
+  return new Promise<void>((resolve) => {
+    window.setTimeout(resolve, time);
+  });
+}

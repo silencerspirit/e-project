@@ -1,12 +1,12 @@
 ---
 import { getMainPage, getMainPageForm } from '@/api';
+import MainPageAdvantages from '@/components/pages/index/MainPageAdvantages.vue';
+import MainPageBanner from '@/components/pages/index/MainPageBanner.vue';
+import MainPageCategories from '@/components/pages/index/MainPageCategories.vue';
+import MainPageListing from '@/components/pages/index/MainPageListing.vue';
+import VueRequestSection from '@/components/vue/VueRequestSection.vue';
 import { createOrganizationSchema, createWebSiteSchema, getPublicSiteUrl } from '@/helpers';
 
-import MainPageAction from '@/components/pages/index/MainPageAction.astro';
-import MainPageAdvantages from '@/components/pages/index/MainPageAdvantages.astro';
-import MainPageBanner from '@/components/pages/index/MainPageBanner.astro';
-import MainPageCategories from '@/components/pages/index/MainPageCategories.astro';
-import MainPageListing from '@/components/pages/index/MainPageListing.astro';
 import Layout from '@/layouts/Layout.astro';
 
 const [page, form] = await Promise.all([getMainPage(), getMainPageForm()]);
@@ -24,11 +24,19 @@ const webSiteSchema = createWebSiteSchema(siteUrl);
   structuredData={[organizationSchema, webSiteSchema]}
 >
   <MainPageBanner
+    client:load
     info={page.heroBanner}
     form={form}
   />
+
   <MainPageCategories info={page.featureBanner} />
-  <MainPageListing info={page.showcaseBanner} />
+
+  <MainPageListing
+    client:visible
+    info={page.showcaseBanner}
+  />
+
   <MainPageAdvantages info={page.advantagesBanner} />
-  <MainPageAction />
+
+  <VueRequestSection client:visible />
 </Layout>

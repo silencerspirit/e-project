@@ -100,6 +100,44 @@ module.exports = {
       },
     },
     {
+      files: ['frontend/**/*.vue'],
+      env: { browser: true },
+      parser: 'vue-eslint-parser',
+      parserOptions: {
+        parser: '@typescript-eslint/parser',
+        extraFileExtensions: ['.vue'],
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+      },
+      plugins: ['vue', '@typescript-eslint', 'simple-import-sort'],
+      extends: ['plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
+      rules: {
+        'sort-imports': 'off',
+        'simple-import-sort/imports': [
+          'error',
+          {
+            groups: [
+              ['^\\u0000'],
+              ['^node:'],
+              ['^@?\\w'],
+              ['^@/(?!.*\\.astro$).+'],
+              ['^@/.+\\.astro$'],
+              [
+                '^\\.\\.(?!/?$)(?!.*\\.astro$)',
+                '^\\./(?=.*/)(?!/?$)(?!.*\\.astro$)',
+                '^\\.(?!/?$)(?!.*\\.astro$)',
+                '^\\./?$',
+              ],
+              ['^\\.{1,2}/.+\\.astro$'],
+              ['^.+\\.s?css$'],
+            ],
+          },
+        ],
+        'simple-import-sort/exports': 'error',
+        'vue/multi-word-component-names': 'off',
+      },
+    },
+    {
       files: ['frontend/**/*.astro'],
       parser: 'astro-eslint-parser',
       parserOptions: {
