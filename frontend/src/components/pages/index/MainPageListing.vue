@@ -106,6 +106,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-vue-next';
 import type SwiperInstance from 'swiper';
 import { computed, nextTick, onMounted, onUnmounted, ref, useId, useTemplateRef, watch } from 'vue';
 
+import { loadSwiperCore, loadSwiperNavigation } from '@/components/ui/swiper/loader';
 import { ButtonRounded, ButtonSize, ButtonVariant } from '@/components/vue/button/button.enums';
 import VueButton from '@/components/vue/button/VueButton.vue';
 import PropertyCard from '@/components/vue/property-card/PropertyCard.vue';
@@ -136,8 +137,7 @@ const filteredProperties = computed<TPropertyListItem[]>(() =>
 );
 
 function loadSwiper() {
-  const loadFn = () => import('@/components/ui/swiper');
-  return loadFn();
+  return Promise.all([loadSwiperCore(), loadSwiperNavigation()]);
 }
 
 function updateNavigationVisibility() {
@@ -149,7 +149,7 @@ function onClickFilter(filter: string) {
 }
 
 async function initSwiper() {
-  const { Swiper, Navigation } = await loadSwiper();
+  const [{ Swiper }, { Navigation }] = await loadSwiper();
 
   if (!swiperRef.value) return;
 

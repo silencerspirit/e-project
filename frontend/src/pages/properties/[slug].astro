@@ -1,22 +1,22 @@
 ---
 import { PropertySlugSchema } from '@contracts';
-import { Check, MapPin } from '@lucide/astro';
+import { Check, MapPin } from 'lucide-vue-next';
 import { parse } from 'valibot';
 
 import { getSiteConfig } from '@/api';
 import { getPropertyBySlug, getPropertySimilarBySlug } from '@/api';
-import type { TBreadcrumbItem } from '@/components/ui/breadcrumbs/Breadcrumbs.astro';
+import PropertyDetailContact from '@/components/pages/properties/components/PropertyDetailContact.vue';
+import PropertyDetailDescription from '@/components/pages/properties/components/PropertyDetailDescription.vue';
+import PropertyDetailForm from '@/components/pages/properties/components/PropertyDetailForm.vue';
+import PropertyDetailList from '@/components/pages/properties/components/PropertyDetailList.vue';
+import PropertyDetailSimilar from '@/components/pages/properties/components/PropertyDetailSimilar.vue';
+import PropertyDetailSlider from '@/components/pages/properties/components/PropertyDetailSlider.vue';
+import PropertyDetailSpecification from '@/components/pages/properties/components/PropertyDetailSpecification.vue';
+import PropertyDetailTechSpecification from '@/components/pages/properties/components/PropertyDetailTechSpecification.vue';
+import type { IBreadcrumbItem } from '@/components/vue/breadcrumbs';
+import Breadcrumbs from '@/components/vue/breadcrumbs/Breadcrumbs.vue';
 import { createBreadcrumbListSchema, createRealEstateListingSchema, getPublicSiteUrl } from '@/helpers';
 
-import PropertyDetailContact from '@/components/pages/properties/components/PropertyDetailContact.astro';
-import PropertyDetailDescription from '@/components/pages/properties/components/PropertyDetailDescription.astro';
-import PropertyDetailForm from '@/components/pages/properties/components/PropertyDetailForm.astro';
-import PropertyDetailList from '@/components/pages/properties/components/PropertyDetailList.astro';
-import PropertyDetailSimilar from '@/components/pages/properties/components/PropertyDetailSimilar.astro';
-import PropertyDetailSlider from '@/components/pages/properties/components/PropertyDetailSlider.astro';
-import PropertyDetailSpecification from '@/components/pages/properties/components/PropertyDetailSpecification.astro';
-import PropertyDetailTechSpecification from '@/components/pages/properties/components/PropertyDetailTechSpecification.astro';
-import Breadcrumbs from '@/components/ui/breadcrumbs/Breadcrumbs.astro';
 import Layout from '@/layouts/Layout.astro';
 
 const { slug } = parse(PropertySlugSchema, Astro.params);
@@ -39,7 +39,7 @@ const realEstateListingSchema = createRealEstateListingSchema(siteUrl, {
   metaDescription,
 });
 
-const breadcrumb: Required<TBreadcrumbItem> = { label: 'Аренда', href: '/properties/' };
+const breadcrumb: Required<IBreadcrumbItem> = { label: 'Аренда', href: '/properties/' };
 
 const breadcrumbSchema = createBreadcrumbListSchema(siteUrl, [
   {
@@ -74,14 +74,17 @@ const breadcrumbSchema = createBreadcrumbListSchema(siteUrl, [
     description={property.address}
   />
 
-  <PropertyDetailSlider images={property.images} />
+  <PropertyDetailSlider
+    client:load
+    images={property.images}
+  />
 
   <section class="py-12 lg:py-16">
     <div class="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 sm:px-6 lg:grid-cols-3 lg:gap-12 lg:px-8">
       <div class="flex flex-col gap-10 lg:col-span-2">
-        <PropertyDetailSpecification property={property} />
+        <PropertyDetailSpecification item={property} />
 
-        {property.description && <PropertyDetailDescription property={property} />}
+        {property.description && <PropertyDetailDescription item={property} />}
 
         {
           Boolean(property.activityTypes.length) && (
@@ -107,7 +110,10 @@ const breadcrumbSchema = createBreadcrumbListSchema(siteUrl, [
 
       <div class="lg:col-span-1">
         <div class="sticky top-36">
-          <PropertyDetailForm title={property.title} />
+          <PropertyDetailForm
+            client:load
+            title={property.title}
+          />
 
           {
             Boolean(property.techSpecifications.length) && (
@@ -121,5 +127,12 @@ const breadcrumbSchema = createBreadcrumbListSchema(siteUrl, [
     </div>
   </section>
 
-  {Boolean(similarList.length) && <PropertyDetailSimilar similarList={similarList} />}
+  {
+    Boolean(similarList.length) && (
+      <PropertyDetailSimilar
+        client:load
+        similarList={similarList}
+      />
+    )
+  }
 </Layout>

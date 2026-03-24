@@ -80,7 +80,7 @@
                     />
 
                     <VueInput
-                      v-model:input="form.phone"
+                      v-model="form.phone"
                       id="request-form-phone"
                       type="tel"
                       name="phone"
@@ -116,34 +116,15 @@
 </template>
 
 <script lang="ts" setup>
-import type { TRequestForm } from '@contracts';
 import { CircleCheck, Phone, SendHorizontal } from 'lucide-vue-next';
-import { reactive, ref } from 'vue';
 
-import { postRequestForm } from '@/api';
 import { ButtonSize } from '@/components/vue/button/button.enums';
 import VueButton from '@/components/vue/button/VueButton.vue';
-import { wait } from '@/helpers';
+import { useRequestForm } from '@/composables';
 
 import VueInput from './input/VueInput.vue';
 
 const ADVANTAGES = ['Бесплатная консультация', 'Помощь с ипотекой', 'Показ объектов'];
-const SUCCESS_TIMEOUT = 3_000;
 
-const isFormSended = ref<boolean>(false);
-const form = reactive<TRequestForm>({
-  phone: '',
-  name: '',
-});
-
-async function onSubmit() {
-  try {
-    await postRequestForm(form);
-    isFormSended.value = true;
-    await wait(SUCCESS_TIMEOUT);
-    isFormSended.value = false;
-  } catch (error) {
-    console.error(error);
-  }
-}
+const { form, isFormSended, onSubmit } = useRequestForm();
 </script>
