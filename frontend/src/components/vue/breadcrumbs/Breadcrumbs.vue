@@ -37,7 +37,7 @@
 
             <a
               v-if="item.href"
-              href="{item.href}"
+              :href="item.href"
               class="transition-colors hover:text-primary"
             >
               {{ item.label }}
