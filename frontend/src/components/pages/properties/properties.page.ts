@@ -2,19 +2,11 @@ import {
   PropertyListingPageQuerySchema,
   PropertyListingPageRequestSchema,
   PropertyListingPageSegmentsSchema,
-  type TPropertyListingPageQuery,
-  type TPropertyListingPageRequest,
 } from '@contracts';
 import { parse } from 'valibot';
 
-import type { TParsedSegments } from './properties.types';
+import type { TParsePropertyListingPageRequestResult } from './properties.types';
 import { parseSegments } from './properties.utils';
-
-type TParsePropertyListingPageRequestResult = {
-  parsedSegments: TParsedSegments;
-  query: TPropertyListingPageQuery;
-  request: TPropertyListingPageRequest;
-};
 
 export function parsePropertyListingPageRequest(
   searchParams: URLSearchParams,

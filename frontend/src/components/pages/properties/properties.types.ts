@@ -1,26 +1,9 @@
-import type { TPropertyListingPageSegments } from '@contracts';
-
-import type { FilterCode } from './properties.enums';
+import type { TPropertyListingPageQuery, TPropertyListingPageRequest, TPropertyListingPageSegments } from '@contracts';
 
 export type TParsedSegments = Partial<TPropertyListingPageSegments>;
-export type TFilterGroup = FilterCode.PropertyType | FilterCode.City | FilterCode.PriceFrom;
-export type TFacet = { slug: string; disabled: boolean };
-export type TPriceFacet = { from: number; to: number; disabled: boolean };
-export type TElements = {
-  filtersAside: HTMLElement;
-  listingContainer: HTMLDivElement;
-  submitFiltersButton: HTMLButtonElement;
-  buttonViewGrid: HTMLButtonElement;
-  buttonViewList: HTMLButtonElement;
-  filterButtonOpen: HTMLButtonElement;
-  filterButtonClose: HTMLButtonElement;
-  sortSelect: HTMLSelectElement;
-  filterButtons: HTMLButtonElement[];
-  listingCards: HTMLDivElement[];
-};
-export type TState = {
-  filters: TParsedSegments;
-  initialFilters: TParsedSegments;
-  lastRequestId: number;
-  params: URLSearchParams;
+
+export type TParsePropertyListingPageRequestResult = {
+  parsedSegments: TParsedSegments;
+  query: TPropertyListingPageQuery;
+  request: TPropertyListingPageRequest;
 };

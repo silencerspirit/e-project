@@ -4,6 +4,7 @@ import {
   COOKIE_CONSENT_COOKIE_NAME,
   COOKIE_CONSENT_COOKIE_VALUE,
 } from '@/components/ui/cookie-consent/cookie-consent.consts';
+import { useAstro } from '@/composables';
 
 import CookieConsent from '@/components/ui/cookie-consent/CookieConsent.astro';
 import Footer from '@/components/ui/footer/Footer.astro';
@@ -21,6 +22,8 @@ interface Props {
   robots?: string;
   structuredData?: unknown[];
 }
+
+useAstro(Astro);
 
 const { metaTitle, metaDescription, openGraphImage, canonicalUrl, robots, structuredData } = Astro.props;
 

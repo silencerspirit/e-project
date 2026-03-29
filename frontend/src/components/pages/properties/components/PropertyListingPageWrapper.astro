@@ -1,0 +1,56 @@
+---
+import type { TPropertyListingPage, TPropertyListingPageList, TPropertyListingPageQuery } from '@contracts';
+
+import Breadcrumbs from '@/components/vue/breadcrumbs/Breadcrumbs.vue';
+import {
+  buildCanonicalUrl,
+  buildPaginatedDescription,
+  buildPaginatedTitle,
+} from '@/components/vue/paginate/paginate.utils';
+import { getPublicSiteUrl } from '@/helpers';
+
+import Layout from '@/layouts/Layout.astro';
+
+import { VIEW_COOKIE_NAME } from '../properties.consts';
+import { ListView } from '../properties.enums';
+import type { TParsedSegments } from '../properties.types';
+import PropertyListingPageView from './PropertyListingPageView.vue';
+
+interface Props {
+  info: TPropertyListingPage;
+  listing: TPropertyListingPageList;
+  parsedSegments?: TParsedSegments;
+  query: TPropertyListingPageQuery;
+}
+
+const { info, listing, parsedSegments = {}, query } = Astro.props;
+const { paginate } = listing;
+
+const siteUrl = getPublicSiteUrl(Astro.url);
+const searchString = Astro.url.search;
+
+const metaTitle: string = buildPaginatedTitle(info.seo?.metaTitle ?? info.title, paginate.page);
+const metaDescription: string = buildPaginatedDescription(info.seo?.metaDescription ?? info.description, paginate.page);
+const canonicalUrl: string = buildCanonicalUrl(Astro.url, paginate.page, siteUrl);
+const initialView: ListView = (Astro.cookies?.get(VIEW_COOKIE_NAME)?.value as ListView) ?? ListView.Grid;
+---
+
+<Layout
+  metaTitle={metaTitle}
+  metaDescription={metaDescription}
+  canonicalUrl={canonicalUrl}
+>
+  <Breadcrumbs
+    title={info.title}
+    description={info.description}
+  />
+
+  <PropertyListingPageView
+    client:load
+    query={query}
+    search={searchString}
+    listing={listing}
+    parsedSegments={parsedSegments}
+    view={initialView}
+  />
+</Layout>

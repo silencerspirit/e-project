@@ -14,8 +14,7 @@
     "lint:fix": "eslint --fix",
     "pre-commit": "lint-staged",
     "typecheck": "tsc -p backend/tsconfig.json --noEmit && npm run check --prefix frontend",
-    "prepare": "husky",
-    "preinstall": "node -e \"const major=Number(process.versions.node.split('.')[0]); if (major<22){console.error('Node 22+ required. Current: '+process.versions.node); process.exit(1)}\""
+    "prepare": "husky"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^7.18.0",
@@ -36,8 +35,9 @@
     "typescript": "5.5.4",
     "vue-eslint-parser": "^10.4.0"
   },
+  "engineStrict": true,
   "engines": {
-    "node": "22.x"
+    "node": ">=22"
   },
   "packageManager": "npm@10.8.2",
   "overrides": {

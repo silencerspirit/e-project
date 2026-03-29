@@ -4,3 +4,8 @@ export const enum FilterCode {
   PriceFrom = 'price-from',
   PriceTo = 'price-to',
 }
+
+export const enum ListView {
+  Grid = 'grid',
+  List = 'list',
+}

@@ -2,7 +2,7 @@
 import { getPropertyListingPage, getPropertyListingPageList } from '@/api';
 import { parsePropertyListingPageRequest } from '@/components/pages/properties';
 
-import PropertyListingPageView from '@/components/pages/properties/components/PropertyListingPageView.astro';
+import PropertyListingPageWrapper from '@/components/pages/properties/components/PropertyListingPageWrapper.astro';
 
 const { parsedSegments, query, request } = parsePropertyListingPageRequest(
   Astro.url.searchParams,
@@ -12,7 +12,7 @@ const { parsedSegments, query, request } = parsePropertyListingPageRequest(
 const [info, listing] = await Promise.all([getPropertyListingPage(), getPropertyListingPageList(request)]);
 ---
 
-<PropertyListingPageView
+<PropertyListingPageWrapper
   info={info}
   listing={listing}
   parsedSegments={parsedSegments}

@@ -1,6 +1,4 @@
-import { declOfNum } from '@/helpers';
-
-import { FILTER_CODES, PROPERTY_TOTAL_ITEMS_TEXT_TEMPLATES } from './properties.consts';
+import { FILTER_CODES } from './properties.consts';
 import type { TParsedSegments } from './properties.types';
 
 export function parseSegments(input: string | undefined): TParsedSegments {
@@ -39,11 +37,4 @@ export function buildSegmentsUrl(filters: TParsedSegments): string {
   if (!segments.length) return '/properties/';
 
   return `/properties/filters/${segments.join('/')}/`;
-}
-
-export function getPropertyTotalItemsText(total: number): string {
-  return declOfNum(
-    total,
-    PROPERTY_TOTAL_ITEMS_TEXT_TEMPLATES.map((template) => template.replace('{count}', String(total))),
-  );
 }

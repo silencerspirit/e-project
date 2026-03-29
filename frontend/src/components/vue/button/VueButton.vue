@@ -2,7 +2,14 @@
   <component
     :is="tag"
     v-bind="forwardedAttrs"
-    :class="[baseClasses, variantClassesMap[variant], sizeClassesMap[size], roundedMap[rounded], className]"
+    :class="[
+      disabledClassNames,
+      baseClasses,
+      variantClassesMap[variant],
+      sizeClassesMap[size],
+      roundedMap[rounded],
+      className,
+    ]"
   >
     <slot />
   </component>
@@ -20,14 +27,16 @@ interface ICommonProps {
 }
 
 interface IButtonProps extends /* @vue-ignore */ ButtonHTMLAttributes, ICommonProps {
+  disabled?: boolean;
   tag?: 'button';
 }
 
 interface IAnchorProps extends /* @vue-ignore */ AnchorHTMLAttributes, ICommonProps {
+  disabled?: boolean;
   tag?: 'a';
 }
 
-withDefaults(defineProps<IButtonProps | IAnchorProps>(), {
+const props = withDefaults(defineProps<IButtonProps | IAnchorProps>(), {
   tag: 'button',
   size: ButtonSize.Default,
   variant: ButtonVariant.Default,
@@ -50,7 +59,9 @@ const forwardedAttrs = computed(() => {
 });
 
 const baseClasses =
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-ring transition-colors';
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-ring transition-colors';
+
+const disabledClassNames = computed<string>(() => (props.disabled ? 'pointer-events-none opacity-50' : ''));
 
 const variantClassesMap: Record<ButtonVariant, string> = {
   [ButtonVariant.Default]: 'bg-primary text-primary-foreground hover:bg-primary/90',

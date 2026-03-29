@@ -50,5 +50,9 @@
   },
   "_moduleAliases": {
     "@": "dist/src"
+  },
+  "engineStrict": true,
+  "engines": {
+    "node": ">=22"
   }
 }
