@@ -2,7 +2,7 @@
   <div class="rounded-2xl border border-border bg-card p-6 shadow-sm lg:p-8">
     <div
       v-if="isFormSended"
-      class="hidden py-6 text-center"
+      class="py-6 text-center"
     >
       <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-green-100">
         <CircleCheck
@@ -69,6 +69,7 @@
 
         <VueButton
           type="submit"
+          :disabled="isLoading"
           class="h-12 w-full bg-primary font-medium text-primary-foreground hover:bg-primary/90"
         >
           <SendHorizontal
@@ -97,5 +98,5 @@ defineProps<{
   title: string;
 }>();
 
-const { form, isFormSended, onSubmit } = useRequestForm();
+const { form, isFormSended, onSubmit, isLoading } = useRequestForm();
 </script>

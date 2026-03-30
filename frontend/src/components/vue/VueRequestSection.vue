@@ -94,6 +94,7 @@
                 </div>
                 <VueButton
                   :size="ButtonSize.Lg"
+                  :disabled="isLoading"
                   type="submit"
                   class="h-14 w-full bg-primary text-base font-medium text-primary-foreground hover:bg-primary/90"
                 >
@@ -126,5 +127,5 @@ import VueInput from './input/VueInput.vue';
 
 const ADVANTAGES = ['Бесплатная консультация', 'Помощь с ипотекой', 'Показ объектов'];
 
-const { form, isFormSended, onSubmit } = useRequestForm();
+const { form, isFormSended, onSubmit, isLoading } = useRequestForm();
 </script>
