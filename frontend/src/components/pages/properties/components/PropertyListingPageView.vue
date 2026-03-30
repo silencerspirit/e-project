@@ -72,6 +72,7 @@ import { reactive, ref, watch } from 'vue';
 import { getPropertyListingPageCount } from '@/api';
 import { ButtonVariant } from '@/components/vue/button/button.enums';
 import VueButton from '@/components/vue/button/VueButton.vue';
+import { useScroll } from '@/composables';
 import { assertNever, declOfNum } from '@/helpers';
 
 import type { FilterCode, ListView } from '../properties.enums';
@@ -86,6 +87,8 @@ const props = defineProps<{
   view: ListView;
   parsedSegments?: TParsedSegments;
 }>();
+
+const { disableScroll, enableScroll } = useScroll();
 
 const isEmptyList: boolean = !props.listing.list.length;
 
@@ -163,6 +166,9 @@ function onChangeSort(sort: PropertyListingPageSort) {
 
 function toggleMobileFilters(value: boolean) {
   isOpenMobileFilters.value = value;
+
+  if (value) disableScroll();
+  else enableScroll();
 }
 
 watch([state.filters], onUpdateState);
