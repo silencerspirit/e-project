@@ -13,6 +13,7 @@ export function useRequestForm() {
   const form = reactive<TRequestForm>({
     phone: '',
     name: '',
+    pageUrl: import.meta.env.SSR ? '' : window.location.href,
   });
 
   function resetForm() {

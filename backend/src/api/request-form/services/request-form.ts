@@ -2,7 +2,7 @@ import type { TRequestForm } from '@/contracts';
 import type { Core } from '@strapi/strapi';
 
 export default ({ strapi }: { strapi: Core.Strapi }) => ({
-  async sendForm(params: TRequestForm & { referer?: string }) {
+  async sendForm(params: TRequestForm) {
     const to = process.env.SMTP_USERNAME;
 
     if (!to) {
@@ -21,29 +21,29 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
   },
 });
 
-function buildSubject(params: TRequestForm & { referer?: string }): string {
-  return params.referer ? `Новая заявка с ${params.referer}` : 'Новая заявка с сайта';
+function buildSubject(params: TRequestForm): string {
+  return params.pageUrl ? `Новая заявка с ${params.pageUrl}` : 'Новая заявка с сайта';
 }
 
-function buildPlainText(params: TRequestForm & { referer?: string }): string {
+function buildPlainText(params: TRequestForm): string {
   return [
     buildSubject(params),
     hasName(params.name) ? `Имя: ${params.name}` : null,
     `Телефон: ${params.phone}`,
-    params.referer ? `Источник: ${params.referer}` : null,
+    params.pageUrl ? `Источник: ${params.pageUrl}` : null,
   ]
     .filter(Boolean)
     .join('\n');
 }
 
-function buildHtml(params: TRequestForm & { referer?: string }): string {
+function buildHtml(params: TRequestForm): string {
   const subject = escapeHtml(buildSubject(params));
   const safePhone = escapeHtml(params.phone);
   const callHref = buildTelHref(params.phone);
   const details = [
     hasName(params.name) ? buildDetailRow('Имя', escapeHtml(params.name)) : '',
     buildDetailRow('Телефон', safePhone),
-    params.referer ? buildDetailRow('Источник', escapeHtml(params.referer)) : '',
+    params.pageUrl ? buildDetailRow('Источник', escapeHtml(params.pageUrl)) : '',
   ]
     .filter(Boolean)
     .join('');
