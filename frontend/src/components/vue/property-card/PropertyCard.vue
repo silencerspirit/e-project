@@ -1,6 +1,6 @@
 <template>
   <li
-    class="property-card h-full w-full"
+    class="property-card w-full"
     :class="[{ 'property-card--row': row }, className]"
     v-bind="attrs"
   >

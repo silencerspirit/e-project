@@ -200,7 +200,7 @@ function onUpdateFilter(type: FilterCode, value: string) {
     left: 0;
     border-radius: 0;
     overflow-y: auto;
-    min-height: 100svh;
+    min-height: 100dvh;
     padding-top: theme('spacing.2');
     z-index: 99;
     transform: translateX(-100%);

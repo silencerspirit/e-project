@@ -36,11 +36,12 @@
 
           <div class="hidden gap-4 lg:flex">
             <VueButton
+              class="main-page-listing__prev text-primary transition-colors hover:bg-primary/10"
               type="button"
               :variant="ButtonVariant.Link"
               aria-label="Предыдущей слайд"
               :id="sliderPrevButtonId"
-              :class="['text-primary transition-colors hover:bg-primary/10', { hidden: isNavigationHidden }]"
+              :class="{ hidden: isNavigationHidden }"
             >
               <ArrowLeft
                 aria-hidden="true"
@@ -49,11 +50,12 @@
             </VueButton>
 
             <VueButton
+              class="main-page-listing__next text-primary transition-colors hover:bg-primary/10"
               type="button"
               :variant="ButtonVariant.Link"
               aria-label="Следующий слайд"
               :id="sliderNextButtonId"
-              :class="['text-primary transition-colors hover:bg-primary/10', { hidden: isNavigationHidden }]"
+              :class="{ hidden: isNavigationHidden }"
             >
               <ArrowRight
                 aria-hidden="true"
@@ -210,6 +212,14 @@ onUnmounted(destroySwiper);
           margin-right: theme('size.4');
         }
       }
+    }
+  }
+
+  &__next,
+  &__prev {
+    &.swiper-button-disabled {
+      opacity: 0.5;
+      pointer-events: none;
     }
   }
 }
