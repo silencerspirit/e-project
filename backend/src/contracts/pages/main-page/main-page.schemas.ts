@@ -12,6 +12,7 @@ export const MainPageSchema = /*#__PURE__*/ object({
 export const MainPagePageFacetSchema = /*#__PURE__*/ object({
   name: pipe(string(), trim()),
   slug: pipe(string(), trim()),
+  order: nullish(number(), 1),
 });
 
 export const MainPagePageFormSchema = /*#__PURE__*/ object({

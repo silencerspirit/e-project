@@ -26,6 +26,10 @@
       "relation": "oneToMany",
       "target": "api::property.property",
       "mappedBy": "propertyType"
+    },
+    "order": {
+      "type": "integer",
+      "default": 1
     }
   }
 }

@@ -26,6 +26,10 @@
       "relation": "oneToMany",
       "target": "api::property.property",
       "mappedBy": "city"
+    },
+    "order": {
+      "type": "integer",
+      "default": 1
     }
   }
 }

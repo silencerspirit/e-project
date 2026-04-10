@@ -1,5 +1,5 @@
 import { array, nullish, number, object, string } from 'valibot';
-import { BadgeSchema, ImageTransformScheme, SeoSchema, SpecItemSchema } from '../shared';
+import { BadgeSchema, ImagesListScheme, ImageTransformScheme, SeoSchema, SpecItemSchema } from '../shared';
 import { PropertyTypeSchema } from '../property-type';
 import { CitySchema } from '../city';
 
@@ -36,8 +36,8 @@ export const PropertyListItemSchema = /*#__PURE__*/ object(PropertyShape);
 
 export const PropertyFullItemSchema = /*#__PURE__*/ object({
   ...PropertyShape,
-  description: string(),
-  images: nullish(array(ImageTransformScheme), []),
+  description: nullish(string(), ''),
+  images: ImagesListScheme,
   activityTypes: nullish(array(BadgeSchema), []),
   techSpecifications: nullish(array(SpecItemSchema), []),
   infrastructure: nullish(array(BadgeSchema), []),

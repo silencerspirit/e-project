@@ -2,6 +2,7 @@ import { parse } from 'valibot';
 import { PropertyTypeSchema, type TMainPageFacet } from '@/contracts';
 import { CitySchema } from '@/contracts/city';
 import { factories } from '@strapi/strapi';
+import { sortByOrder } from '@/utils';
 
 export default factories.createCoreService('api::main-page.main-page', ({ strapi }) => ({
   async getMainPage() {
@@ -60,10 +61,10 @@ export default factories.createCoreService('api::main-page.main-page', ({ strapi
       fields: ['priceFrom'],
       populate: {
         city: {
-          fields: ['slug', 'name'],
+          fields: ['slug', 'name', 'order'],
         },
         propertyType: {
-          fields: ['slug', 'name'],
+          fields: ['slug', 'name', 'order'],
         },
       },
     });
@@ -71,7 +72,6 @@ export default factories.createCoreService('api::main-page.main-page', ({ strapi
     const cityMap = new Map<TMainPageFacet['slug'], TMainPageFacet>();
     const propertyMap = new Map<TMainPageFacet['slug'], TMainPageFacet>();
     let maxPrice = 0;
-
     list.forEach((property) => {
       const city = parse(CitySchema, property.city);
       const propertyType = parse(PropertyTypeSchema, property.propertyType);
@@ -83,8 +83,8 @@ export default factories.createCoreService('api::main-page.main-page', ({ strapi
 
     return {
       maxPrice,
-      cities: [...cityMap.values()],
-      propertyTypes: [...propertyMap.values()],
+      cities: [...cityMap.values()].sort(sortByOrder),
+      propertyTypes: [...propertyMap.values()].sort(sortByOrder),
     };
   },
 }));

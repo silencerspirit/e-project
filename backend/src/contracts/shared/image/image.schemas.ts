@@ -1,8 +1,8 @@
-import { nullish, object, pipe, string, transform } from 'valibot';
+import { array, nullish, object, pipe, string, transform } from 'valibot';
 
 export const ImageScheme = /*#__PURE__*/ pipe(
   object({
-    url: string(),
+    url: nullish(string(), ''),
     alternativeText: nullish(string(), ''),
     formats: nullish(
       object({
@@ -15,20 +15,25 @@ export const ImageScheme = /*#__PURE__*/ pipe(
     ),
   }),
   transform((img) => ({
-    url: img.url,
-    alternativeText: img.alternativeText,
+    url: img?.url ?? '',
+    alternativeText: img?.alternativeText ?? '',
     formats: {
-      large: img.formats?.large?.url ?? img.url,
-      medium: img.formats?.medium?.url ?? img.url,
-      small: img.formats?.small?.url ?? img.url,
-      thumbnail: img.formats?.thumbnail?.url ?? img.url,
+      large: img?.formats?.large?.url ?? img.url ?? '',
+      medium: img?.formats?.medium?.url ?? img.url ?? '',
+      small: img?.formats?.small?.url ?? img.url ?? '',
+      thumbnail: img?.formats?.thumbnail?.url ?? img.url ?? '',
     },
   })),
 );
 
 export const ImageTransformScheme = /*#__PURE__*/ pipe(
   object({
-    image: ImageScheme,
+    image: nullish(ImageScheme, null),
   }),
   transform((v) => v.image),
+);
+
+export const ImagesListScheme = /*#__PURE__*/ pipe(
+  nullish(array(ImageTransformScheme), []),
+  transform((images) => images.filter((image): image is NonNullable<typeof image> => Boolean(image))),
 );

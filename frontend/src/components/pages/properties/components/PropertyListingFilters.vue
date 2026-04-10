@@ -155,16 +155,16 @@ defineSlots<{
 }>();
 
 const buttonPriceTextMap = {
-  0: (price: TPropertyListingPageFilters['prices'][number]) => `до ${formatMillions(price.to)}`,
+  0: (price: TPropertyListingPageFilters['prices'][number]) => `до ${formatThousands(price.to)}`,
   1: (price: TPropertyListingPageFilters['prices'][number]) =>
-    `от ${formatMillions(price.from)} до ${formatMillions(price.to)}`,
-  2: (price: TPropertyListingPageFilters['prices'][number]) => `от ${formatMillions(price.from)}`,
+    `от ${formatThousands(price.from)} до ${formatThousands(price.to)}`,
+  2: (price: TPropertyListingPageFilters['prices'][number]) => `от ${formatThousands(price.from)}`,
 };
 
 const existFilters = computed<boolean>(() => Object.values(props.parsedSegments ?? {}).filter(Boolean).length > 0);
 
-function formatMillions(price: number): string {
-  return `${price / 1_000_000} млн.`;
+function formatThousands(price: number): string {
+  return `${Math.floor(price / 1_000)} тыс.`;
 }
 
 function getPriceButtonVariant(price: TPropertyListingPageFilters['prices'][number]): ButtonVariant {

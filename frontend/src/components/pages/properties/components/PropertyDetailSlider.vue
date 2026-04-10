@@ -127,6 +127,7 @@ async function initSwiper() {
   sliderInstance = new Swiper(swiperRef.value, {
     modules: [Thumbs, Navigation],
     thumbs: {
+      autoScrollOffset: 2,
       swiper: thumbsInstance,
     },
     navigation: {

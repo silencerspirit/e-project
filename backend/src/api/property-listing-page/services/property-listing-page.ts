@@ -8,6 +8,7 @@ import {
   TPropertyListingPageFilters,
 } from '@/contracts';
 import { CitySchema, TCity } from '@/contracts/city';
+import { sortByOrder } from '@/utils';
 import { factories } from '@strapi/strapi';
 import { parse } from 'valibot';
 
@@ -21,7 +22,7 @@ type TPropertyFacetSourceItem = {
   propertyType: TPropertyType | null;
 };
 
-const MILLION = 1_000_000;
+const THOUSAND = 1_000;
 
 function parseFiniteNumber(value: unknown): number | null {
   if (typeof value === 'number' && Number.isFinite(value)) {
@@ -112,6 +113,7 @@ function setFacetMap(map: TPropertyFacetMap, facet: TCity | TPropertyType) {
   map.set(facet.slug, {
     name: facet.name,
     slug: facet.slug,
+    order: facet.order,
     disabled: true,
   });
 }
@@ -125,8 +127,8 @@ function enableFacetMap(map: TPropertyFacetMap, facet: TCity | TPropertyType) {
   existing.disabled = false;
 }
 
-function toMillions(price: number): number {
-  return Math.floor(price / MILLION) * MILLION;
+function toThousands(price: number): number {
+  return Math.floor(price / THOUSAND) * THOUSAND;
 }
 
 function createPriceFacets(prices: number[]): TPriceFacet[] {
@@ -166,10 +168,10 @@ export default factories.createCoreService('api::property-listing-page.property-
       fields: ['title', 'priceFrom'],
       populate: {
         city: {
-          fields: ['slug', 'name'],
+          fields: ['slug', 'name', 'order'],
         },
         propertyType: {
-          fields: ['slug', 'name'],
+          fields: ['slug', 'name', 'order'],
         },
       },
     });
@@ -182,7 +184,7 @@ export default factories.createCoreService('api::property-listing-page.property-
     for (const item of allPublishedFacetItems) {
       if (item.propertyType) setFacetMap(propertyTypeFacetMap, item.propertyType);
       if (item.city) setFacetMap(cityFacetMap, item.city);
-      if (item.priceFrom !== null) priceRange.push(toMillions(item.priceFrom));
+      if (item.priceFrom !== null) priceRange.push(toThousands(item.priceFrom));
     }
 
     const prices = createPriceFacets(priceRange);
@@ -212,8 +214,8 @@ export default factories.createCoreService('api::property-listing-page.property-
     return {
       total: filteredItems.length,
       filters: {
-        cities: [...cityFacetMap.values()],
-        propertyTypes: [...propertyTypeFacetMap.values()],
+        cities: [...cityFacetMap.values()].sort(sortByOrder),
+        propertyTypes: [...propertyTypeFacetMap.values()].sort(sortByOrder),
         prices,
       },
     };

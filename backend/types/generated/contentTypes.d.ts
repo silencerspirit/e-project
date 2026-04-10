@@ -391,6 +391,7 @@ export interface ApiCityCity extends Struct.CollectionTypeSchema {
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::city.city'> & Schema.Attribute.Private;
     name: Schema.Attribute.String & Schema.Attribute.Required & Schema.Attribute.Unique;
+    order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<1>;
     properties: Schema.Attribute.Relation<'oneToMany', 'api::property.property'>;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
@@ -562,6 +563,7 @@ export interface ApiPropertyTypePropertyType extends Struct.CollectionTypeSchema
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::property-type.property-type'> &
       Schema.Attribute.Private;
     name: Schema.Attribute.String & Schema.Attribute.Required & Schema.Attribute.Unique;
+    order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<1>;
     properties: Schema.Attribute.Relation<'oneToMany', 'api::property.property'>;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;

@@ -40,6 +40,7 @@ export const PropertyListingPageRequestSchema = /*#__PURE__*/ object({
 export const PropertyListingPageFacetSchema = /*#__PURE__*/ object({
   name: pipe(string(), trim()),
   slug: pipe(string(), trim()),
+  order: number(),
   disabled: boolean(),
 });
 
