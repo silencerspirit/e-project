@@ -69,6 +69,18 @@ export interface SharedMetricItem extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedRequestBanner extends Struct.ComponentSchema {
+  collectionName: 'components_shared_request_banners';
+  info: {
+    displayName: 'RequestBanner';
+  };
+  attributes: {
+    advantages: Schema.Attribute.Component<'shared.badge', true>;
+    description: Schema.Attribute.Text & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface SharedSeo extends Struct.ComponentSchema {
   collectionName: 'components_shared_seos';
   info: {
@@ -129,6 +141,7 @@ declare module '@strapi/strapi' {
       'shared.hero-banner': SharedHeroBanner;
       'shared.images': SharedImages;
       'shared.metric-item': SharedMetricItem;
+      'shared.request-banner': SharedRequestBanner;
       'shared.seo': SharedSeo;
       'shared.showcase-banner': SharedShowcaseBanner;
       'shared.spec-item': SharedSpecItem;

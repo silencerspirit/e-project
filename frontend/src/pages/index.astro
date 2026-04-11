@@ -23,20 +23,35 @@ const webSiteSchema = createWebSiteSchema(siteUrl);
   metaDescription={metaDescription}
   structuredData={[organizationSchema, webSiteSchema]}
 >
-  <MainPageBanner
-    client:load
-    info={page.heroBanner}
-    form={form}
-  />
+  {
+    page.heroBanner && (
+      <MainPageBanner
+        client:load
+        info={page.heroBanner}
+        form={form}
+      />
+    )
+  }
 
-  <MainPageCategories info={page.featureBanner} />
+  {page.featureBanner && <MainPageCategories info={page.featureBanner} />}
 
-  <MainPageListing
-    client:visible
-    info={page.showcaseBanner}
-  />
+  {
+    page.showcaseBanner && (
+      <MainPageListing
+        client:visible
+        info={page.showcaseBanner}
+      />
+    )
+  }
 
-  <MainPageAdvantages info={page.advantagesBanner} />
+  {page.advantagesBanner && <MainPageAdvantages info={page.advantagesBanner} />}
 
-  <VueRequestSection client:visible />
+  {
+    page.requestBanner && (
+      <VueRequestSection
+        info={page.requestBanner}
+        client:visible
+      />
+    )
+  }
 </Layout>

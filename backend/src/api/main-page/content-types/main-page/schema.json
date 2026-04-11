@@ -38,6 +38,11 @@
       "type": "component",
       "component": "shared.showcase-banner",
       "repeatable": false
+    },
+    "requestBanner": {
+      "type": "component",
+      "component": "shared.request-banner",
+      "repeatable": false
     }
   }
 }

@@ -51,6 +51,11 @@ export default factories.createCoreService('api::main-page.main-page', ({ strapi
             },
           },
         },
+        requestBanner: {
+          populate: {
+            advantages: true,
+          },
+        },
       },
     });
   },

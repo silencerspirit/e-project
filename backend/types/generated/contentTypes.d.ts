@@ -419,6 +419,7 @@ export interface ApiMainPageMainPage extends Struct.SingleTypeSchema {
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::main-page.main-page'> & Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    requestBanner: Schema.Attribute.Component<'shared.request-banner', false>;
     seo: Schema.Attribute.Component<'shared.seo', false>;
     showcaseBanner: Schema.Attribute.Component<'shared.showcase-banner', false>;
     updatedAt: Schema.Attribute.DateTime;

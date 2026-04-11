@@ -21,23 +21,26 @@
               id="main-page-action-title"
               class="text-balance text-3xl font-bold leading-tight text-primary-foreground sm:text-4xl lg:text-5xl"
             >
-              Готовы найти идеальную недвижимость?
+              {{ info.title }}
             </h2>
             <p class="mt-6 max-w-lg text-lg text-primary-foreground/80">
-              Оставьте заявку, и наш специалист свяжется с вами в течение 15 минут для бесплатной консультации
+              {{ info.description }}
             </p>
 
-            <ul class="mt-8 flex flex-wrap gap-6 text-primary-foreground/90">
+            <ul
+              v-if="info.advantages.length"
+              class="mt-8 flex flex-wrap gap-6 text-primary-foreground/90"
+            >
               <li
                 class="flex items-center gap-2"
-                v-for="(item, i) in ADVANTAGES"
+                v-for="(item, i) in info.advantages"
                 :key="i"
               >
                 <CircleCheck
                   aria-hidden="true"
                   class="h-5 w-5"
                 />
-                <span>{{ item }}</span>
+                <span>{{ item.value }}</span>
               </li>
             </ul>
           </div>
@@ -117,6 +120,7 @@
 </template>
 
 <script lang="ts" setup>
+import type { TRequestBanner } from '@contracts';
 import { CircleCheck, Phone, SendHorizontal } from 'lucide-vue-next';
 
 import { ButtonSize } from '@/components/vue/button/button.enums';
@@ -125,7 +129,7 @@ import { useRequestForm } from '@/composables';
 
 import VueInput from './input/VueInput.vue';
 
-const ADVANTAGES = ['Бесплатная консультация', 'Помощь с ипотекой', 'Показ объектов'];
+defineProps<{ info: TRequestBanner }>();
 
 const { form, isFormSended, onSubmit, isLoading } = useRequestForm();
 </script>

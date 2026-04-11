@@ -9,3 +9,4 @@ export * from './feature-item';
 export * from './feature-banner';
 export * from './hero-banner';
 export * from './showcase-banner';
+export * from './request-banner';

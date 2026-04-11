@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_shared_request_banners",
+  "info": {
+    "displayName": "RequestBanner"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "advantages": {
+      "type": "component",
+      "component": "shared.badge",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}
