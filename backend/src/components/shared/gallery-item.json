@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_shared_gallery_items",
+  "info": {
+    "displayName": "GalleryItem"
+  },
+  "options": {},
+  "attributes": {
+    "group": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    }
+  },
+  "config": {}
+}

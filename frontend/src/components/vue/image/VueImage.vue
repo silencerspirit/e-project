@@ -13,19 +13,21 @@
         :srcset="srcTablet"
       />
       <img
-        class="vue-image__img absolute inset-0 h-full w-full object-cover"
+        class="vue-image__img absolute inset-0 h-full w-full"
         :src="srcDesktop"
         :alt="alt"
         :loading="loading"
         :fetchpriority="fetchpriority"
         :decoding="decoding"
+        :class="fitMap[fit]"
         v-bind="attrs"
       />
     </picture>
 
     <img
-      class="vue-image__placeholder absolute inset-0 h-full w-full object-cover"
+      class="vue-image__placeholder absolute inset-0 h-full w-full"
       :src="srcPlaceholder"
+      :class="fitMap[fit]"
       :alt="alt"
       aria-hidden="true"
       :loading="loading"
@@ -43,6 +45,7 @@ import { type ImgHTMLAttributes, useAttrs } from 'vue';
 interface Props {
   image: TImage;
   thumbnail?: boolean;
+  fit?: 'cover' | 'contain';
 
   loading?: ImgHTMLAttributes['loading'];
   fetchpriority?: ImgHTMLAttributes['fetchpriority'];
@@ -58,9 +61,15 @@ const props = withDefaults(defineProps<Props>(), {
   fetchpriority: 'auto',
   thumbnail: false,
   decoding: 'async',
+  fit: 'cover',
 });
 
 const { class: className, ...attrs } = useAttrs();
+
+const fitMap: Record<typeof props.fit, string> = {
+  cover: 'object-cover',
+  contain: 'object-contain',
+};
 
 const alt = props.image.alternativeText ?? '';
 const srcPlaceholder = props.image.formats.thumbnail || props.image.url;

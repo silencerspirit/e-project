@@ -400,6 +400,31 @@ export interface ApiCityCity extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiGalleryPageGalleryPage extends Struct.SingleTypeSchema {
+  collectionName: 'gallery_pages';
+  info: {
+    displayName: 'GalleryPage';
+    pluralName: 'gallery-pages';
+    singularName: 'gallery-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
+    description: Schema.Attribute.Text & Schema.Attribute.Required;
+    items: Schema.Attribute.Component<'shared.gallery-item', true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::gallery-page.gallery-page'> & Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
+  };
+}
+
 export interface ApiMainPageMainPage extends Struct.SingleTypeSchema {
   collectionName: 'main_pages';
   info: {
@@ -1055,6 +1080,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::city.city': ApiCityCity;
+      'api::gallery-page.gallery-page': ApiGalleryPageGalleryPage;
       'api::main-page.main-page': ApiMainPageMainPage;
       'api::navigation-item.navigation-item': ApiNavigationItemNavigationItem;
       'api::personal-data-page.personal-data-page': ApiPersonalDataPagePersonalDataPage;

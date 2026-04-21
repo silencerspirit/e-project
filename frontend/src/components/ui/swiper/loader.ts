@@ -1,6 +1,6 @@
 import 'swiper/css';
 
-export function loadSwiperCore() {
+export async function loadSwiperCore() {
   return import('swiper').then(({ default: Swiper }) => ({ Swiper }));
 }
 
@@ -14,4 +14,9 @@ export function loadSwiperThumbs() {
 
 export function loadSwiperFreeMode() {
   return import('swiper/modules').then(({ FreeMode }) => ({ FreeMode }));
+}
+
+export async function loadSwiperZoom() {
+  await import('swiper/css/zoom');
+  return import('swiper/modules').then(({ Zoom }) => ({ Zoom }));
 }

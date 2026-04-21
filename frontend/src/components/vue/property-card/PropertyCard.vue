@@ -10,6 +10,7 @@
     >
       <div class="property-card__image-container relative shrink-0 overflow-hidden">
         <VueImage
+          v-if="property.previewImage"
           :image="property.previewImage"
           class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           loading="lazy"

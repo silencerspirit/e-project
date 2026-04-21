@@ -1,10 +1,18 @@
 import type { TPropertySlugList } from '@contracts';
 import type { APIRoute } from 'astro';
+import { isString } from 'es-toolkit';
 
 import { getPublicSiteUrl, toAbsoluteUrl } from '@/helpers';
+import { strapiFetch } from '@/utils';
 
-const STATIC_PATHS = ['/', '/properties/'];
+const STATIC_PAGE_MODULES = import.meta.glob('./**/*.astro', {
+  eager: true,
+  import: 'default',
+  query: '?raw',
+}) as Record<string, string>;
 const CACHE_CONTROL_HEADER = 'public, max-age=300, s-maxage=300';
+const ERROR_PAGE_FILE_PATTERN = /^\.\/(?:404|500)\.astro$/;
+const NOINDEX_ROBOTS_PATTERN = /robots\s*=\s*["'][^"']*\bnoindex\b/i;
 
 type TPropertySitemapItem = {
   slug: string;
@@ -15,11 +23,6 @@ type TUrlEntry = {
   loc: string;
   lastmod?: string;
 };
-
-function getStrapiBaseUrl(): string | null {
-  const base = import.meta.env.PUBLIC_STRAPI_URL;
-  return base ? base.replace(/\/$/, '') : null;
-}
 
 function xmlEscape(value: string): string {
   return value
@@ -39,41 +42,49 @@ function normalizeLastModified(value: string): string | null {
   return Number.isNaN(date.getTime()) ? null : date.toISOString();
 }
 
-async function getPropertySlugs(): Promise<TPropertySitemapItem[]> {
-  const base = getStrapiBaseUrl();
+function isPublicStaticPage(filePath: string, source: string): boolean {
+  return !filePath.includes('[') && !ERROR_PAGE_FILE_PATTERN.test(filePath) && !NOINDEX_ROBOTS_PATTERN.test(source);
+}
 
-  if (!base) {
+function pageFilePathToUrlPath(filePath: string): string {
+  const routePath = filePath.replace(/^\.\//, '').replace(/\.astro$/, '');
+  const segments = routePath.split('/');
+
+  if (segments.at(-1) === 'index') {
+    segments.pop();
+  }
+
+  return segments.length ? `/${segments.join('/')}/` : '/';
+}
+
+function getStaticPagePaths(): string[] {
+  return Object.entries(STATIC_PAGE_MODULES)
+    .filter(([filePath, source]) => isPublicStaticPage(filePath, source))
+    .map(([filePath]) => pageFilePathToUrlPath(filePath))
+    .sort((a, b) => a.localeCompare(b));
+}
+
+async function getPropertySlugs(): Promise<TPropertySitemapItem[]> {
+  if (!import.meta.env.PUBLIC_STRAPI_URL) {
     return [];
   }
 
-  const token = import.meta.env.STRAPI_TOKEN;
-  const headers = new Headers();
-  if (token) {
-    headers.set('Authorization', `Bearer ${token}`);
-  }
-
   try {
-    const response = await fetch(`${base}/api/property/slugs`, { headers });
-    if (!response.ok) {
-      return [];
-    }
-
-    const payload = (await response.json()) as TPropertySlugList;
+    const payload = await strapiFetch<TPropertySlugList>('/api/property/slugs');
     if (!payload || !Array.isArray(payload.list)) {
       return [];
     }
 
     return payload.list
-      .filter((item) => typeof item?.slug === 'string' && item.slug.length > 0)
+      .filter((item) => isString(item?.slug) && item.slug.length > 0)
       .map((item) => ({
         slug: item.slug,
-        lastModified: typeof item.lastModified === 'string' ? item.lastModified : '',
+        lastModified: isString(item.lastModified) ? item.lastModified : '',
       }));
   } catch {
     return [];
   }
 }
-
 export const prerender = false;
 
 export const GET: APIRoute = async ({ request }) => {
@@ -84,7 +95,7 @@ export const GET: APIRoute = async ({ request }) => {
     loc: toAbsoluteUrl(`/properties/${encodeURIComponent(item.slug)}/`, `${siteUrl}/`),
     lastmod: normalizeLastModified(item.lastModified) ?? undefined,
   }));
-  const staticUrls: TUrlEntry[] = STATIC_PATHS.map((path) => ({ loc: toAbsoluteUrl(path, `${siteUrl}/`) }));
+  const staticUrls: TUrlEntry[] = getStaticPagePaths().map((path) => ({ loc: toAbsoluteUrl(path, `${siteUrl}/`) }));
   const urls = [...new Map([...staticUrls, ...dynamicPropertyUrls].map((item) => [item.loc, item])).values()];
 
   const body = [

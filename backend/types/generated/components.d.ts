@@ -35,6 +35,18 @@ export interface SharedFeatureItem extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedGalleryItem extends Struct.ComponentSchema {
+  collectionName: 'components_shared_gallery_items';
+  info: {
+    displayName: 'GalleryItem';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    group: Schema.Attribute.String;
+    image: Schema.Attribute.Media<'images' | 'files'> & Schema.Attribute.Required;
+  };
+}
+
 export interface SharedHeroBanner extends Struct.ComponentSchema {
   collectionName: 'components_shared_hero_banners';
   info: {
@@ -138,6 +150,7 @@ declare module '@strapi/strapi' {
       'shared.badge': SharedBadge;
       'shared.feature-banner': SharedFeatureBanner;
       'shared.feature-item': SharedFeatureItem;
+      'shared.gallery-item': SharedGalleryItem;
       'shared.hero-banner': SharedHeroBanner;
       'shared.images': SharedImages;
       'shared.metric-item': SharedMetricItem;

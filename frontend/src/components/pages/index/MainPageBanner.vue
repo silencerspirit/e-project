@@ -5,6 +5,7 @@
   >
     <div class="absolute inset-0 z-0">
       <VueImage
+        v-if="info.backgroundImage"
         class="h-full w-full object-cover"
         :image="info.backgroundImage"
         fetchpriority="high"

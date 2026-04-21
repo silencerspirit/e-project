@@ -1,0 +1,33 @@
+---
+import { getGalleryPage } from '@/api';
+import { ListView, VIEW_COOKIE_NAME } from '@/components/pages/gallery';
+import VGalleryContainer from '@/components/pages/gallery/components/VGalleryContainer.vue';
+import Breadcrumbs from '@/components/vue/breadcrumbs/Breadcrumbs.vue';
+
+import Layout from '@/layouts/Layout.astro';
+
+const page = await getGalleryPage();
+
+const metaTitle: string = page.seo?.metaTitle ?? '';
+const metaDescription: string = page.seo?.metaDescription ?? '';
+
+const initialView: ListView = (Astro.cookies?.get(VIEW_COOKIE_NAME)?.value as ListView) ?? ListView.Grid2X2;
+---
+
+<Layout
+  metaTitle={metaTitle}
+  metaDescription={metaDescription}
+>
+  <Breadcrumbs
+    title={page.title}
+    description={page.description}
+  />
+
+  <section class="py-12 lg:py-16">
+    <VGalleryContainer
+      client:load
+      items={page.items}
+      view={initialView}
+    />
+  </section>
+</Layout>
