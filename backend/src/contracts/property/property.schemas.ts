@@ -1,7 +1,10 @@
 import { array, nullish, number, object, string } from 'valibot';
-import { BadgeSchema, ImagesListScheme, ImageTransformScheme, SeoSchema, SpecItemSchema } from '../shared';
-import { PropertyTypeSchema } from '../property-type';
 import { CitySchema } from '../city';
+import { PropertyTypeSchema } from '../property-type';
+import { BadgeSchema } from '../shared/badge';
+import { ImagesListScheme, ImageTransformScheme } from '../shared/image';
+import { SeoSchema } from '../shared/seo';
+import { SpecItemSchema } from '../shared/spec-item/spec-item.schemas';
 
 export const PropertySlugSchema = /*#__PURE__*/ object({
   slug: string(),

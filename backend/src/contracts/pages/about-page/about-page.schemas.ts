@@ -1,5 +1,8 @@
-import { FeatureItemScheme, ImageScheme, MetricItemScheme, SeoSchema } from '../../shared';
 import { RequestBannerScheme } from '../../request-banner';
+import { FeatureItemScheme } from '../../shared/feature-item';
+import { ImageScheme } from '../../shared/image';
+import { MetricItemScheme } from '../../shared/metric-item/metric-item.schemas';
+import { SeoSchema } from '../../shared/seo';
 import { array, nullish, object, omit, string } from 'valibot';
 
 const AboutPageDescriptionSectionSchema = /*#__PURE__*/ object({

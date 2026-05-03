@@ -1,4 +1,4 @@
-import { SeoSchema } from '../../shared';
+import { SeoSchema } from '../../shared/seo';
 import { nullish, object, string } from 'valibot';
 
 export const PersonalDataPageSchema = /*#__PURE__*/ object({

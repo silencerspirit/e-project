@@ -1,7 +1,6 @@
 export * from './config';
 export * from './contracts.constants';
 export * from './navigation-item';
-export * from './news-item';
 export * from './pages';
 export * from './property';
 export * from './property-type';

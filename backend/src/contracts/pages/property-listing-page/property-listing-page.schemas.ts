@@ -1,5 +1,6 @@
-import { PaginateSchema, SeoSchema } from '../../shared';
 import { PropertyListItemSchema } from '../../property';
+import { PaginateSchema } from '../../shared/paginate';
+import { SeoSchema } from '../../shared/seo';
 import { array, boolean, literal, nullish, number, object, pipe, string, trim, union } from 'valibot';
 import { PropertyListingPageSort } from './property-listing-page.enums';
 

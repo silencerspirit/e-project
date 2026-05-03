@@ -31,6 +31,53 @@ module.exports = {
       env: { node: true },
     },
     {
+      files: ['backend/src/contracts/**/*.schemas.ts'],
+      rules: {
+        'no-restricted-imports': [
+          'error',
+          {
+            paths: [
+              {
+                name: '@/contracts',
+                message:
+                  'Runtime schemas must use direct imports instead of barrel imports to avoid ESM initialization order bugs.',
+              },
+              {
+                name: '@contracts',
+                message:
+                  'Runtime schemas must use direct imports instead of barrel imports to avoid ESM initialization order bugs.',
+              },
+              ...[
+                '../shared',
+                '../shared/index',
+                '../../shared',
+                '../../shared/index',
+                '../../../shared',
+                '../../../shared/index',
+                '../pages',
+                '../pages/index',
+                '../../pages',
+                '../../pages/index',
+                '../../../pages',
+                '../../../pages/index',
+              ].map((name) => ({
+                name,
+                message:
+                  'Runtime schemas must use direct imports instead of barrel imports to avoid ESM initialization order bugs.',
+              })),
+            ],
+            patterns: [
+              {
+                group: ['@/contracts', '@contracts'],
+                message:
+                  'Runtime schemas must use direct imports instead of barrel imports to avoid ESM initialization order bugs.',
+              },
+            ],
+          },
+        ],
+      },
+    },
+    {
       files: ['*.cjs', '*.mjs', 'frontend/astro.config.mjs', 'frontend/postcss.config.cjs'],
       env: { node: true },
     },
