@@ -1,8 +1,8 @@
 import { type InferOutput } from 'valibot';
 import {
   PropertyFullItemSchema,
-  PropertySlugListItemSchema,
   PropertyListItemSchema,
+  PropertySlugListItemSchema,
   PropertySlugListSchema,
   PropertySlugSchema,
 } from './property.schemas';

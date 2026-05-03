@@ -1,4 +1,4 @@
-import { nullish, string, object } from 'valibot';
+import { nullish, object, string } from 'valibot';
 
 export const SeoSchema = /*#__PURE__*/ nullish(
   object({

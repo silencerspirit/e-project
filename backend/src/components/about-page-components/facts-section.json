@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_about_page_components_facts_sections",
+  "info": {
+    "displayName": "FactsSection"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "features": {
+      "type": "component",
+      "component": "shared.feature-item",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

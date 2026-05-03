@@ -2,9 +2,9 @@ import { array, GenericSchema, nullish, number, object, string } from 'valibot';
 import { MenuPosition } from './navigation-item.enums';
 
 interface INavigationItem {
+  order: number;
   title: string;
   url: string;
-  order: number;
 }
 
 export const NavigationItemSchema: GenericSchema<INavigationItem> = /*#__PURE__*/ object({

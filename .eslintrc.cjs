@@ -1,13 +1,18 @@
 const prettierPluginAstro = require.resolve('prettier-plugin-astro');
 const prettierPluginTailwindcss = require.resolve('prettier-plugin-tailwindcss');
 
+const perfectionistNaturalSort = {
+  order: 'asc',
+  type: 'natural',
+};
+
 module.exports = {
   root: true,
   env: {
     es2022: true,
   },
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'simple-import-sort'],
+  plugins: ['@typescript-eslint', 'perfectionist', 'simple-import-sort'],
   extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
   ignorePatterns: [
     '**/node_modules/**',
@@ -109,7 +114,7 @@ module.exports = {
         ecmaVersion: 'latest',
         sourceType: 'module',
       },
-      plugins: ['vue', '@typescript-eslint', 'simple-import-sort'],
+      plugins: ['vue', '@typescript-eslint', 'perfectionist', 'simple-import-sort'],
       extends: ['plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
       rules: {
         'sort-imports': 'off',
@@ -144,7 +149,7 @@ module.exports = {
         parser: '@typescript-eslint/parser',
         extraFileExtensions: ['.astro'],
       },
-      plugins: ['astro', 'simple-import-sort'],
+      plugins: ['astro', 'perfectionist', 'simple-import-sort'],
       extends: ['plugin:astro/recommended', 'plugin:prettier/recommended'],
       rules: {
         'prettier/prettier': [
@@ -170,6 +175,14 @@ module.exports = {
     },
   ],
   rules: {
+    'perfectionist/sort-enums': ['error', perfectionistNaturalSort],
+    'perfectionist/sort-exports': ['error', perfectionistNaturalSort],
+    'perfectionist/sort-interfaces': ['error', perfectionistNaturalSort],
+    'perfectionist/sort-intersection-types': ['error', perfectionistNaturalSort],
+    'perfectionist/sort-named-exports': ['error', perfectionistNaturalSort],
+    'perfectionist/sort-named-imports': ['error', perfectionistNaturalSort],
+    'perfectionist/sort-object-types': ['error', perfectionistNaturalSort],
+    'perfectionist/sort-union-types': ['error', perfectionistNaturalSort],
     'prettier/prettier': [
       'error',
       {

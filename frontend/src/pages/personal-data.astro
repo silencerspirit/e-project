@@ -1,7 +1,7 @@
 ---
 import { getPersonalDataPage } from '@/api';
+import VBreadcrumbs from '@/components/vue/breadcrumbs/VBreadcrumbs.vue';
 
-import Breadcrumbs from '@/components/ui/breadcrumbs/Breadcrumbs.astro';
 import Content from '@/components/ui/content/Content.astro';
 import Layout from '@/layouts/Layout.astro';
 
@@ -15,7 +15,7 @@ const metaDescription: string = page.seo?.metaDescription ?? '';
   metaTitle={metaTitle}
   metaDescription={metaDescription}
 >
-  <Breadcrumbs title={page.title} />
+  <VBreadcrumbs title={page.title} />
 
   <section class="py-12 lg:py-16">
     <Content

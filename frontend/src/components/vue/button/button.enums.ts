@@ -1,18 +1,18 @@
 export enum ButtonSize {
   Default = 'default',
-  Sm = 'sm',
-  Lg = 'lg',
   Icon = 'icon',
+  Lg = 'lg',
+  Sm = 'sm',
 }
 
 export enum ButtonVariant {
   Default = 'default',
-  Outline = 'outline',
   Link = 'link',
+  Outline = 'outline',
 }
 
 export enum ButtonRounded {
-  None = 'none',
-  Md = 'md',
   Full = 'full',
+  Md = 'md',
+  None = 'none',
 }

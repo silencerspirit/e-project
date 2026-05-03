@@ -1,13 +1,13 @@
 ---
 import { ArrowLeft, Construction, House } from '@lucide/astro';
 
+import { ButtonSize, ButtonVariant } from '@/components/vue/button/button.enums';
+import VButton from '@/components/vue/button/VButton.vue';
 import { AVAILABLE_PAGES } from '@/constants';
 
-import Button from '@/components/ui/button/Button.astro';
-
 interface Props {
-  title?: string;
   description?: string;
+  title?: string;
 }
 
 const {
@@ -53,24 +53,25 @@ const {
     </div>
 
     <div class="mb-14 flex flex-col items-center justify-center gap-4 sm:flex-row">
-      <Button
+      <VButton
         href="/"
-        size="lg"
+        tag="a"
+        size={ButtonSize.Lg}
       >
         <House class="h-4 w-4" />
         На главную
-      </Button>
+      </VButton>
 
-      <Button
+      <VButton
         type="button"
-        size="lg"
-        variant="outline"
+        size={ButtonSize.Lg}
+        variant={ButtonVariant.Outline}
         class="bg-transparent"
         data-coming-soon-back
       >
         <ArrowLeft class="h-4 w-4" />
         Вернуться назад
-      </Button>
+      </VButton>
     </div>
 
     <div class="border-t border-border pt-10">

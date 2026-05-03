@@ -69,8 +69,8 @@ import { computed, nextTick, onMounted, onUnmounted, ref, useTemplateRef } from 
 import { loadSwiperCore, loadSwiperNavigation, loadSwiperZoom } from '@/components/ui/swiper/loader';
 
 const props = defineProps<{
-  items: TGalleryItem[];
   currentIndex: number;
+  items: TGalleryItem[];
 }>();
 
 const emit = defineEmits<{
@@ -81,7 +81,7 @@ const swiperRef = useTemplateRef<HTMLElement>('swiper');
 const dialogRef = useTemplateRef<HTMLElement>('dialog');
 const slideIndex = ref<number>(props.currentIndex);
 
-let sliderInstance: SwiperInstance | null = null;
+let sliderInstance: null | SwiperInstance = null;
 
 const counter = computed<string>(() => `${slideIndex.value + 1} / ${props.items.length}`);
 

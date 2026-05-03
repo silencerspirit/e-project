@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_about_page_components_values_sections",
+  "info": {
+    "displayName": "ValuesSection"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "features": {
+      "type": "component",
+      "component": "shared.feature-item",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

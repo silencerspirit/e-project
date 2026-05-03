@@ -1,5 +1,6 @@
 ---
-import Button from '@/components/ui/button/Button.astro';
+import { ButtonSize } from '@/components/vue/button/button.enums';
+import VButton from '@/components/vue/button/VButton.vue';
 ---
 
 <aside
@@ -21,14 +22,14 @@ import Button from '@/components/ui/button/Button.astro';
         .
       </p>
 
-      <Button
+      <VButton
         type="button"
-        size="sm"
+        size={ButtonSize.Sm}
         class="w-full shrink-0 md:w-auto"
         data-cookie-consent-accept
       >
         Принять
-      </Button>
+      </VButton>
     </div>
   </div>
 </aside>

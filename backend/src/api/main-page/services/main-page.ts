@@ -6,58 +6,67 @@ import { sortByOrder } from '@/utils';
 
 export default factories.createCoreService('api::main-page.main-page', ({ strapi }) => ({
   async getMainPage() {
-    return strapi.documents('api::main-page.main-page').findFirst({
-      status: 'published',
-      populate: {
-        seo: true,
-        heroBanner: {
-          populate: {
-            metrics: true,
-            backgroundImage: { populate: { image: true } },
+    const [mainPage, requestBanner] = await Promise.all([
+      strapi.documents('api::main-page.main-page').findFirst({
+        status: 'published',
+        populate: {
+          seo: true,
+          heroBanner: {
+            populate: {
+              metrics: true,
+              backgroundImage: { populate: { image: true } },
+            },
           },
-        },
-        featureBanner: {
-          populate: {
-            features: true,
+          featureBanner: {
+            populate: {
+              features: true,
+            },
           },
-        },
-        advantagesBanner: {
-          populate: {
-            features: true,
+          advantagesBanner: {
+            populate: {
+              features: true,
+            },
           },
-        },
-        showcaseBanner: {
-          populate: {
-            properties: {
-              populate: {
-                badges: true,
-                specifications: true,
-                city: {
-                  populate: {
-                    properties: true,
+          showcaseBanner: {
+            populate: {
+              properties: {
+                populate: {
+                  badges: true,
+                  specifications: true,
+                  city: {
+                    populate: {
+                      properties: true,
+                    },
                   },
-                },
-                propertyType: {
-                  populate: {
-                    properties: true,
+                  propertyType: {
+                    populate: {
+                      properties: true,
+                    },
                   },
-                },
-                previewImage: {
-                  populate: {
-                    image: true,
+                  previewImage: {
+                    populate: {
+                      image: true,
+                    },
                   },
                 },
               },
             },
           },
         },
-        requestBanner: {
-          populate: {
-            advantages: true,
-          },
+      }),
+      strapi.documents('api::request-banner.request-banner').findFirst({
+        status: 'published',
+        fields: ['title', 'description'],
+        populate: {
+          advantages: true,
         },
-      },
-    });
+      }),
+    ]);
+
+    return {
+      ...mainPage,
+      requestBanner,
+    };
   },
 
   async getMainPageForm() {

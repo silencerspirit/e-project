@@ -1,7 +1,7 @@
 ---
 import type { TPropertyListingPage, TPropertyListingPageList, TPropertyListingPageQuery } from '@contracts';
 
-import Breadcrumbs from '@/components/vue/breadcrumbs/Breadcrumbs.vue';
+import VBreadcrumbs from '@/components/vue/breadcrumbs/VBreadcrumbs.vue';
 import {
   buildCanonicalUrl,
   buildPaginatedDescription,
@@ -14,7 +14,7 @@ import Layout from '@/layouts/Layout.astro';
 import { VIEW_COOKIE_NAME } from '../properties.consts';
 import { ListView } from '../properties.enums';
 import type { TParsedSegments } from '../properties.types';
-import PropertyListingPageView from './PropertyListingPageView.vue';
+import VPropertyListingPageView from './VPropertyListingPageView.vue';
 
 interface Props {
   info: TPropertyListingPage;
@@ -40,12 +40,12 @@ const initialView: ListView = (Astro.cookies?.get(VIEW_COOKIE_NAME)?.value as Li
   metaDescription={metaDescription}
   canonicalUrl={canonicalUrl}
 >
-  <Breadcrumbs
+  <VBreadcrumbs
     title={info.title}
     description={info.description}
   />
 
-  <PropertyListingPageView
+  <VPropertyListingPageView
     client:load
     query={query}
     search={searchString}

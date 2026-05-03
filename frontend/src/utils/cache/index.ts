@@ -1,7 +1,7 @@
 type CacheEntry<T> = {
-  value?: T;
   expiresAt: number;
   pending?: Promise<T>;
+  value?: T;
 };
 
 const store: Map<string, CacheEntry<unknown>> = new Map();

@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_about_page_components_team_sections",
+  "info": {
+    "displayName": "TeamSection"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "team": {
+      "type": "component",
+      "component": "about-page-components.team-item",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

@@ -1,13 +1,13 @@
 import type { InferOutput } from 'valibot';
 import {
-  PropertyListingPageSchema,
+  PropertyListingPageCountSchema,
   PropertyListingPageFacetSchema,
-  PropertyListingPageSegmentsSchema,
-  PropertyListingPageQuerySchema,
-  PropertyListingPageRequestSchema,
   PropertyListingPageFiltersSchema,
   PropertyListingPageListSchema,
-  PropertyListingPageCountSchema,
+  PropertyListingPageQuerySchema,
+  PropertyListingPageRequestSchema,
+  PropertyListingPageSchema,
+  PropertyListingPageSegmentsSchema,
 } from './property-listing-page.schemas';
 
 export type TPropertyListingPage = InferOutput<typeof PropertyListingPageSchema>;

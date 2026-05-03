@@ -15,13 +15,13 @@ const ERROR_PAGE_FILE_PATTERN = /^\.\/(?:404|500)\.astro$/;
 const NOINDEX_ROBOTS_PATTERN = /robots\s*=\s*["'][^"']*\bnoindex\b/i;
 
 type TPropertySitemapItem = {
-  slug: string;
   lastModified: string;
+  slug: string;
 };
 
 type TUrlEntry = {
-  loc: string;
   lastmod?: string;
+  loc: string;
 };
 
 function xmlEscape(value: string): string {
@@ -33,7 +33,7 @@ function xmlEscape(value: string): string {
     .replaceAll("'", '&apos;');
 }
 
-function normalizeLastModified(value: string): string | null {
+function normalizeLastModified(value: string): null | string {
   if (!value) {
     return null;
   }

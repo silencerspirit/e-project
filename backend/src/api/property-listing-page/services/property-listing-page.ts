@@ -1,11 +1,11 @@
 import {
-  type TPropertyListingPageFacet,
-  type TPropertyListingPageRequest,
   DEFAULT_PAGINATE_LIMIT,
   PropertyListingPageSort,
   PropertyTypeSchema,
-  TPropertyType,
+  type TPropertyListingPageFacet,
   TPropertyListingPageFilters,
+  type TPropertyListingPageRequest,
+  TPropertyType,
 } from '@/contracts';
 import { CitySchema, TCity } from '@/contracts/city';
 import { sortByOrder } from '@/utils';
@@ -13,18 +13,18 @@ import { factories } from '@strapi/strapi';
 import { parse } from 'valibot';
 
 type TPropertyFacetMap = Map<string, TPropertyListingPageFacet>;
-type TPriceFacet = { from: number; to: number; disabled: boolean };
+type TPriceFacet = { disabled: boolean; from: number; to: number };
 type TFacetGroup = keyof TPropertyListingPageFilters;
-type TPropertySortNotation = 'publishedAt:desc' | 'priceFrom:asc' | 'priceFrom:desc';
+type TPropertySortNotation = 'priceFrom:asc' | 'priceFrom:desc' | 'publishedAt:desc';
 type TPropertyFacetSourceItem = {
-  priceFrom: number | null;
-  city: TCity | null;
-  propertyType: TPropertyType | null;
+  city: null | TCity;
+  priceFrom: null | number;
+  propertyType: null | TPropertyType;
 };
 
 const THOUSAND = 1_000;
 
-function parseFiniteNumber(value: unknown): number | null {
+function parseFiniteNumber(value: unknown): null | number {
   if (typeof value === 'number' && Number.isFinite(value)) {
     return value;
   }

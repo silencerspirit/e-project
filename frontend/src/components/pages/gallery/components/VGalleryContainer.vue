@@ -43,8 +43,8 @@ const VGalleryFullView = defineAsyncComponent(() => import('./VGalleryFullView.v
 const { disableScroll, enableScroll } = useScroll();
 
 const props = defineProps<{
-  view: ListView;
   items: TGalleryItem[];
+  view: ListView;
 }>();
 
 const mappedItems = props.items.reduce(

@@ -2,7 +2,7 @@
 import { getGalleryPage } from '@/api';
 import { ListView, VIEW_COOKIE_NAME } from '@/components/pages/gallery';
 import VGalleryContainer from '@/components/pages/gallery/components/VGalleryContainer.vue';
-import Breadcrumbs from '@/components/vue/breadcrumbs/Breadcrumbs.vue';
+import VBreadcrumbs from '@/components/vue/breadcrumbs/VBreadcrumbs.vue';
 
 import Layout from '@/layouts/Layout.astro';
 
@@ -18,7 +18,7 @@ const initialView: ListView = (Astro.cookies?.get(VIEW_COOKIE_NAME)?.value as Li
   metaTitle={metaTitle}
   metaDescription={metaDescription}
 >
-  <Breadcrumbs
+  <VBreadcrumbs
     title={page.title}
     description={page.description}
   />

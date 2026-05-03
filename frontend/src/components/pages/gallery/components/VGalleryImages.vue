@@ -29,8 +29,8 @@ import { ListView } from '../gallery.enums';
 import VGalleryItem from './VGalleryItem.vue';
 
 const props = defineProps<{
-  view: ListView;
   items: TGalleryItem[];
+  view: ListView;
 }>();
 
 const emit = defineEmits<{

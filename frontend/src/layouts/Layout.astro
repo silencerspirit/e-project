@@ -14,13 +14,13 @@ import Header from '@/components/ui/header/Header.astro';
 import '@/styles/global.scss';
 
 interface Props {
-  withSidebar?: boolean;
-  metaTitle?: string;
-  metaDescription?: string;
-  openGraphImage?: string;
   canonicalUrl?: string;
+  metaDescription?: string;
+  metaTitle?: string;
+  openGraphImage?: string;
   robots?: string;
   structuredData?: unknown[];
+  withSidebar?: boolean;
 }
 
 useAstro(Astro);

@@ -1,12 +1,72 @@
 ---
-import ComingSoon from '@/components/pages/coming-soon/ComingSoon.astro';
+import { getAboutPage } from '@/api';
+import VAboutDescriptionSection from '@/components/pages/about/components/VAboutDescriptionSection.vue';
+import VAboutFactsSection from '@/components/pages/about/components/VAboutFactsSection.vue';
+import VAboutPathSection from '@/components/pages/about/components/VAboutPathSection.vue';
+import VAboutTeamSection from '@/components/pages/about/components/VAboutTeamSection.vue';
+import VAboutValuesSection from '@/components/pages/about/components/VAboutValuesSection.vue';
+import VBreadcrumbs from '@/components/vue/breadcrumbs/VBreadcrumbs.vue';
+import VRequestSection from '@/components/vue/VRequestSection.vue';
+import { createBreadcrumbListSchema, getPublicSiteUrl, toAbsoluteUrl } from '@/helpers';
+
 import Layout from '@/layouts/Layout.astro';
+
+const page = await getAboutPage();
+
+const metaTitle: string = page.seo?.metaTitle ?? '';
+const metaDescription: string = page.seo?.metaDescription ?? '';
+const siteUrl = getPublicSiteUrl(Astro.url);
+const pagePath = Astro.url.pathname;
+const pageUrl = new URL(pagePath, `${siteUrl}/`).toString();
+const breadcrumbSchema = createBreadcrumbListSchema(siteUrl, [
+  {
+    position: 1,
+    name: 'Главная',
+    item: '/',
+  },
+  {
+    position: 2,
+    name: page.title,
+    item: pagePath,
+  },
+]);
+const aboutPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: page.title,
+  description: metaDescription || page.description,
+  url: pageUrl,
+  inLanguage: 'ru-RU',
+  image: page.descriptionSection?.image?.url ? toAbsoluteUrl(page.descriptionSection.image.url, siteUrl) : undefined,
+};
 ---
 
 <Layout
-  metaTitle="О нас - в разработке"
-  metaDescription="Раздел о нас находится в разработке."
-  robots="noindex, nofollow"
+  metaTitle={metaTitle}
+  metaDescription={metaDescription}
+  structuredData={[aboutPageSchema, breadcrumbSchema]}
 >
-  <ComingSoon />
+  <VBreadcrumbs
+    title={page.title}
+    description={page.description}
+  />
+
+  {page.descriptionSection && <VAboutDescriptionSection info={page.descriptionSection} />}
+
+  {page.factsSection && <VAboutFactsSection info={page.factsSection} />}
+
+  {page.pathSection && <VAboutPathSection info={page.pathSection} />}
+
+  {page.valuesSection && <VAboutValuesSection info={page.valuesSection} />}
+
+  {page.teamSection && <VAboutTeamSection info={page.teamSection} />}
+
+  {
+    page.requestBanner && (
+      <VRequestSection
+        info={page.requestBanner}
+        client:visible
+      />
+    )
+  }
 </Layout>

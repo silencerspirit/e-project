@@ -32,8 +32,8 @@ export function createOrganizationSchema(
     name = 'Alfa realting',
     logoPath = '/images/logo.png',
   }: {
-    name?: string;
     logoPath?: string;
+    name?: string;
   } = {},
 ) {
   return {
@@ -51,8 +51,8 @@ export function createWebSiteSchema(
     name = 'Alfa realting',
     inLanguage = 'ru-RU',
   }: {
-    name?: string;
     inLanguage?: string;
+    name?: string;
   } = {},
 ) {
   return {
@@ -67,9 +67,9 @@ export function createWebSiteSchema(
 export function createBreadcrumbListSchema(
   base: string | URL,
   items: {
-    position: number;
-    name: string;
     item: string;
+    name: string;
+    position: number;
   }[],
 ) {
   return {
@@ -93,11 +93,11 @@ export function createRealEstateListingSchema(
     addressCountry = 'RU',
     priceCurrency = 'RUB',
   }: {
-    property: TPropertyFullItem;
-    pageUrl: string;
-    metaDescription?: string;
     addressCountry?: string;
+    metaDescription?: string;
+    pageUrl: string;
     priceCurrency?: string;
+    property: TPropertyFullItem;
   },
 ) {
   const imageUrls = [property.previewImage?.formats?.large, ...property.images.map((image) => image.formats.large)]

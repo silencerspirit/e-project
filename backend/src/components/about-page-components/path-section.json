@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_about_page_components_path_sections",
+  "info": {
+    "displayName": "PathSection"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "paths": {
+      "type": "component",
+      "component": "shared.feature-item",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

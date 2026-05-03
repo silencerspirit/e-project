@@ -38,7 +38,7 @@ export default factories.createCoreService('api::property.property', ({ strapi }
           (typeof item.publishedAt === 'string' && item.publishedAt) ||
           '',
       }))
-      .filter((item): item is { slug: string; lastModified: string } => Boolean(item.slug));
+      .filter((item): item is { lastModified: string; slug: string } => Boolean(item.slug));
   },
 
   async getBySlug(slug: string) {

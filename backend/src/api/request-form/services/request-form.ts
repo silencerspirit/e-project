@@ -103,6 +103,6 @@ function buildTelHref(phone: string): string {
   return `tel:${normalizedPhone}`;
 }
 
-function hasName(name: string | null | undefined): name is string {
+function hasName(name: null | string | undefined): name is string {
   return Boolean(name?.trim());
 }

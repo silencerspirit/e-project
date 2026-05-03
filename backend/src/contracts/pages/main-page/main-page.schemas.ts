@@ -1,11 +1,6 @@
-import {
-  FeatureBannerScheme,
-  HeroBannerScheme,
-  RequestBannerScheme,
-  SeoSchema,
-  ShowcaseBannerScheme,
-} from '../../shared';
+import { FeatureBannerScheme, HeroBannerScheme, SeoSchema, ShowcaseBannerScheme } from '../../shared';
 import { array, nullish, number, object, pipe, string, trim } from 'valibot';
+import { RequestBannerScheme } from '../../request-banner';
 
 export const MainPageSchema = /*#__PURE__*/ object({
   heroBanner: nullish(HeroBannerScheme, null),

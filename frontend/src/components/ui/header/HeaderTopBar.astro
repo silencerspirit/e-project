@@ -5,8 +5,8 @@ import { MapPin, Phone } from '@lucide/astro';
 import { formatPhone } from '@/helpers';
 
 interface Props {
-  phone?: TSiteConfig['phone'];
   address?: TSiteConfig['address'];
+  phone?: TSiteConfig['phone'];
 }
 
 const { phone, address } = Astro.props;

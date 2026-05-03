@@ -1,5 +1,87 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
+export interface AboutPageComponentsAboutPageComponents extends Struct.ComponentSchema {
+  collectionName: 'components_about_page_components_about_page_components';
+  info: {
+    displayName: 'DescriptionSection';
+  };
+  attributes: {
+    advantage: Schema.Attribute.Component<'shared.metric-item', false>;
+    content: Schema.Attribute.RichText &
+      Schema.Attribute.CustomField<
+        'plugin::ckeditor5.CKEditor',
+        {
+          preset: 'defaultHtml';
+        }
+      >;
+    image: Schema.Attribute.Media<'images' | 'files'> & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface AboutPageComponentsFactsSection extends Struct.ComponentSchema {
+  collectionName: 'components_about_page_components_facts_sections';
+  info: {
+    displayName: 'FactsSection';
+  };
+  attributes: {
+    features: Schema.Attribute.Component<'shared.feature-item', true>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface AboutPageComponentsPathSection extends Struct.ComponentSchema {
+  collectionName: 'components_about_page_components_path_sections';
+  info: {
+    displayName: 'PathSection';
+  };
+  attributes: {
+    description: Schema.Attribute.Text & Schema.Attribute.Required;
+    paths: Schema.Attribute.Component<'shared.feature-item', true>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface AboutPageComponentsTeamItem extends Struct.ComponentSchema {
+  collectionName: 'components_about_page_components_team_items';
+  info: {
+    displayName: 'TeamItem';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    email: Schema.Attribute.Email;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    phone: Schema.Attribute.String;
+    photo: Schema.Attribute.Media<'images' | 'files'> & Schema.Attribute.Required;
+    position: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface AboutPageComponentsTeamSection extends Struct.ComponentSchema {
+  collectionName: 'components_about_page_components_team_sections';
+  info: {
+    displayName: 'TeamSection';
+  };
+  attributes: {
+    description: Schema.Attribute.Text & Schema.Attribute.Required;
+    team: Schema.Attribute.Component<'about-page-components.team-item', true>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface AboutPageComponentsValuesSection extends Struct.ComponentSchema {
+  collectionName: 'components_about_page_components_values_sections';
+  info: {
+    displayName: 'ValuesSection';
+  };
+  attributes: {
+    description: Schema.Attribute.Text & Schema.Attribute.Required;
+    features: Schema.Attribute.Component<'shared.feature-item', true>;
+    image: Schema.Attribute.Media<'images' | 'files'> & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface SharedBadge extends Struct.ComponentSchema {
   collectionName: 'components_shared_badges';
   info: {
@@ -147,6 +229,12 @@ export interface SharedSpecItem extends Struct.ComponentSchema {
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
+      'about-page-components.about-page-components': AboutPageComponentsAboutPageComponents;
+      'about-page-components.facts-section': AboutPageComponentsFactsSection;
+      'about-page-components.path-section': AboutPageComponentsPathSection;
+      'about-page-components.team-item': AboutPageComponentsTeamItem;
+      'about-page-components.team-section': AboutPageComponentsTeamSection;
+      'about-page-components.values-section': AboutPageComponentsValuesSection;
       'shared.badge': SharedBadge;
       'shared.feature-banner': SharedFeatureBanner;
       'shared.feature-item': SharedFeatureItem;

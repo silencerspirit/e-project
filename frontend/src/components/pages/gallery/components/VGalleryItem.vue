@@ -3,7 +3,7 @@
     @click="onClick"
     class="v-gallery-item group relative flex cursor-pointer flex-col overflow-hidden rounded-xl"
   >
-    <VueImage
+    <VImage
       class="v-gallery-item__image h-full w-full transition-transform duration-300"
       loading="lazy"
       decoding="async"
@@ -33,10 +33,10 @@
 import type { TGalleryItem } from '@contracts';
 import { LucideZoomIn } from 'lucide-vue-next';
 
-import VueImage from '@/components/vue/image/VueImage.vue';
+import VImage from '@/components/vue/image/VImage.vue';
 const props = defineProps<{
-  item: TGalleryItem;
   index: number;
+  item: TGalleryItem;
 }>();
 
 const emit = defineEmits<{

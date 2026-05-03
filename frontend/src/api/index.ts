@@ -1,3 +1,4 @@
+export * from './about-page';
 export * from './base';
 export * from './gallery-page';
 export * from './main-page';

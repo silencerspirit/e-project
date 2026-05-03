@@ -6,7 +6,7 @@ export default ({ env }: { env: EnvFn }) => {
   const isS3UploadEnabled = env.bool('S3_UPLOAD_ENABLED', hasS3Credentials);
   const s3Acl = env('S3_ACL');
 
-  const s3Params: Record<string, string | number> = {
+  const s3Params: Record<string, number | string> = {
     Bucket: env('S3_BUCKET'),
     signedUrlExpires: env.int('S3_SIGNED_URL_EXPIRES', 15 * 60),
   };

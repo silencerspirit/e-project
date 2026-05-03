@@ -1,10 +1,10 @@
 ---
 import { getMainPage, getMainPageForm } from '@/api';
-import MainPageAdvantages from '@/components/pages/index/MainPageAdvantages.vue';
-import MainPageBanner from '@/components/pages/index/MainPageBanner.vue';
-import MainPageCategories from '@/components/pages/index/MainPageCategories.vue';
-import MainPageListing from '@/components/pages/index/MainPageListing.vue';
-import VueRequestSection from '@/components/vue/VueRequestSection.vue';
+import VMainPageAdvantages from '@/components/pages/index/VMainPageAdvantages.vue';
+import VMainPageBanner from '@/components/pages/index/VMainPageBanner.vue';
+import VMainPageCategories from '@/components/pages/index/VMainPageCategories.vue';
+import VMainPageListing from '@/components/pages/index/VMainPageListing.vue';
+import VRequestSection from '@/components/vue/VRequestSection.vue';
 import { createOrganizationSchema, createWebSiteSchema, getPublicSiteUrl } from '@/helpers';
 
 import Layout from '@/layouts/Layout.astro';
@@ -25,7 +25,7 @@ const webSiteSchema = createWebSiteSchema(siteUrl);
 >
   {
     page.heroBanner && (
-      <MainPageBanner
+      <VMainPageBanner
         client:load
         info={page.heroBanner}
         form={form}
@@ -33,22 +33,22 @@ const webSiteSchema = createWebSiteSchema(siteUrl);
     )
   }
 
-  {page.featureBanner && <MainPageCategories info={page.featureBanner} />}
+  {page.featureBanner && <VMainPageCategories info={page.featureBanner} />}
 
   {
     page.showcaseBanner && (
-      <MainPageListing
+      <VMainPageListing
         client:visible
         info={page.showcaseBanner}
       />
     )
   }
 
-  {page.advantagesBanner && <MainPageAdvantages info={page.advantagesBanner} />}
+  {page.advantagesBanner && <VMainPageAdvantages info={page.advantagesBanner} />}
 
   {
     page.requestBanner && (
-      <VueRequestSection
+      <VRequestSection
         info={page.requestBanner}
         client:visible
       />

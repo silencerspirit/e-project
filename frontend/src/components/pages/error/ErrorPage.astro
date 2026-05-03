@@ -2,26 +2,26 @@
 import type { AstroComponent } from '@lucide/astro';
 import { ArrowLeft } from '@lucide/astro';
 
+import { ButtonSize, ButtonVariant } from '@/components/vue/button/button.enums';
+import VButton from '@/components/vue/button/VButton.vue';
 import { AVAILABLE_PAGES } from '@/constants';
 
-import Button from '@/components/ui/button/Button.astro';
-
 interface Props {
-  status: string;
-  title: string;
-  description: string;
   availablePages?: boolean;
+  description: string;
   icon: AstroComponent;
   primaryAction: {
     href: string;
-    label: string;
     icon: AstroComponent;
+    label: string;
   };
   secondaryAction?: {
     href: string;
-    label: string;
     icon: AstroComponent;
+    label: string;
   };
+  status: string;
+  title: string;
 }
 
 const { status, title, description, icon: Icon, primaryAction, secondaryAction, availablePages = false } = Astro.props;
@@ -50,25 +50,27 @@ const SecondaryActionIcon = secondaryAction?.icon;
     <p class="mx-auto mb-10 max-w-xl text-lg leading-relaxed text-muted-foreground">{description}</p>
 
     <div class="mb-14 flex flex-col items-center justify-center gap-4 sm:flex-row">
-      <Button
+      <VButton
         href={primaryAction.href}
-        size="lg"
+        tag="a"
+        size={ButtonSize.Lg}
       >
         <PrimaryActionIcon class="h-4 w-4" />
         {primaryAction.label}
-      </Button>
+      </VButton>
 
       {
         secondaryAction && (
-          <Button
+          <VButton
             href={secondaryAction.href}
-            size="lg"
-            variant="outline"
+            size={ButtonSize.Lg}
+            tag="a"
+            variant={ButtonVariant.Outline}
             class="bg-transparent"
           >
             {SecondaryActionIcon && <SecondaryActionIcon class="h-4 w-4" />}
             {secondaryAction.label}
-          </Button>
+          </VButton>
         )
       }
     </div>

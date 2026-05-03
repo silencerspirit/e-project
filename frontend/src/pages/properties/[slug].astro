@@ -5,16 +5,16 @@ import { parse } from 'valibot';
 
 import { getSiteConfig } from '@/api';
 import { getPropertyBySlug, getPropertySimilarBySlug } from '@/api';
-import PropertyDetailContact from '@/components/pages/properties/components/PropertyDetailContact.vue';
-import PropertyDetailDescription from '@/components/pages/properties/components/PropertyDetailDescription.vue';
-import PropertyDetailForm from '@/components/pages/properties/components/PropertyDetailForm.vue';
-import PropertyDetailList from '@/components/pages/properties/components/PropertyDetailList.vue';
-import PropertyDetailSimilar from '@/components/pages/properties/components/PropertyDetailSimilar.vue';
-import PropertyDetailSlider from '@/components/pages/properties/components/PropertyDetailSlider.vue';
-import PropertyDetailSpecification from '@/components/pages/properties/components/PropertyDetailSpecification.vue';
-import PropertyDetailTechSpecification from '@/components/pages/properties/components/PropertyDetailTechSpecification.vue';
+import VPropertyDetailContact from '@/components/pages/properties/components/VPropertyDetailContact.vue';
+import VPropertyDetailDescription from '@/components/pages/properties/components/VPropertyDetailDescription.vue';
+import VPropertyDetailForm from '@/components/pages/properties/components/VPropertyDetailForm.vue';
+import VPropertyDetailList from '@/components/pages/properties/components/VPropertyDetailList.vue';
+import VPropertyDetailSimilar from '@/components/pages/properties/components/VPropertyDetailSimilar.vue';
+import VPropertyDetailSlider from '@/components/pages/properties/components/VPropertyDetailSlider.vue';
+import VPropertyDetailSpecification from '@/components/pages/properties/components/VPropertyDetailSpecification.vue';
+import VPropertyDetailTechSpecification from '@/components/pages/properties/components/VPropertyDetailTechSpecification.vue';
 import type { IBreadcrumbItem } from '@/components/vue/breadcrumbs';
-import Breadcrumbs from '@/components/vue/breadcrumbs/Breadcrumbs.vue';
+import VBreadcrumbs from '@/components/vue/breadcrumbs/VBreadcrumbs.vue';
 import { createBreadcrumbListSchema, createRealEstateListingSchema, getPublicSiteUrl } from '@/helpers';
 
 import Layout from '@/layouts/Layout.astro';
@@ -66,7 +66,7 @@ const breadcrumbSchema = createBreadcrumbListSchema(siteUrl, [
   metaDescription={metaDescription}
   structuredData={[realEstateListingSchema, breadcrumbSchema]}
 >
-  <Breadcrumbs
+  <VBreadcrumbs
     items={[breadcrumb]}
     title={property.title}
     status={badge?.value}
@@ -74,7 +74,7 @@ const breadcrumbSchema = createBreadcrumbListSchema(siteUrl, [
     description={property.address}
   />
 
-  <PropertyDetailSlider
+  <VPropertyDetailSlider
     client:load
     images={property.images}
   />
@@ -82,13 +82,13 @@ const breadcrumbSchema = createBreadcrumbListSchema(siteUrl, [
   <section class="py-12 lg:py-16">
     <div class="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 sm:px-6 lg:grid-cols-3 lg:gap-12 lg:px-8">
       <div class="flex flex-col gap-10 lg:col-span-2">
-        <PropertyDetailSpecification item={property} />
+        <VPropertyDetailSpecification item={property} />
 
-        {property.description && <PropertyDetailDescription item={property} />}
+        {property.description && <VPropertyDetailDescription item={property} />}
 
         {
           Boolean(property.activityTypes.length) && (
-            <PropertyDetailList
+            <VPropertyDetailList
               list={property.activityTypes}
               title="Возможные виды деятельности"
               icon={Check}
@@ -98,7 +98,7 @@ const breadcrumbSchema = createBreadcrumbListSchema(siteUrl, [
 
         {
           Boolean(property.infrastructure.length) && (
-            <PropertyDetailList
+            <VPropertyDetailList
               list={property.infrastructure}
               title="Инфраструктура"
               icon={MapPin}
@@ -110,18 +110,18 @@ const breadcrumbSchema = createBreadcrumbListSchema(siteUrl, [
 
       <div class="lg:col-span-1">
         <div class="sticky top-36">
-          <PropertyDetailForm
+          <VPropertyDetailForm
             client:load
             title={property.title}
           />
 
           {
             Boolean(property.techSpecifications.length) && (
-              <PropertyDetailTechSpecification techSpecification={property.techSpecifications} />
+              <VPropertyDetailTechSpecification techSpecification={property.techSpecifications} />
             )
           }
 
-          <PropertyDetailContact config={config} />
+          <VPropertyDetailContact config={config} />
         </div>
       </div>
     </div>
@@ -129,7 +129,7 @@ const breadcrumbSchema = createBreadcrumbListSchema(siteUrl, [
 
   {
     Boolean(similarList.length) && (
-      <PropertyDetailSimilar
+      <VPropertyDetailSimilar
         client:load
         similarList={similarList}
       />

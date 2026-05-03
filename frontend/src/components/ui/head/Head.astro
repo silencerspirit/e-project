@@ -2,12 +2,12 @@
 import { getPublicSiteUrl, toAbsoluteUrl } from '@/helpers';
 
 interface Props {
-  title?: string;
+  canonical?: string;
   description?: string;
   ogImage?: string;
-  canonical?: string;
   robots?: string;
   structuredData?: unknown[];
+  title?: string;
 }
 
 const DEFAULT_TITLE = 'Default title';

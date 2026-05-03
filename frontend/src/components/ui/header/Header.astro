@@ -2,15 +2,15 @@
 import type { TNavigationItem, TSiteConfig } from '@contracts';
 import { Menu, X } from '@lucide/astro';
 
-import Button from '@/components/ui/button/Button.astro';
+import VButton from '@/components/vue/button/VButton.vue';
 
 import HeaderLogo from './HeaderLogo.astro';
 import HeaderNav from './HeaderNav.astro';
 import HeaderTopBar from './HeaderTopBar.astro';
 
 interface Props {
-  menu: TNavigationItem[];
   config: TSiteConfig;
+  menu: TNavigationItem[];
 }
 
 const { menu, config } = Astro.props;
@@ -28,7 +28,7 @@ const { menu, config } = Astro.props;
       <HeaderNav items={menu} />
 
       <div class="hidden lg:block">
-        <Button type="button"> Оставить заявку </Button>
+        <VButton type="button"> Оставить заявку </VButton>
       </div>
 
       <button
@@ -60,7 +60,7 @@ const { menu, config } = Astro.props;
           mobile
         />
 
-        <Button type="button"> Оставить заявку </Button>
+        <VButton type="button"> Оставить заявку </VButton>
       </div>
     </div>
   </div>

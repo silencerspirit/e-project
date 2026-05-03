@@ -1,0 +1,35 @@
+{
+  "collectionName": "components_about_page_components_about_page_components",
+  "info": {
+    "displayName": "DescriptionSection"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "content": {
+      "type": "customField",
+      "customField": "plugin::ckeditor5.CKEditor",
+      "options": {
+        "preset": "defaultHtml"
+      }
+    },
+    "advantage": {
+      "type": "component",
+      "component": "shared.metric-item",
+      "repeatable": false
+    }
+  },
+  "config": {}
+}

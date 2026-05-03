@@ -1,8 +1,8 @@
 import {
   PropertyListingPageCountSchema,
   PropertyListingPageListSchema,
-  PropertyListingPageRequestSchema,
   PropertyListingPageQuerySchema,
+  PropertyListingPageRequestSchema,
   PropertyListingPageSchema,
 } from '@/contracts';
 import { factories } from '@strapi/strapi';

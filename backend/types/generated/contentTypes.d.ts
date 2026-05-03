@@ -375,6 +375,35 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiAboutPageAboutPage extends Struct.SingleTypeSchema {
+  collectionName: 'about_pages';
+  info: {
+    displayName: 'AboutPage';
+    pluralName: 'about-pages';
+    singularName: 'about-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
+    description: Schema.Attribute.Text & Schema.Attribute.Required;
+    descriptionSection: Schema.Attribute.Component<'about-page-components.about-page-components', false>;
+    factsSection: Schema.Attribute.Component<'about-page-components.facts-section', false>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::about-page.about-page'> & Schema.Attribute.Private;
+    pathSection: Schema.Attribute.Component<'about-page-components.path-section', false>;
+    publishedAt: Schema.Attribute.DateTime;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
+    teamSection: Schema.Attribute.Component<'about-page-components.team-section', false>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
+    valuesSection: Schema.Attribute.Component<'about-page-components.values-section', false>;
+  };
+}
+
 export interface ApiCityCity extends Struct.CollectionTypeSchema {
   collectionName: 'cities';
   info: {
@@ -444,7 +473,6 @@ export interface ApiMainPageMainPage extends Struct.SingleTypeSchema {
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::main-page.main-page'> & Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    requestBanner: Schema.Attribute.Component<'shared.request-banner', false>;
     seo: Schema.Attribute.Component<'shared.seo', false>;
     showcaseBanner: Schema.Attribute.Component<'shared.showcase-banner', false>;
     updatedAt: Schema.Attribute.DateTime;
@@ -637,6 +665,31 @@ export interface ApiPropertyProperty extends Struct.CollectionTypeSchema {
     specifications: Schema.Attribute.Component<'shared.spec-item', true>;
     techSpecifications: Schema.Attribute.Component<'shared.spec-item', true>;
     title: Schema.Attribute.String & Schema.Attribute.Required & Schema.Attribute.Unique;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
+  };
+}
+
+export interface ApiRequestBannerRequestBanner extends Struct.SingleTypeSchema {
+  collectionName: 'request_banners';
+  info: {
+    displayName: 'RequestBanner';
+    pluralName: 'request-banners';
+    singularName: 'request-banner';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    advantages: Schema.Attribute.Component<'shared.badge', true>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
+    description: Schema.Attribute.Text & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::request-banner.request-banner'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
   };
@@ -1079,6 +1132,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::about-page.about-page': ApiAboutPageAboutPage;
       'api::city.city': ApiCityCity;
       'api::gallery-page.gallery-page': ApiGalleryPageGalleryPage;
       'api::main-page.main-page': ApiMainPageMainPage;
@@ -1088,6 +1142,7 @@ declare module '@strapi/strapi' {
       'api::property-listing-page.property-listing-page': ApiPropertyListingPagePropertyListingPage;
       'api::property-type.property-type': ApiPropertyTypePropertyType;
       'api::property.property': ApiPropertyProperty;
+      'api::request-banner.request-banner': ApiRequestBannerRequestBanner;
       'api::site-config.site-config': ApiSiteConfigSiteConfig;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
