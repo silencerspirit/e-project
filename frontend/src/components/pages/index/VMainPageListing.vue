@@ -78,6 +78,7 @@
             v-for="property in filteredProperties"
             :key="property.slug"
             :property="property"
+            full-price
             class="swiper-slide flex"
           />
         </ul>

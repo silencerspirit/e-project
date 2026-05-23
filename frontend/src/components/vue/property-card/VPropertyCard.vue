@@ -104,7 +104,7 @@ const { class: className, ...attrs } = useAttrs();
 
 const link = computed<string>(() => `/properties/${props.property.slug}/`);
 const price = computed<string>(() => {
-  if (props.fullPrice) return `от ${formatPrice(props.property.priceFrom)} ${PRICE_SUFFIX}`;
+  if (props.fullPrice) return `${formatPrice(props.property.priceFrom)} ${PRICE_SUFFIX}`;
 
   return `от ${formatPrice(props.property.pricePerM2)} ${PRICE_PER_M2_SUFFIX}`;
 });
