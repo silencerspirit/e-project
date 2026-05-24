@@ -82,6 +82,58 @@ export interface AboutPageComponentsValuesSection extends Struct.ComponentSchema
   };
 }
 
+export interface ContactsPageComponentsContactBlock extends Struct.ComponentSchema {
+  collectionName: 'components_contacts_page_components_contact_blocks';
+  info: {
+    displayName: 'ContactsBlock';
+  };
+  attributes: {
+    description: Schema.Attribute.Text & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    value: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface ContactsPageComponentsContactsForm extends Struct.ComponentSchema {
+  collectionName: 'components_contacts_page_components_contacts_forms';
+  info: {
+    displayName: 'ContactsForm';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    features: Schema.Attribute.Component<'shared.metric-item', true>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface ContactsPageComponentsContactsMap extends Struct.ComponentSchema {
+  collectionName: 'components_contacts_page_components_contacts_maps';
+  info: {
+    displayName: 'ContactsMap';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    offices: Schema.Attribute.Component<'contacts-page-components.contacts-office', true>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface ContactsPageComponentsContactsOffice extends Struct.ComponentSchema {
+  collectionName: 'components_contacts_page_components_contacts_offices';
+  info: {
+    displayName: 'ContactsOffice';
+  };
+  attributes: {
+    address: Schema.Attribute.String & Schema.Attribute.Required;
+    city: Schema.Attribute.String & Schema.Attribute.Required;
+    general: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    latitude: Schema.Attribute.Float & Schema.Attribute.Required;
+    longitude: Schema.Attribute.Float & Schema.Attribute.Required;
+    phone: Schema.Attribute.String & Schema.Attribute.Required;
+    workTime: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface SharedBadge extends Struct.ComponentSchema {
   collectionName: 'components_shared_badges';
   info: {
@@ -235,6 +287,10 @@ declare module '@strapi/strapi' {
       'about-page-components.team-item': AboutPageComponentsTeamItem;
       'about-page-components.team-section': AboutPageComponentsTeamSection;
       'about-page-components.values-section': AboutPageComponentsValuesSection;
+      'contacts-page-components.contact-block': ContactsPageComponentsContactBlock;
+      'contacts-page-components.contacts-form': ContactsPageComponentsContactsForm;
+      'contacts-page-components.contacts-map': ContactsPageComponentsContactsMap;
+      'contacts-page-components.contacts-office': ContactsPageComponentsContactsOffice;
       'shared.badge': SharedBadge;
       'shared.feature-banner': SharedFeatureBanner;
       'shared.feature-item': SharedFeatureItem;

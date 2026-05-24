@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_contacts_page_components_contacts_maps",
+  "info": {
+    "displayName": "ContactsMap"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "offices": {
+      "type": "component",
+      "component": "contacts-page-components.contacts-office",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

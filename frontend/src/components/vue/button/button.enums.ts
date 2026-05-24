@@ -3,6 +3,7 @@ export enum ButtonSize {
   Icon = 'icon',
   Lg = 'lg',
   Sm = 'sm',
+  Xl = 'xl',
 }
 
 export enum ButtonVariant {

@@ -13,12 +13,14 @@ export function useRequestForm() {
   const form = reactive<TRequestForm>({
     phone: '',
     name: '',
+    comment: '',
     pageUrl: import.meta.env.SSR ? '' : window.location.href,
   });
 
   function resetForm() {
     form.name = '';
     form.phone = '';
+    form.comment = '';
   }
 
   async function onSubmit() {

@@ -429,6 +429,34 @@ export interface ApiCityCity extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiContactsPageContactsPage extends Struct.SingleTypeSchema {
+  collectionName: 'contacts_pages';
+  info: {
+    displayName: 'ContactsPage';
+    pluralName: 'contacts-pages';
+    singularName: 'contacts-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    contactsBlockSection: Schema.Attribute.Component<'contacts-page-components.contact-block', true>;
+    contactsFormSection: Schema.Attribute.Component<'contacts-page-components.contacts-form', false>;
+    contactsMapSection: Schema.Attribute.Component<'contacts-page-components.contacts-map', false>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
+    description: Schema.Attribute.Text & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::contacts-page.contacts-page'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
+  };
+}
+
 export interface ApiGalleryPageGalleryPage extends Struct.SingleTypeSchema {
   collectionName: 'gallery_pages';
   info: {
@@ -1134,6 +1162,7 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::about-page.about-page': ApiAboutPageAboutPage;
       'api::city.city': ApiCityCity;
+      'api::contacts-page.contacts-page': ApiContactsPageContactsPage;
       'api::gallery-page.gallery-page': ApiGalleryPageGalleryPage;
       'api::main-page.main-page': ApiMainPageMainPage;
       'api::navigation-item.navigation-item': ApiNavigationItemNavigationItem;

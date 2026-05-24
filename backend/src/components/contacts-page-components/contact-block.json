@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_contacts_page_components_contact_blocks",
+  "info": {
+    "displayName": "ContactsBlock"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "value": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "config": {}
+}

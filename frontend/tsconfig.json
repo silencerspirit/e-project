@@ -4,9 +4,16 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@contracts": ["../backend/src/contracts"]
+      "@contracts": ["../backend/src/contracts"],
+      "ymaps3": [
+        "./node_modules/@yandex/ymaps3-types"
+      ]
     }
   },
+  "typeRoots": [
+    "./node_modules/@types",
+    "./node_modules/@yandex/ymaps3-types"
+  ],
   "include": [".astro/types.d.ts", "**/*"],
   "exclude": ["dist"]
 }

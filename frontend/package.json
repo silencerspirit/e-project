@@ -15,6 +15,7 @@
     "@astrojs/node": "^9.5.1",
     "@astrojs/tailwind": "^5.1.2",
     "@types/js-cookie": "^3.0.6",
+    "@yandex/ymaps3-types": "^1.0.19674496",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.38",
     "sass": "^1.77.8",

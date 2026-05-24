@@ -30,6 +30,7 @@ function buildPlainText(params: TRequestForm): string {
     buildSubject(params),
     hasName(params.name) ? `Имя: ${params.name}` : null,
     `Телефон: ${params.phone}`,
+    hasComment(params.comment) ? `Комментарий: ${params.comment}` : null,
     params.pageUrl ? `Источник: ${params.pageUrl}` : null,
   ]
     .filter(Boolean)
@@ -43,6 +44,7 @@ function buildHtml(params: TRequestForm): string {
   const details = [
     hasName(params.name) ? buildDetailRow('Имя', escapeHtml(params.name)) : '',
     buildDetailRow('Телефон', safePhone),
+    hasComment(params.comment) ? buildDetailRow('Комментарий', formatMultilineText(params.comment)) : '',
     params.pageUrl ? buildDetailRow('Источник', escapeHtml(params.pageUrl)) : '',
   ]
     .filter(Boolean)
@@ -97,6 +99,10 @@ function buildDetailRow(label: string, value: string): string {
   `.trim();
 }
 
+function formatMultilineText(value: string): string {
+  return escapeHtml(value).replace(/\n/g, '<br>');
+}
+
 function buildTelHref(phone: string): string {
   const normalizedPhone = phone.replace(/[^\d+]/g, '');
 
@@ -105,4 +111,8 @@ function buildTelHref(phone: string): string {
 
 function hasName(name: null | string | undefined): name is string {
   return Boolean(name?.trim());
+}
+
+function hasComment(comment: null | string | undefined): comment is string {
+  return Boolean(comment?.trim());
 }

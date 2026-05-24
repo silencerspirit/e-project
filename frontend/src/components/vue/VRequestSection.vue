@@ -49,17 +49,9 @@
             <div
               v-if="isFormSended"
               id="request-form-success"
-              class="py-8 text-center"
-              aria-live="polite"
+              class="py-8"
             >
-              <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
-                <CircleCheck
-                  aria-hidden="true"
-                  class="h-8 w-8 text-green-600"
-                />
-              </div>
-              <h3 class="mb-2 text-xl font-semibold text-foreground">Заявка отправлена!</h3>
-              <p class="text-muted-foreground">Наш специалист свяжется с вами в ближайшее время</p>
+              <VFormSuccess />
             </div>
 
             <div v-else>
@@ -125,6 +117,7 @@ import { CircleCheck, Phone, SendHorizontal } from 'lucide-vue-next';
 
 import { ButtonSize } from '@/components/vue/button/button.enums';
 import VButton from '@/components/vue/button/VButton.vue';
+import VFormSuccess from '@/components/vue/form-success/VFormSuccess.vue';
 import { useRequestForm } from '@/composables';
 
 import VInput from './input/VInput.vue';

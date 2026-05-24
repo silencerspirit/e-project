@@ -73,6 +73,7 @@ const sizeClassesMap: Record<ButtonSize, string> = {
   [ButtonSize.Default]: 'h-9 px-4 py-2',
   [ButtonSize.Sm]: 'h-8 gap-1.5 px-3',
   [ButtonSize.Lg]: 'h-10 px-6',
+  [ButtonSize.Xl]: 'h-12 px-6',
   [ButtonSize.Icon]: 'size-9',
 };
 

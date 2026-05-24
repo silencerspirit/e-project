@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_contacts_page_components_contacts_forms",
+  "info": {
+    "displayName": "ContactsForm"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": false
+    },
+    "features": {
+      "type": "component",
+      "component": "shared.metric-item",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

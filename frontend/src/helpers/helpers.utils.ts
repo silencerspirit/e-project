@@ -50,3 +50,11 @@ export function wait(time = 0): Promise<void> {
     window.setTimeout(resolve, time);
   });
 }
+
+export function isEmail(value: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+}
+
+export function isPhone(value: string): boolean {
+  return /^(?:8\d{10}|\+7\d{10})$/.test(value.replace(/[^\d+]/g, ''));
+}

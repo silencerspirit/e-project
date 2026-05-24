@@ -1,12 +1,44 @@
 ---
-import ComingSoon from '@/components/pages/coming-soon/ComingSoon.astro';
+import { getContactsPage } from '@/api';
+import VContactsForm from '@/components/pages/contacts/components/VContactsForm.vue';
+import VContactsList from '@/components/pages/contacts/components/VContactsList.vue';
+import VContactsOffices from '@/components/pages/contacts/components/VContactsOffices.vue';
+import VBreadcrumbs from '@/components/vue/breadcrumbs/VBreadcrumbs.vue';
+
 import Layout from '@/layouts/Layout.astro';
+
+const page = await getContactsPage();
+
+const metaTitle: string = page.seo?.metaTitle ?? '';
+const metaDescription: string = page.seo?.metaDescription ?? '';
 ---
 
 <Layout
-  metaTitle="Контакты - в разработке"
-  metaDescription="Раздел контактов находится в разработке."
-  robots="noindex, nofollow"
+  metaTitle={metaTitle}
+  metaDescription={metaDescription}
 >
-  <ComingSoon />
+  <VBreadcrumbs
+    title={page.title}
+    description={page.description}
+  />
+
+  {page.contactsBlockSection.length > 0 && <VContactsList list={page.contactsBlockSection} />}
+
+  {
+    page.contactsFormSection && (
+      <VContactsForm
+        info={page.contactsFormSection}
+        client:load
+      />
+    )
+  }
+
+  {
+    page.contactsMapSection && (
+      <VContactsOffices
+        info={page.contactsMapSection}
+        client:load
+      />
+    )
+  }
 </Layout>

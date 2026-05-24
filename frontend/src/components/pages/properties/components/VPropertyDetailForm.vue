@@ -2,16 +2,14 @@
   <div class="rounded-2xl border border-border bg-card p-6 shadow-sm lg:p-8">
     <div
       v-if="isFormSended"
-      class="py-6 text-center"
+      class="py-6"
     >
-      <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-green-100">
-        <CircleCheck
-          class="h-7 w-7 text-green-600"
-          aria-hidden="true"
-        />
-      </div>
-      <h3 class="mb-2 text-xl font-semibold text-foreground">Заявка отправлена!</h3>
-      <p class="text-sm text-muted-foreground">Мы свяжемся с вами в ближайшее время</p>
+      <VFormSuccess
+        description="Мы свяжемся с вами в ближайшее время"
+        description-class="text-sm text-muted-foreground"
+        icon-class="h-7 w-7 text-green-600"
+        icon-wrapper-class="h-14 w-14"
+      />
     </div>
 
     <div v-else>
@@ -88,9 +86,10 @@
 </template>
 
 <script lang="ts" setup>
-import { CircleCheck, Phone, SendHorizontal } from 'lucide-vue-next';
+import { Phone, SendHorizontal } from 'lucide-vue-next';
 
 import VButton from '@/components/vue/button/VButton.vue';
+import VFormSuccess from '@/components/vue/form-success/VFormSuccess.vue';
 import VInput from '@/components/vue/input/VInput.vue';
 import { useRequestForm } from '@/composables';
 

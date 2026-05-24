@@ -1,3 +1,5 @@
+/// <reference types="@yandex/ymaps3-types" />
+
 interface ImportMetaEnv {
   readonly PUBLIC_SITE_URL?: string;
   readonly PUBLIC_STRAPI_URL: string;

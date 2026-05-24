@@ -3,7 +3,7 @@
     <div class="mb-6 flex flex-col gap-4 border-b border-border pb-6 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <p class="text-sm text-muted-foreground">Стоимость</p>
-        <p class="text-3xl font-bold text-primary">от {{ formatPrice(item.priceFrom) }} {{ PRICE_SUFFIX }}</p>
+        <p class="text-3xl font-bold text-primary">{{ formatPrice(item.priceFrom) }} {{ PRICE_SUFFIX }}</p>
       </div>
       <div class="sm:text-right">
         <p class="text-sm text-muted-foreground">Цена за м²</p>
