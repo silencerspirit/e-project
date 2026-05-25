@@ -139,7 +139,10 @@ async function onUpdateState([filters]: [TParsedSegments]) {
 }
 
 function getNavigateUrl(): string {
-  const stringifiedParams = state.params.toString();
+  const params = new URLSearchParams(state.params);
+  params.delete('page');
+
+  const stringifiedParams = params.toString();
   const paramsString = stringifiedParams ? `?${stringifiedParams}` : stringifiedParams;
   const segments = buildSegmentsUrl(state.filters);
   return `${segments}${paramsString}`;
