@@ -94,7 +94,7 @@ function createMarkerElement(): HTMLElement {
 }
 
 function getDefaultBehaviors(): BehaviorType[] {
-  return isTouchDevice() ? [] : ['drag'];
+  return isTouchDevice() ? ['drag', 'pinchZoom'] : ['drag'];
 }
 
 export function useMap(createInitOptions?: TInitMapOptionsFactory) {
