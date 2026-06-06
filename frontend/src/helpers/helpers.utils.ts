@@ -27,6 +27,12 @@ export function isMobileUserAgent(): boolean {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(window?.navigator?.userAgent);
 }
 
+export function isTouchDevice(): boolean {
+  if (typeof window === 'undefined') return false;
+
+  return window.matchMedia('(pointer: coarse)').matches;
+}
+
 export function isHTMLElement<T = HTMLElement>(el: unknown): el is T {
   return el instanceof Element && Boolean(el);
 }

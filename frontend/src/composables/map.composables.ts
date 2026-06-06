@@ -2,6 +2,7 @@ import { onBeforeUnmount, onMounted, ref, shallowRef } from 'vue';
 import type { BehaviorType, LngLat, YMap, YMapLocationRequest, YMapMarker, YMapMarkerProps } from 'ymaps3';
 
 import LogoIcon from '@/assets/logo.svg?raw';
+import { isTouchDevice } from '@/helpers';
 
 const API_KEY = '39b49b90-cd08-48f5-9c13-a35ffa021676';
 const YMAP_SCRIPT_ID = 'ymaps3-script';
@@ -92,6 +93,10 @@ function createMarkerElement(): HTMLElement {
   return markerElement;
 }
 
+function getDefaultBehaviors(): BehaviorType[] {
+  return isTouchDevice() ? [] : ['drag'];
+}
+
 export function useMap(createInitOptions?: TInitMapOptionsFactory) {
   const currentZoom = ref<number>(MAP_DEFAULT_ZOOM);
   const map = shallowRef<undefined | YMap>();
@@ -104,7 +109,7 @@ export function useMap(createInitOptions?: TInitMapOptionsFactory) {
   }
 
   async function initMap(options: TInitMapOptions) {
-    const { container, center, markers = [], zoom = MAP_DEFAULT_ZOOM, behaviors = ['drag'] } = options;
+    const { container, center, markers = [], zoom = MAP_DEFAULT_ZOOM, behaviors = getDefaultBehaviors() } = options;
 
     if (!container) return;
 
