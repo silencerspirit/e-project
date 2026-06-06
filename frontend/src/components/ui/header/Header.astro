@@ -17,7 +17,7 @@ const { menu, config } = Astro.props;
 const requestFormHref = '/#form';
 ---
 
-<header class="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur-sm">
+<header class="header sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur-sm">
   <HeaderTopBar
     phone={config.phone}
     address={config.address}
@@ -78,3 +78,9 @@ const requestFormHref = '/#form';
 </header>
 
 <script src="./header.ts"></script>
+
+<style lang="scss">
+  .header {
+    z-index: 1001;
+  }
+</style>

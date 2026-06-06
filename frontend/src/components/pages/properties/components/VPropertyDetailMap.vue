@@ -4,11 +4,11 @@
 
     <div
       v-if="item.address"
-      class="mb-2 flex items-center gap-2 text-muted-foreground"
+      class="mb-2 flex items-start gap-2 text-muted-foreground"
     >
       <MapPin
         aria-hidden="true"
-        class="h-4 w-4"
+        class="mt-1 h-4 w-4"
       />
       <span class="text-sm">{{ item.address }}</span>
     </div>
