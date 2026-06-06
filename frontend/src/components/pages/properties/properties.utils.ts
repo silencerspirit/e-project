@@ -1,3 +1,7 @@
+import type { TPropertyFullItem } from '@contracts';
+import { isNull } from 'es-toolkit';
+import { isNaN } from 'es-toolkit/compat';
+
 import { FILTER_CODES } from './properties.consts';
 import type { TParsedSegments } from './properties.types';
 
@@ -37,4 +41,15 @@ export function buildSegmentsUrl(filters: TParsedSegments): string {
   if (!segments.length) return '/properties/';
 
   return `/properties/filters/${segments.join('/')}/`;
+}
+
+export function isExistCoords(property: TPropertyFullItem): boolean {
+  return (
+    !isNull(property.latitude) &&
+    !isNull(property.longitude) &&
+    !isNaN(Number(property.latitude)) &&
+    !isNaN(Number(property.longitude)) &&
+    property.latitude > 0 &&
+    property.longitude > 0
+  );
 }

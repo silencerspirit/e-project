@@ -9,10 +9,12 @@ import VPropertyDetailContact from '@/components/pages/properties/components/VPr
 import VPropertyDetailDescription from '@/components/pages/properties/components/VPropertyDetailDescription.vue';
 import VPropertyDetailForm from '@/components/pages/properties/components/VPropertyDetailForm.vue';
 import VPropertyDetailList from '@/components/pages/properties/components/VPropertyDetailList.vue';
+import VPropertyDetailMap from '@/components/pages/properties/components/VPropertyDetailMap.vue';
 import VPropertyDetailSimilar from '@/components/pages/properties/components/VPropertyDetailSimilar.vue';
 import VPropertyDetailSlider from '@/components/pages/properties/components/VPropertyDetailSlider.vue';
 import VPropertyDetailSpecification from '@/components/pages/properties/components/VPropertyDetailSpecification.vue';
 import VPropertyDetailTechSpecification from '@/components/pages/properties/components/VPropertyDetailTechSpecification.vue';
+import { isExistCoords } from '@/components/pages/properties/properties.utils';
 import type { IBreadcrumbItem } from '@/components/vue/breadcrumbs';
 import VBreadcrumbs from '@/components/vue/breadcrumbs/VBreadcrumbs.vue';
 import { createBreadcrumbListSchema, createRealEstateListingSchema, getPublicSiteUrl } from '@/helpers';
@@ -83,6 +85,15 @@ const breadcrumbSchema = createBreadcrumbListSchema(siteUrl, [
     <div class="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 sm:px-6 lg:grid-cols-3 lg:gap-12 lg:px-8">
       <div class="flex flex-col gap-10 lg:col-span-2">
         <VPropertyDetailSpecification item={property} />
+
+        {
+          isExistCoords(property) && (
+            <VPropertyDetailMap
+              client:load
+              item={property}
+            />
+          )
+        }
 
         {property.description && <VPropertyDetailDescription item={property} />}
 

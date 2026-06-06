@@ -27,6 +27,8 @@ const PropertyShape = {
   priceFrom: number(),
   pricePerM2: number(),
   previewImage: ImageTransformScheme,
+  latitude: nullish(number(), null),
+  longitude: nullish(number(), null),
 
   city: nullish(CitySchema),
   propertyType: nullish(PropertyTypeSchema),

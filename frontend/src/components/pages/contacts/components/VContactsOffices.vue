@@ -58,9 +58,21 @@
 
       <div
         v-if="headOffice"
-        class="mt-12 flex h-96 items-center justify-center overflow-hidden rounded-2xl border border-border bg-secondary/50"
-        :id="MAP_ID"
-      ></div>
+        class="relative mt-12 h-96 overflow-hidden rounded-2xl border border-border bg-secondary/50"
+      >
+        <div
+          :ref="MAP_CONTAINER_REF"
+          class="h-full w-full"
+        ></div>
+
+        <VMapZoomControls
+          :current-zoom="currentZoom"
+          :max-zoom="MAP_MAX_ZOOM"
+          :min-zoom="MAP_MIN_ZOOM"
+          @zoom-in="zoomIn"
+          @zoom-out="zoomOut"
+        />
+      </div>
     </div>
   </section>
 </template>
@@ -68,74 +80,33 @@
 <script lang="ts" setup>
 import type { TContactsPage, TContactsPageOffice } from '@contracts';
 import { LucideClock, LucideMapPin, LucidePhone } from 'lucide-vue-next';
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
-import type { YMap, YMapLocationRequest, YMapMarker, YMapMarkerProps } from 'ymaps3';
+import { computed, ref, useTemplateRef } from 'vue';
 
-import LogoIcon from '@/assets/logo.svg?raw';
+import VMapZoomControls from '@/components/vue/map/VMapZoomControls.vue';
+import { MAP_CONTAINER_REF, MAP_MAX_ZOOM, MAP_MIN_ZOOM, useMap } from '@/composables';
 import { formatPhone } from '@/helpers';
 
 const props = defineProps<{
   info: TContactsPage['contactsMapSection'];
 }>();
 
-let scriptMap: HTMLScriptElement | undefined;
-let map: YMap;
-
-const MAP_ID = 'map';
-const API_KEY = '39b49b90-cd08-48f5-9c13-a35ffa021676';
-const YMAP_SETTINGS: YMapLocationRequest = {
-  zoom: 18,
-  duration: 300,
-  easing: 'ease',
-};
-
 const offices = computed<TContactsPageOffice[]>(() => props.info?.offices ?? []);
 const headOffice = computed<TContactsPageOffice | undefined>(() => getHeadOffice());
 const activeOfficeId = ref<string>(headOffice.value ? getOfficeId(headOffice.value) : '');
+const mapContainerEl = useTemplateRef<HTMLElement>(MAP_CONTAINER_REF);
+const { currentZoom, setCenter, zoomIn, zoomOut } = useMap(() => {
+  if (!headOffice.value) return;
 
-function createMarker(props: YMapMarkerProps): YMapMarker {
-  const { YMapMarker } = window.ymaps3;
-  const markerElement = document.createElement('div');
-  markerElement.className = 'contact-map-marker';
-  markerElement.innerHTML = `
-    <div class="contact-map-marker__body">
-      <div class="contact-map-marker__icon">${LogoIcon}</div>
-    </div>
-  `;
-
-  return new YMapMarker(props, markerElement);
-}
-
-function onYmapLoad() {
-  const mapEl = document.getElementById(MAP_ID);
-  const { ymaps3 } = window;
-
-  ymaps3.ready.then(() => {
-    if (!mapEl || !headOffice.value) return;
-    const { YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer } = ymaps3;
-
-    map = new YMap(
-      mapEl,
-      {
-        location: {
-          center: [headOffice.value.longitude, headOffice.value.latitude],
-          zoom: 18,
-        },
-      },
-      [new YMapDefaultSchemeLayer({}), new YMapDefaultFeaturesLayer({})],
-    );
-
-    offices.value.forEach((office) => {
-      map.addChild(
-        createMarker({
-          id: getOfficeId(office),
-          coordinates: [office.longitude, office.latitude],
-          onClick: () => setPosition(office),
-        }),
-      );
-    });
-  });
-}
+  return {
+    container: mapContainerEl.value,
+    center: [headOffice.value.longitude, headOffice.value.latitude],
+    markers: offices.value.map((office) => ({
+      id: getOfficeId(office),
+      coordinates: [office.longitude, office.latitude],
+      onClick: () => setPosition(office),
+    })),
+  };
+});
 
 function getHeadOffice(): TContactsPageOffice | undefined {
   const [firstOffice] = offices.value;
@@ -148,78 +119,17 @@ function getOfficeId(office: TContactsPageOffice): string {
   return `${office.latitude}_${office.longitude}`;
 }
 
-function addYmap() {
-  if (!headOffice.value) return;
-
-  scriptMap = document.createElement('script');
-  scriptMap.src = `https://api-maps.yandex.ru/v3/?apikey=${API_KEY}&lang=ru_RU`;
-  scriptMap.onload = onYmapLoad;
-  document.body.appendChild(scriptMap);
-}
-
-function removeYmap() {
-  scriptMap?.parentNode?.removeChild(scriptMap);
-}
-
 function setPosition(office: TContactsPageOffice) {
   activeOfficeId.value = getOfficeId(office);
-  if (!map) return;
-
-  map.setLocation({
-    ...YMAP_SETTINGS,
-    center: [office.longitude, office.latitude],
-  });
+  setCenter([office.longitude, office.latitude]);
 }
 
 function onClick(office: TContactsPageOffice) {
-  document.getElementById(MAP_ID)?.scrollIntoView({
+  mapContainerEl.value?.scrollIntoView({
     behavior: 'smooth',
     inline: 'center',
     block: 'center',
   });
   setPosition(office);
 }
-
-onMounted(addYmap);
-onBeforeUnmount(removeYmap);
 </script>
-
-<style lang="scss">
-.contact-map-marker {
-  position: relative;
-  display: block;
-  width: 48px;
-  height: 60px;
-  cursor: pointer;
-  transform: translate(-50%, -100%);
-
-  &__body {
-    position: relative;
-    display: flex;
-    width: 48px;
-    height: 48px;
-    align-items: center;
-    justify-content: center;
-    border: 3px solid rgb(var(--primary-foreground));
-    border-radius: 50% 50% 50% 0;
-    background-color: rgb(var(--primary));
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-    transform: rotate(-45deg);
-  }
-
-  &__icon {
-    display: flex;
-    width: 28px;
-    height: 28px;
-    align-items: center;
-    justify-content: center;
-    color: rgb(var(--primary-foreground));
-    transform: rotate(45deg);
-
-    svg {
-      width: 100%;
-      height: 100%;
-    }
-  }
-}
-</style>

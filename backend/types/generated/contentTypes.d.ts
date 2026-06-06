@@ -680,8 +680,10 @@ export interface ApiPropertyProperty extends Struct.CollectionTypeSchema {
       >;
     images: Schema.Attribute.Component<'shared.images', true>;
     infrastructure: Schema.Attribute.Component<'shared.badge', true>;
+    latitude: Schema.Attribute.Float;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::property.property'> & Schema.Attribute.Private;
+    longitude: Schema.Attribute.Float;
     previewImage: Schema.Attribute.Component<'shared.images', false> & Schema.Attribute.Required;
     priceFrom: Schema.Attribute.Decimal & Schema.Attribute.Required;
     pricePerM2: Schema.Attribute.Decimal & Schema.Attribute.Required;
