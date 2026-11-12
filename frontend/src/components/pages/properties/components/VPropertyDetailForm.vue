@@ -1,7 +1,7 @@
 <template>
   <div class="rounded-2xl border border-border bg-card p-6 shadow-sm lg:p-8">
     <div
-      v-if="isFormSended"
+      v-if="submitted"
       class="py-6"
     >
       <VFormSuccess
@@ -19,6 +19,7 @@
       <form
         class="space-y-4"
         @submit.prevent="onSubmit"
+        :aria-busy="loading"
       >
         <div>
           <label
@@ -67,7 +68,7 @@
 
         <VButton
           type="submit"
-          :disabled="isLoading"
+          :disabled="loading"
           class="h-12 w-full bg-primary font-medium text-primary-foreground hover:bg-primary/90"
         >
           <SendHorizontal
@@ -76,6 +77,10 @@
           />
           Отправить заявку
         </VButton>
+        <VFormFeedback
+          :error-message
+          :status-message
+        />
 
         <p class="text-center text-xs text-muted-foreground">
           Нажимая кнопку, вы соглашаетесь с обработкой персональных данных
@@ -89,6 +94,7 @@
 import { Phone, SendHorizontal } from 'lucide-vue-next';
 
 import VButton from '@/components/vue/button/VButton.vue';
+import VFormFeedback from '@/components/vue/form-feedback/VFormFeedback.vue';
 import VFormSuccess from '@/components/vue/form-success/VFormSuccess.vue';
 import VInput from '@/components/vue/input/VInput.vue';
 import { useRequestForm } from '@/composables';
@@ -97,5 +103,5 @@ defineProps<{
   title: string;
 }>();
 
-const { form, isFormSended, onSubmit, isLoading } = useRequestForm();
+const { form, submitted, onSubmit, loading, errorMessage, statusMessage } = useRequestForm();
 </script>

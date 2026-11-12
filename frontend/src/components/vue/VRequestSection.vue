@@ -47,7 +47,7 @@
 
           <div class="main-page-action__form rounded-2xl bg-card p-6 shadow-2xl sm:p-8">
             <div
-              v-if="isFormSended"
+              v-if="submitted"
               id="request-form-success"
               class="py-8"
             >
@@ -60,6 +60,7 @@
                 class="space-y-4"
                 id="request-form"
                 @submit.prevent="onSubmit"
+                :aria-busy="loading"
               >
                 <div>
                   <label
@@ -89,7 +90,7 @@
                 </div>
                 <VButton
                   :size="ButtonSize.Lg"
-                  :disabled="isLoading"
+                  :disabled="loading"
                   type="submit"
                   class="h-14 w-full bg-primary text-base font-medium text-primary-foreground hover:bg-primary/90"
                 >
@@ -99,6 +100,10 @@
                   />
                   Отправить
                 </VButton>
+                <VFormFeedback
+                  :error-message
+                  :status-message
+                />
                 <p class="text-center text-xs text-muted-foreground">
                   Нажимая кнопку, вы соглашаетесь с обработкой персональных данных
                 </p>
@@ -117,6 +122,7 @@ import { CircleCheck, Phone, SendHorizontal } from 'lucide-vue-next';
 
 import { ButtonSize } from '@/components/vue/button/button.enums';
 import VButton from '@/components/vue/button/VButton.vue';
+import VFormFeedback from '@/components/vue/form-feedback/VFormFeedback.vue';
 import VFormSuccess from '@/components/vue/form-success/VFormSuccess.vue';
 import { useRequestForm } from '@/composables';
 
@@ -124,5 +130,5 @@ import VInput from './input/VInput.vue';
 
 defineProps<{ info: TRequestBanner }>();
 
-const { form, isFormSended, onSubmit, isLoading } = useRequestForm();
+const { form, submitted, onSubmit, loading, errorMessage, statusMessage } = useRequestForm();
 </script>

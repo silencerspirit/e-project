@@ -32,7 +32,7 @@
 
         <div class="rounded-2xl border border-border bg-card p-6 shadow-lg sm:p-8">
           <div
-            v-if="isFormSended"
+            v-if="submitted"
             class="py-8"
           >
             <VFormSuccess />
@@ -42,6 +42,7 @@
             v-else
             class="space-y-5"
             @submit.prevent="onSubmit"
+            :aria-busy="loading"
           >
             <div>
               <label
@@ -114,13 +115,17 @@
             </div>
             <VButton
               :size="ButtonSize.Xl"
-              :disabled="isLoading"
+              :disabled="loading"
               type="submit"
               class="w-full"
             >
               <LucideSend class="mr-2 h-5 w-5" />
               Отправить заявку
             </VButton>
+            <VFormFeedback
+              :error-message
+              :status-message
+            />
 
             <p class="text-center text-xs text-muted-foreground">
               Нажимая кнопку, вы соглашаетесь с
@@ -144,6 +149,7 @@ import { LucideCircleCheckBig, LucideMessageSquare, LucideSend, LucideUser, Phon
 
 import { ButtonSize } from '@/components/vue/button/button.enums';
 import VButton from '@/components/vue/button/VButton.vue';
+import VFormFeedback from '@/components/vue/form-feedback/VFormFeedback.vue';
 import VFormSuccess from '@/components/vue/form-success/VFormSuccess.vue';
 import VInput from '@/components/vue/input/VInput.vue';
 import { useRequestForm } from '@/composables';
@@ -152,5 +158,5 @@ defineProps<{
   info: TContactsPage['contactsFormSection'];
 }>();
 
-const { form, isFormSended, isLoading, onSubmit } = useRequestForm();
+const { form, submitted, loading, onSubmit, errorMessage, statusMessage } = useRequestForm();
 </script>

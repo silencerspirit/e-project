@@ -9,3 +9,6 @@ frontend/dist
 backend/.cache
 backend/public/uploads
 *.log
+backend/.env
+backend/.env.*
+!backend/.env.example

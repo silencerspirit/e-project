@@ -2,6 +2,7 @@
   <component
     :is="tag"
     v-bind="forwardedAttrs"
+    :disabled="tag === 'button' ? disabled : undefined"
     :class="[
       disabledClassNames,
       baseClasses,
