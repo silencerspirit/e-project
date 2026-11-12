@@ -25,7 +25,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
     } catch (error) {
       if (error instanceof SmartCaptchaError) {
         if (error.status === HttpStatus.BadRequest) return context.badRequest(error.message);
-        strapi.log.warn(`${REQUEST_FORM_LOG_MESSAGES.captchaUnavailable} ${JSON.stringify(error.diagnostics ?? {})}`);
+        strapi.log.warn(REQUEST_FORM_LOG_MESSAGES.captchaUnavailable);
         return context.serviceUnavailable(error.message);
       }
       throw error;

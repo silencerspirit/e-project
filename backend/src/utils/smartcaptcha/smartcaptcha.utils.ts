@@ -1,27 +1,12 @@
 import { HttpStatus } from '../../constants/http.enums';
 import {
   SMARTCAPTCHA_MESSAGES,
-  SMARTCAPTCHA_NETWORK_ERROR_CODE_PATTERN,
-  SMARTCAPTCHA_TIMEOUT_ERROR_NAME,
   SMARTCAPTCHA_VALIDATE_TIMEOUT_MS,
   SMARTCAPTCHA_VALIDATE_URL,
 } from './smartcaptcha.constants';
-import { SmartCaptchaErrorReason, SmartCaptchaStatus } from './smartcaptcha.enums';
+import { SmartCaptchaStatus } from './smartcaptcha.enums';
 import { SmartCaptchaError } from './smartcaptcha.errors';
-import type { ISmartCaptchaConfig, ISmartCaptchaDiagnostics } from './smartcaptcha.types';
-
-function createUnavailableError(diagnostics: ISmartCaptchaDiagnostics): SmartCaptchaError {
-  return new SmartCaptchaError(HttpStatus.ServiceUnavailable, SMARTCAPTCHA_MESSAGES.unavailable, diagnostics);
-}
-
-/** В диагностику допускаются только системные коды соединения, без текста ошибки и данных запроса. */
-function getNetworkErrorCode(error: unknown): string | undefined {
-  if (!error || typeof error !== 'object' || !('cause' in error)) return;
-
-  const cause = error.cause;
-  if (!cause || typeof cause !== 'object' || !('code' in cause) || typeof cause.code !== 'string') return;
-  if (SMARTCAPTCHA_NETWORK_ERROR_CODE_PATTERN.test(cause.code)) return cause.code;
-}
+import type { ISmartCaptchaConfig } from './smartcaptcha.types';
 
 /**
  * Проверяет одноразовый токен до отправки письма. IP должен поступать из серверного контекста,
@@ -30,12 +15,11 @@ function getNetworkErrorCode(error: unknown): string | undefined {
 export async function verifySmartCaptcha(token: string, ip: string, config: ISmartCaptchaConfig) {
   const allowedHosts = config.allowedHosts.map((host) => host.trim().toLowerCase()).filter(Boolean);
 
-  if (!config.secretKey) throw createUnavailableError({ reason: SmartCaptchaErrorReason.MissingSecretKey });
-  if (!allowedHosts.length) throw createUnavailableError({ reason: SmartCaptchaErrorReason.MissingAllowedHosts });
+  if (!config.secretKey || !allowedHosts.length) {
+    throw new SmartCaptchaError(HttpStatus.ServiceUnavailable, SMARTCAPTCHA_MESSAGES.unavailable);
+  }
 
-  const startedAt = Date.now();
   let result: unknown;
-  let upstreamStatus: number | undefined;
 
   try {
     const body = new URLSearchParams({ secret: config.secretKey, token });
@@ -50,41 +34,18 @@ export async function verifySmartCaptcha(token: string, ip: string, config: ISma
       signal: AbortSignal.timeout(SMARTCAPTCHA_VALIDATE_TIMEOUT_MS),
       redirect: 'error',
     });
-    upstreamStatus = response.status;
 
     if (response.status !== HttpStatus.Ok) {
-      throw createUnavailableError({
-        reason: SmartCaptchaErrorReason.UnexpectedHttpStatus,
-        upstreamStatus,
-        elapsedMs: Date.now() - startedAt,
-      });
+      throw new SmartCaptchaError(HttpStatus.ServiceUnavailable, SMARTCAPTCHA_MESSAGES.unavailable);
     }
     result = await response.json();
-  } catch (error) {
-    if (error instanceof SmartCaptchaError) throw error;
-
-    let reason = SmartCaptchaErrorReason.RequestFailed;
-    if (error instanceof Error && error.name === SMARTCAPTCHA_TIMEOUT_ERROR_NAME) {
-      reason = SmartCaptchaErrorReason.RequestTimeout;
-    } else if (error instanceof SyntaxError) {
-      reason = SmartCaptchaErrorReason.InvalidResponse;
-    }
-
+  } catch {
     // При сбое сети или API заявка не проходит без подтверждённой проверки.
-    throw createUnavailableError({
-      reason,
-      upstreamStatus,
-      elapsedMs: Date.now() - startedAt,
-      networkCode: getNetworkErrorCode(error),
-    });
+    throw new SmartCaptchaError(HttpStatus.ServiceUnavailable, SMARTCAPTCHA_MESSAGES.unavailable);
   }
 
   if (!result || typeof result !== 'object' || !('status' in result)) {
-    throw createUnavailableError({
-      reason: SmartCaptchaErrorReason.InvalidResponse,
-      upstreamStatus,
-      elapsedMs: Date.now() - startedAt,
-    });
+    throw new SmartCaptchaError(HttpStatus.ServiceUnavailable, SMARTCAPTCHA_MESSAGES.unavailable);
   }
 
   if (result.status === SmartCaptchaStatus.Failed) {
@@ -92,11 +53,7 @@ export async function verifySmartCaptcha(token: string, ip: string, config: ISma
   }
 
   if (result.status !== SmartCaptchaStatus.Ok) {
-    throw createUnavailableError({
-      reason: SmartCaptchaErrorReason.InvalidResponse,
-      upstreamStatus,
-      elapsedMs: Date.now() - startedAt,
-    });
+    throw new SmartCaptchaError(HttpStatus.ServiceUnavailable, SMARTCAPTCHA_MESSAGES.unavailable);
   }
 
   // Пустой host возможен и при блокировке облачного аккаунта, поэтому принимать его небезопасно.
