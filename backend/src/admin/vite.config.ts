@@ -1,6 +1,6 @@
 import { mergeConfig, type UserConfig } from 'vite';
 
-export default (config: UserConfig) => {
+export default function createAdminViteConfig(config: UserConfig) {
   return mergeConfig(config, {
     resolve: {
       alias: {
@@ -8,4 +8,4 @@ export default (config: UserConfig) => {
       },
     },
   });
-};
+}

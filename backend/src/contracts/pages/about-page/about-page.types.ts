@@ -1,4 +1,4 @@
-import { AboutPageSchema, AboutPageTeamItemSchema } from './about-page.schemas';
+import { type AboutPageSchema, type AboutPageTeamItemSchema } from './about-page.schemas';
 import type { InferOutput } from 'valibot';
 
 export type TAboutPage = InferOutput<typeof AboutPageSchema>;

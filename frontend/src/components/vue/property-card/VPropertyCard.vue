@@ -1,7 +1,7 @@
 <template>
   <li
     class="v-property-card w-full"
-    :class="[{ 'v-property-card--row': row }, className]"
+    :class="cardClasses"
     v-bind="attrs"
   >
     <a
@@ -81,7 +81,7 @@
 <script lang="ts" setup>
 import type { TPropertyListItem, TSpecItem } from '@contracts';
 import { ArrowRight, MapPin } from 'lucide-vue-next';
-import { computed, useAttrs } from 'vue';
+import { type ClassValue, computed, useAttrs } from 'vue';
 
 import { PRICE_PER_M2_SUFFIX, PRICE_SUFFIX } from '@/constants';
 import { formatPrice } from '@/helpers';
@@ -89,7 +89,7 @@ import { formatPrice } from '@/helpers';
 import VImage from '../image/VImage.vue';
 import { SPEC_ICON_MAP } from './property-card.icons';
 
-const props = defineProps<{
+const { property, fullPrice, row } = defineProps<{
   fullPrice?: boolean;
   hideDetails?: boolean;
   property: TPropertyListItem;
@@ -102,16 +102,17 @@ defineOptions({
 
 const { class: className, ...attrs } = useAttrs();
 
-const link = computed<string>(() => `/properties/${props.property.slug}/`);
+const cardClasses = computed<ClassValue>(() => [{ 'v-property-card--row': row }, className]);
+const link = computed<string>(() => `/properties/${property.slug}/`);
 const price = computed<string>(() => {
-  if (props.fullPrice) return `${formatPrice(props.property.priceFrom)} ${PRICE_SUFFIX}`;
+  if (fullPrice) return `${formatPrice(property.priceFrom)} ${PRICE_SUFFIX}`;
 
-  return `от ${formatPrice(props.property.pricePerM2)} ${PRICE_PER_M2_SUFFIX}`;
+  return `от ${formatPrice(property.pricePerM2)} ${PRICE_PER_M2_SUFFIX}`;
 });
 
-const specs = computed<TSpecItem[]>(() => props.property.specifications.slice(0, 2));
+const specs = computed<TSpecItem[]>(() => property.specifications.slice(0, 2));
 
-const badge = computed<string>(() => props.property.badges[0]?.value ?? '');
+const badge = computed<string>(() => property.badges[0]?.value ?? '');
 </script>
 
 <style lang="scss">

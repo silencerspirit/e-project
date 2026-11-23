@@ -3,14 +3,8 @@
     :is="tag"
     v-bind="forwardedAttrs"
     :disabled="tag === 'button' ? disabled : undefined"
-    :class="[
-      disabledClassNames,
-      baseClasses,
-      variantClassesMap[variant],
-      sizeClassesMap[size],
-      roundedMap[rounded],
-      className,
-    ]"
+    class="inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap text-sm font-medium outline-none transition-all transition-colors focus-visible:border-ring focus-visible:ring-ring focus-visible:ring-ring/50"
+    :class="buttonClasses"
   >
     <slot />
   </component>
@@ -37,40 +31,25 @@ interface IAnchorProps extends /* @vue-ignore */ AnchorHTMLAttributes, ICommonPr
   tag?: 'a';
 }
 
-const props = withDefaults(defineProps<IAnchorProps | IButtonProps>(), {
-  tag: 'button',
-  size: ButtonSize.Default,
-  variant: ButtonVariant.Default,
-  rounded: ButtonRounded.Md,
-});
+const {
+  disabled,
+  tag = 'button',
+  size = ButtonSize.Default,
+  variant = ButtonVariant.Default,
+  rounded = ButtonRounded.Md,
+} = defineProps<IAnchorProps | IButtonProps>();
 
 defineOptions({
   inheritAttrs: false,
 });
 
-const attrs = useAttrs();
-
-const className = computed<ClassValue>(() => attrs.class);
-const forwardedAttrs = computed(() => {
-  const restAttrs = { ...attrs };
-
-  delete restAttrs.class;
-
-  return restAttrs;
-});
-
-const baseClasses =
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-ring transition-colors';
-
-const disabledClassNames = computed<string>(() => (props.disabled ? 'pointer-events-none opacity-50' : ''));
-
-const variantClassesMap: Record<ButtonVariant, string> = {
+const VARIANT_CLASSES: Record<ButtonVariant, string> = {
   [ButtonVariant.Default]: 'bg-primary text-primary-foreground hover:bg-primary/90',
   [ButtonVariant.Outline]: 'border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground',
   [ButtonVariant.Link]: 'text-primary underline-offset-4 hover:underline',
 };
 
-const sizeClassesMap: Record<ButtonSize, string> = {
+const SIZE_CLASSES: Record<ButtonSize, string> = {
   [ButtonSize.Default]: 'h-9 px-4 py-2',
   [ButtonSize.Sm]: 'h-8 gap-1.5 px-3',
   [ButtonSize.Lg]: 'h-10 px-6',
@@ -78,9 +57,25 @@ const sizeClassesMap: Record<ButtonSize, string> = {
   [ButtonSize.Icon]: 'size-9',
 };
 
-const roundedMap: Record<ButtonRounded, string> = {
+const ROUNDED_CLASSES: Record<ButtonRounded, string> = {
   [ButtonRounded.Md]: 'rounded-md',
   [ButtonRounded.Full]: 'rounded-full',
   [ButtonRounded.None]: 'rounded-none',
 };
+
+const attrs = useAttrs();
+
+const className = computed<ClassValue>(() => attrs.class);
+const forwardedAttrs = computed<Record<string, unknown>>(() => {
+  const restAttrs = { ...attrs };
+  delete restAttrs.class;
+  return restAttrs;
+});
+const buttonClasses = computed<ClassValue>(() => [
+  disabled ? 'pointer-events-none opacity-50' : '',
+  VARIANT_CLASSES[variant],
+  SIZE_CLASSES[size],
+  ROUNDED_CLASSES[rounded],
+  className.value,
+]);
 </script>

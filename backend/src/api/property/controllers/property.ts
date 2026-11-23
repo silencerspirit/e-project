@@ -6,7 +6,7 @@ import {
   PropertySlugListSchema,
   PropertySlugSchema,
 } from '@/contracts';
-import { Context } from 'koa';
+import { type Context } from 'koa';
 
 export default factories.createCoreController('api::property.property', ({ strapi }) => ({
   async findSlugs() {

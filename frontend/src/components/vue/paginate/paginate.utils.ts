@@ -12,7 +12,9 @@ export function buildCanonicalUrl(url: URL, page: number, siteUrl?: string): str
   const canonicalUrl = new URL(url.pathname, base);
 
   canonicalUrl.search = url.search;
-  if (page <= 1) canonicalUrl.searchParams.delete('page');
+  if (page <= 1) {
+    canonicalUrl.searchParams.delete('page');
+  }
 
   return canonicalUrl.toString();
 }

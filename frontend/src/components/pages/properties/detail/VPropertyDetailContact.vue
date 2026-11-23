@@ -16,9 +16,9 @@ import type { TSiteConfig } from '@contracts';
 
 import { formatPhone } from '@/helpers';
 
-const props = defineProps<{
+const { config } = defineProps<{
   config: TSiteConfig;
 }>();
 
-const telHref = `tel:${props.config.phone?.replace(/\D/g, '')}`;
+const telHref = `tel:${config.phone?.replace(/\D/g, '')}`;
 </script>

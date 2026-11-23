@@ -3,7 +3,10 @@
     class="text-center"
     aria-live="polite"
   >
-    <div :class="['mx-auto mb-4 flex items-center justify-center rounded-full bg-green-100', iconWrapperClass]">
+    <div
+      class="mx-auto mb-4 flex items-center justify-center rounded-full bg-green-100"
+      :class="iconWrapperClass"
+    >
       <CircleCheck
         :class="iconClass"
         aria-hidden="true"

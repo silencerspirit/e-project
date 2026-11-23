@@ -1,4 +1,4 @@
-interface EnvFn {
+interface IEnvFn {
   (key: string, defaultValue?: string): string;
   array: (key: string, defaultValue?: string[]) => string[];
   bool: (key: string, defaultValue?: boolean) => boolean;

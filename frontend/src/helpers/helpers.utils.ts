@@ -1,9 +1,9 @@
 export function formatPhone(input: string): string {
   const digits = input.replace(/\D/g, '');
-  const hasLeadingPlus = input.trim().startsWith('+');
+  const leadingPlus = input.trim().startsWith('+');
 
   return [
-    hasLeadingPlus ? `+${digits.slice(0, 1)}` : digits.slice(0, 1),
+    leadingPlus ? `+${digits.slice(0, 1)}` : digits.slice(0, 1),
     digits.slice(1, 4),
     digits.slice(4, 7),
     digits.slice(7, 9),
@@ -41,11 +41,11 @@ export function formatPrice(value: unknown): string {
   return Number(value).toLocaleString('ru-RU');
 }
 
-export const declOfNum = (number: number, titles: string[]): string => {
+export function declOfNum(number: number, titles: string[]): string {
   const cases: number[] = [2, 0, 1, 1, 1, 2];
 
   return titles[number % 100 > 4 && number % 100 < 20 ? 2 : cases[number % 10 < 5 ? number % 10 : 5]];
-};
+}
 
 export function assertNever(x: never): never {
   throw new Error(`Неожиданное значение: ${x}`);

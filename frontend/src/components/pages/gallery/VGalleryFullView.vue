@@ -66,9 +66,9 @@ import { ArrowLeft, ArrowRight, X } from 'lucide-vue-next';
 import type SwiperInstance from 'swiper';
 import { computed, nextTick, onMounted, onUnmounted, ref, useTemplateRef } from 'vue';
 
-import { loadSwiperCore, loadSwiperNavigation, loadSwiperZoom } from '@/components/ui/swiper/loader';
+import { loadSwiperCore, loadSwiperNavigation, loadSwiperZoom } from '@/components/ui/swiper/swiper.utils';
 
-const props = defineProps<{
+const { currentIndex, items } = defineProps<{
   currentIndex: number;
   items: TGalleryItem[];
 }>();
@@ -79,20 +79,16 @@ const emit = defineEmits<{
 
 const swiperRef = useTemplateRef<HTMLElement>('swiper');
 const dialogRef = useTemplateRef<HTMLElement>('dialog');
-const slideIndex = ref<number>(props.currentIndex);
+const slideIndex = ref<number>(currentIndex);
 
 let sliderInstance: null | SwiperInstance = null;
 
-const counter = computed<string>(() => `${slideIndex.value + 1} / ${props.items.length}`);
+const counter = computed<string>(() => `${slideIndex.value + 1} / ${items.length}`);
 
-const description = computed<string>(() => props.items[slideIndex.value].description ?? '');
-const group = computed<string>(() => props.items[slideIndex.value].group ?? '');
+const description = computed<string>(() => items[slideIndex.value].description ?? '');
+const group = computed<string>(() => items[slideIndex.value].group ?? '');
 
 const counterText = computed<string>(() => `${counter.value} ${group.value ? `— ${group.value}` : ''}`);
-
-function loadSwiper() {
-  return Promise.all([loadSwiperCore(), loadSwiperNavigation(), loadSwiperZoom()]);
-}
 
 function destroySwiper() {
   sliderInstance?.destroy(true, true);
@@ -122,13 +118,17 @@ function onKeydown(event: KeyboardEvent) {
 }
 
 async function initSwiper() {
-  const [{ Swiper }, { Navigation }, { Zoom }] = await loadSwiper();
+  const [{ Swiper }, { Navigation }, { Zoom }] = await Promise.all([
+    loadSwiperCore(),
+    loadSwiperNavigation(),
+    loadSwiperZoom(),
+  ]);
 
   if (!swiperRef.value) return;
 
   sliderInstance = new Swiper(swiperRef.value, {
     modules: [Navigation, Zoom],
-    initialSlide: props.currentIndex,
+    initialSlide: currentIndex,
     slidesPerView: 1,
     zoom: {
       maxRatio: 3,

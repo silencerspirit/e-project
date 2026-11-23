@@ -1,24 +1,26 @@
-export default ({ env }: { env: EnvFn }) => ({
-  auth: {
-    sessions: {
-      maxRefreshTokenLifespan: 2592000, // 30 дней
-      maxSessionLifespan: 604800, // 7 дней
+export default function createAdminConfig({ env }: { env: IEnvFn }) {
+  return {
+    auth: {
+      sessions: {
+        maxRefreshTokenLifespan: 2592000, // 30 дней
+        maxSessionLifespan: 604800, // 7 дней
+      },
+      secret: env('ADMIN_JWT_SECRET'),
     },
-    secret: env('ADMIN_JWT_SECRET'),
-  },
-  apiToken: {
-    salt: env('API_TOKEN_SALT'),
-  },
-  transfer: {
-    token: {
-      salt: env('TRANSFER_TOKEN_SALT'),
+    apiToken: {
+      salt: env('API_TOKEN_SALT'),
     },
-  },
-  secrets: {
-    encryptionKey: env('ENCRYPTION_KEY'),
-  },
-  flags: {
-    nps: env.bool('FLAG_NPS', true),
-    promoteEE: env.bool('FLAG_PROMOTE_EE', true),
-  },
-});
+    transfer: {
+      token: {
+        salt: env('TRANSFER_TOKEN_SALT'),
+      },
+    },
+    secrets: {
+      encryptionKey: env('ENCRYPTION_KEY'),
+    },
+    flags: {
+      nps: env.bool('FLAG_NPS', true),
+      promoteEE: env.bool('FLAG_PROMOTE_EE', true),
+    },
+  };
+}

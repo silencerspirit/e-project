@@ -19,7 +19,7 @@
             </a>
 
             <ChevronRight
-              v-if="isEmptyItems"
+              v-if="itemsEmpty"
               class="h-4 w-4 text-border"
               aria-hidden="true"
             />
@@ -91,12 +91,7 @@ import { computed } from 'vue';
 
 import type { IBreadcrumbsProps } from './breadcrumbs.types';
 
-const props = withDefaults(defineProps<IBreadcrumbsProps>(), {
-  items: () => [],
-  category: '',
-  description: '',
-  status: '',
-});
+const { items = [], category = '', description = '', status = '' } = defineProps<IBreadcrumbsProps>();
 
-const isEmptyItems = computed<boolean>(() => !props.items.length);
+const itemsEmpty = computed<boolean>(() => !items.length);
 </script>

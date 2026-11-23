@@ -1,15 +1,15 @@
 import type { APIRoute } from 'astro';
 
-const getStrapiBaseUrl = (): string => {
+function getStrapiBaseUrl(): string {
   const base = import.meta.env.PUBLIC_STRAPI_URL;
 
   if (!base) {
     throw new Error('STRAPI_URL is not set');
   }
   return base.replace(/\/$/, '');
-};
+}
 
-export const GET: APIRoute = async ({ params, request }) => {
+export async function GET({ params, request }: Parameters<APIRoute>[0]): Promise<Response> {
   const segments = (params.path ?? '').split('/').filter(Boolean);
   const upstreamUrl = `${getStrapiBaseUrl()}/uploads/${segments.join('/')}`;
 
@@ -28,4 +28,4 @@ export const GET: APIRoute = async ({ params, request }) => {
     statusText: upstream.statusText,
     headers,
   });
-};
+}

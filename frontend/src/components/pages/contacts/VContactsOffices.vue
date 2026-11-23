@@ -14,13 +14,13 @@
       <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <div
           class="relative rounded-2xl border bg-card p-6 transition-all hover:shadow-lg"
-          v-for="(office, i) in offices"
+          v-for="({ office, id, onClick }, i) in officeCards"
           :key="i"
           :class="{
-            'border-border': activeOfficeId !== getOfficeId(office),
-            'border-primary': activeOfficeId === getOfficeId(office),
+            'border-border': activeOfficeId !== id,
+            'border-primary': activeOfficeId === id,
           }"
-          @click="onClick(office)"
+          @click="onClick"
         >
           <span
             v-if="office.general"
@@ -63,10 +63,10 @@
         <div
           :ref="MAP_CONTAINER_REF"
           class="h-full w-full"
-        ></div>
+        />
 
         <VMapZoomControls
-          :current-zoom="currentZoom"
+          :current-zoom
           :max-zoom="MAP_MAX_ZOOM"
           :min-zoom="MAP_MIN_ZOOM"
           @zoom-in="zoomIn"
@@ -86,13 +86,12 @@ import VMapZoomControls from '@/components/vue/map/VMapZoomControls.vue';
 import { MAP_CONTAINER_REF, MAP_MAX_ZOOM, MAP_MIN_ZOOM, useMap } from '@/composables';
 import { formatPhone } from '@/helpers';
 
-const props = defineProps<{
+const { info } = defineProps<{
   info: TContactsPage['contactsMapSection'];
 }>();
 
-const offices = computed<TContactsPageOffice[]>(() => props.info?.offices ?? []);
-const headOffice = computed<TContactsPageOffice | undefined>(() => getHeadOffice());
-const activeOfficeId = ref<string>(headOffice.value ? getOfficeId(headOffice.value) : '');
+const initialOffice = getHeadOffice(info?.offices ?? []);
+const activeOfficeId = ref<string>(initialOffice ? getOfficeId(initialOffice) : '');
 const mapContainerEl = useTemplateRef<HTMLElement>(MAP_CONTAINER_REF);
 const { currentZoom, setCenter, zoomIn, zoomOut } = useMap(() => {
   if (!headOffice.value) return;
@@ -108,9 +107,21 @@ const { currentZoom, setCenter, zoomIn, zoomOut } = useMap(() => {
   };
 });
 
-function getHeadOffice(): TContactsPageOffice | undefined {
-  const [firstOffice] = offices.value;
-  const headOffice = offices.value.find((office) => office.general) || firstOffice;
+const offices = computed<TContactsPageOffice[]>(() => info?.offices ?? []);
+const headOffice = computed<TContactsPageOffice | undefined>(() => getHeadOffice(offices.value));
+const officeCards = computed<Array<{ id: string; office: TContactsPageOffice; onClick: () => void }>>(() =>
+  offices.value.map((office) => ({
+    office,
+    id: getOfficeId(office),
+    onClick() {
+      onClick(office);
+    },
+  })),
+);
+
+function getHeadOffice(items: TContactsPageOffice[]): TContactsPageOffice | undefined {
+  const [firstOffice] = items;
+  const headOffice = items.find((office) => office.general) || firstOffice;
 
   return headOffice;
 }

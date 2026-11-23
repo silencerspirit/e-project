@@ -7,17 +7,17 @@
       class="flex size-10 items-center justify-center text-primary transition-colors hover:bg-primary hover:text-primary-foreground disabled:pointer-events-none disabled:opacity-40"
       aria-label="Увеличить карту"
       :disabled="currentZoom >= maxZoom"
-      @click.stop="$emit('zoomIn')"
+      @click.stop="onZoomIn"
     >
       <LucidePlus class="size-5" />
     </button>
-    <span class="h-px bg-primary/30"></span>
+    <span class="h-px bg-primary/30" />
     <button
       type="button"
       class="flex size-10 items-center justify-center text-primary transition-colors hover:bg-primary hover:text-primary-foreground disabled:pointer-events-none disabled:opacity-40"
       aria-label="Уменьшить карту"
       :disabled="currentZoom <= minZoom"
-      @click.stop="$emit('zoomOut')"
+      @click.stop="onZoomOut"
     >
       <LucideMinus class="size-5" />
     </button>
@@ -33,10 +33,18 @@ defineProps<{
   minZoom: number;
 }>();
 
-defineEmits<{
+const emit = defineEmits<{
   zoomIn: [];
   zoomOut: [];
 }>();
+
+function onZoomIn() {
+  emit('zoomIn');
+}
+
+function onZoomOut() {
+  emit('zoomOut');
+}
 </script>
 
 <style lang="scss">

@@ -12,7 +12,7 @@
             class="swiper-slide aspect-square sm:aspect-video"
           >
             <VImage
-              :image="image"
+              :image
               :loading="i === 0 ? 'eager' : 'lazy'"
               :decoding="i === 0 ? 'sync' : 'async'"
               :fetchpriority="i === 0 ? 'high' : 'low'"
@@ -60,7 +60,7 @@
             class="swiper-slide relative aspect-square shrink-0 cursor-pointer overflow-hidden rounded-xl transition-colors"
           >
             <VImage
-              :image="image"
+              :image
               thumbnail
               :loading="i === 0 ? 'eager' : 'lazy'"
               :decoding="i === 0 ? 'sync' : 'async'"
@@ -85,10 +85,10 @@ import {
   loadSwiperFreeMode,
   loadSwiperNavigation,
   loadSwiperThumbs,
-} from '@/components/ui/swiper/loader';
+} from '@/components/ui/swiper/swiper.utils';
 import VImage from '@/components/vue/image/VImage.vue';
 
-const props = defineProps<{
+const { images } = defineProps<{
   images: TImage[];
 }>();
 
@@ -99,11 +99,7 @@ const slideIndex = ref<number>(0);
 let sliderInstance: null | SwiperInstance = null;
 let thumbsInstance: null | SwiperInstance = null;
 
-const counterText = computed<string>(() => `${slideIndex.value + 1} / ${props.images.length}`);
-
-function loadSwiper() {
-  return Promise.all([loadSwiperCore(), loadSwiperNavigation(), loadSwiperThumbs(), loadSwiperFreeMode()]);
-}
+const counterText = computed<string>(() => `${slideIndex.value + 1} / ${images.length}`);
 
 function destroySwiper() {
   sliderInstance?.destroy(true, true);
@@ -111,7 +107,12 @@ function destroySwiper() {
 }
 
 async function initSwiper() {
-  const [{ Swiper }, { Navigation }, { Thumbs }, { FreeMode }] = await loadSwiper();
+  const [{ Swiper }, { Navigation }, { Thumbs }, { FreeMode }] = await Promise.all([
+    loadSwiperCore(),
+    loadSwiperNavigation(),
+    loadSwiperThumbs(),
+    loadSwiperFreeMode(),
+  ]);
 
   if (!swiperRef.value || !thumbsRef.value) return;
 

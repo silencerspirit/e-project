@@ -3,11 +3,11 @@ import {
   PropertyListingPageSort,
   PropertyTypeSchema,
   type TPropertyListingPageFacet,
-  TPropertyListingPageFilters,
+  type TPropertyListingPageFilters,
   type TPropertyListingPageRequest,
-  TPropertyType,
+  type TPropertyType,
 } from '@/contracts';
-import { CitySchema, TCity } from '@/contracts/city';
+import { CitySchema, type TCity } from '@/contracts/city';
 import { sortByOrder } from '@/utils';
 import { factories } from '@strapi/strapi';
 import { parse } from 'valibot';
@@ -182,9 +182,15 @@ export default factories.createCoreService('api::property-listing-page.property-
     const priceRange: number[] = [];
 
     for (const item of allPublishedFacetItems) {
-      if (item.propertyType) setFacetMap(propertyTypeFacetMap, item.propertyType);
-      if (item.city) setFacetMap(cityFacetMap, item.city);
-      if (item.priceFrom !== null) priceRange.push(toThousands(item.priceFrom));
+      if (item.propertyType) {
+        setFacetMap(propertyTypeFacetMap, item.propertyType);
+      }
+      if (item.city) {
+        setFacetMap(cityFacetMap, item.city);
+      }
+      if (item.priceFrom !== null) {
+        priceRange.push(toThousands(item.priceFrom));
+      }
     }
 
     const prices = createPriceFacets(priceRange);
@@ -194,9 +200,15 @@ export default factories.createCoreService('api::property-listing-page.property-
     const cityFacetItems = allPublishedFacetItems.filter((item) => matchesFacetItem(item, request, 'cities'));
     const priceFacetItems = allPublishedFacetItems.filter((item) => matchesFacetItem(item, request, 'prices'));
 
-    for (const item of typeFacetItems) if (item.propertyType) enableFacetMap(propertyTypeFacetMap, item.propertyType);
+    for (const item of typeFacetItems)
+      if (item.propertyType) {
+        enableFacetMap(propertyTypeFacetMap, item.propertyType);
+      }
 
-    for (const item of cityFacetItems) if (item.city) enableFacetMap(cityFacetMap, item.city);
+    for (const item of cityFacetItems)
+      if (item.city) {
+        enableFacetMap(cityFacetMap, item.city);
+      }
 
     for (const item of priceFacetItems) {
       if (item.priceFrom === null) {
@@ -205,10 +217,15 @@ export default factories.createCoreService('api::property-listing-page.property-
 
       const price = item.priceFrom;
 
-      if (firstRange && firstRange.disabled && firstRange.to >= price) firstRange.disabled = false;
-      if (secondRange && secondRange.disabled && secondRange.from < price && secondRange.to >= price)
+      if (firstRange && firstRange.disabled && firstRange.to >= price) {
+        firstRange.disabled = false;
+      }
+      if (secondRange && secondRange.disabled && secondRange.from < price && secondRange.to >= price) {
         secondRange.disabled = false;
-      if (thirdRange && thirdRange.disabled && thirdRange.from < price) thirdRange.disabled = false;
+      }
+      if (thirdRange && thirdRange.disabled && thirdRange.from < price) {
+        thirdRange.disabled = false;
+      }
     }
 
     return {

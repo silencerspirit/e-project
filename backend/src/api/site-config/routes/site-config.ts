@@ -1,4 +1,4 @@
-import { Core } from '@strapi/strapi';
+import { type Core } from '@strapi/strapi';
 
 const config: Core.RouterConfig = {
   type: 'content-api',

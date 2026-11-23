@@ -87,7 +87,7 @@ async function getPropertySlugs(): Promise<TPropertySitemapItem[]> {
 }
 export const prerender = false;
 
-export const GET: APIRoute = async ({ request }) => {
+export async function GET({ request }: Parameters<APIRoute>[0]): Promise<Response> {
   const siteUrl = getPublicSiteUrl(request.url);
   const sitemapItems = await getPropertySlugs();
 
@@ -115,4 +115,4 @@ export const GET: APIRoute = async ({ request }) => {
       'Cache-Control': CACHE_CONTROL_HEADER,
     },
   });
-};
+}

@@ -1,34 +1,22 @@
 import { onBeforeUnmount, onMounted, ref, shallowRef } from 'vue';
-import type { BehaviorType, LngLat, YMap, YMapLocationRequest, YMapMarker, YMapMarkerProps } from 'ymaps3';
+import type { BehaviorType, LngLat, YMap, YMapMarker } from 'ymaps3';
 
 import LogoIcon from '@/assets/logo.svg?raw';
 import { isTouchDevice } from '@/helpers';
 
-const API_KEY = '39b49b90-cd08-48f5-9c13-a35ffa021676';
-const YMAP_SCRIPT_ID = 'ymaps3-script';
-const YMAP_ANIMATION_SETTINGS: Pick<YMapLocationRequest, 'duration' | 'easing'> = {
-  duration: 300,
-  easing: 'ease',
-};
+import {
+  MAP_DEFAULT_ZOOM,
+  MAP_MAX_ZOOM,
+  MAP_MIN_ZOOM,
+  YMAP_ANIMATION_SETTINGS,
+  YMAP_API_KEY,
+  YMAP_SCRIPT_ID,
+} from './map.constants';
+import type { IInitMapOptions, TInitMapOptionsFactory, TMapMarkerProps } from './map.types';
 
 let ymapLoadPromise: Promise<void> | undefined;
 
-export const MAP_DEFAULT_ZOOM = 18;
-export const MAP_MIN_ZOOM = 3;
-export const MAP_MAX_ZOOM = 20;
-export const MAP_CONTAINER_REF = 'mapContainerEl';
-
-export type TMapMarkerProps = YMapMarkerProps;
-
-type TInitMapOptions = {
-  behaviors?: BehaviorType[];
-  center: LngLat;
-  container: HTMLElement | null;
-  markers?: TMapMarkerProps[];
-  zoom?: number;
-};
-type TInitMapOptionsFactory = () => TInitMapOptions | undefined;
-
+/** Общий Promise объединяет параллельные загрузки SDK карты. */
 function loadYmapScript(): Promise<void> {
   if (window.ymaps3) return Promise.resolve();
   if (ymapLoadPromise) return ymapLoadPromise;
@@ -38,11 +26,13 @@ function loadYmapScript(): Promise<void> {
     const script = existedScript ?? document.createElement('script');
 
     script.id = YMAP_SCRIPT_ID;
-    script.src = `https://api-maps.yandex.ru/v3/?apikey=${API_KEY}&lang=ru_RU`;
+    script.src = `https://api-maps.yandex.ru/v3/?apikey=${YMAP_API_KEY}&lang=ru_RU`;
     script.addEventListener('load', () => resolve(), { once: true });
     script.addEventListener('error', () => reject(new Error('Failed to load Yandex Maps script')), { once: true });
 
-    if (!existedScript) document.body.appendChild(script);
+    if (!existedScript) {
+      document.body.appendChild(script);
+    }
   });
 
   return ymapLoadPromise;
@@ -100,7 +90,7 @@ function getDefaultBehaviors(): BehaviorType[] {
 export function useMap(createInitOptions?: TInitMapOptionsFactory) {
   const currentZoom = ref<number>(MAP_DEFAULT_ZOOM);
   const map = shallowRef<undefined | YMap>();
-  let isActive = true;
+  let active = true;
 
   function createMarker(props: TMapMarkerProps): YMapMarker {
     const { YMapMarker } = window.ymaps3;
@@ -108,18 +98,18 @@ export function useMap(createInitOptions?: TInitMapOptionsFactory) {
     return new YMapMarker(props, createMarkerElement());
   }
 
-  async function initMap(options: TInitMapOptions) {
+  async function initMap(options: IInitMapOptions) {
     const { container, center, markers = [], zoom = MAP_DEFAULT_ZOOM, behaviors = getDefaultBehaviors() } = options;
 
     if (!container) return;
 
-    isActive = true;
+    active = true;
     currentZoom.value = zoom;
 
     await loadYmapScript();
     await window.ymaps3.ready;
 
-    if (!isActive) return;
+    if (!active) return;
 
     const { YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer } = window.ymaps3;
 
@@ -146,7 +136,7 @@ export function useMap(createInitOptions?: TInitMapOptionsFactory) {
   }
 
   function destroyMap() {
-    isActive = false;
+    active = false;
     map.value?.destroy();
     map.value = undefined;
   }

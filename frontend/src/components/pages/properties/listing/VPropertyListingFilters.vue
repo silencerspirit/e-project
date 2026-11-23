@@ -18,7 +18,7 @@
         type="button"
         class="inline-block xl:hidden"
         aria-label="Закрыть фильтры"
-        @click="emit('closeFilters')"
+        @click="onFiltersClose"
       >
         <X
           aria-hidden="true"
@@ -32,19 +32,19 @@
       <div class="flex flex-wrap gap-2">
         <VButton
           :variant="stateFilters?.[FilterCode.PropertyType] ? ButtonVariant.Outline : ButtonVariant.Default"
-          @click="onUpdateFilter(FilterCode.PropertyType, '')"
+          @click="onResetPropertyType"
         >
           Все объекты
         </VButton>
 
         <VButton
-          v-for="type in filters.propertyTypes"
+          v-for="type in propertyTypeButtons"
           :key="type.slug"
           :variant="
             stateFilters?.[FilterCode.PropertyType] === type.slug ? ButtonVariant.Default : ButtonVariant.Outline
           "
           :disabled="type.disabled"
-          @click="onUpdateFilter(FilterCode.PropertyType, type.slug)"
+          @click="type.onClick"
         >
           {{ type.name }}
         </VButton>
@@ -55,17 +55,17 @@
       <div class="flex flex-wrap gap-2">
         <VButton
           :variant="stateFilters?.[FilterCode.City] ? ButtonVariant.Outline : ButtonVariant.Default"
-          @click="onUpdateFilter(FilterCode.City, '')"
+          @click="onResetCity"
         >
           Все города
         </VButton>
 
         <VButton
-          v-for="city in filters.cities"
+          v-for="city in cityButtons"
           :key="city.slug"
           :variant="stateFilters?.[FilterCode.City] === city.slug ? ButtonVariant.Default : ButtonVariant.Outline"
           :disabled="city.disabled"
-          @click="onUpdateFilter(FilterCode.City, city.slug)"
+          @click="city.onClick"
         >
           {{ city.name }}
         </VButton>
@@ -80,29 +80,19 @@
               ? ButtonVariant.Outline
               : ButtonVariant.Default
           "
-          @click="
-            () => {
-              onUpdateFilter(FilterCode.PriceFrom, '');
-              onUpdateFilter(FilterCode.PriceTo, '');
-            }
-          "
+          @click="onResetPrice"
         >
           Любая цена
         </VButton>
 
         <VButton
-          v-for="(price, i) in filters.prices"
+          v-for="{ price, label, onClick } in priceButtons"
           :key="price.from"
           :variant="getPriceButtonVariant(price)"
           :disabled="price.disabled"
-          @click="
-            () => {
-              onUpdateFilter(FilterCode.PriceFrom, `${price.from}`);
-              onUpdateFilter(FilterCode.PriceTo, `${price.to}`);
-            }
-          "
+          @click="onClick"
         >
-          {{ buttonPriceTextMap[i as keyof typeof buttonPriceTextMap](price) }}
+          {{ label }}
         </VButton>
       </div>
     </div>
@@ -114,7 +104,7 @@
         :variant="ButtonVariant.Outline"
         tag="a"
         href="/properties/"
-        :class="{ hidden: !existFilters }"
+        :class="{ hidden: !filtersAvailable }"
       >
         <X
           aria-hidden="true"
@@ -136,9 +126,19 @@ import { ButtonVariant } from '@/components/vue/button/button.enums';
 import VButton from '@/components/vue/button/VButton.vue';
 
 import { FilterCode } from '../properties.enums';
-import type { TParsedSegments } from '../properties.types';
+import type { IPropertyFilterUpdatePayload, TParsedSegments } from '../properties.types';
 
-const props = defineProps<{
+type TFacetButton = Pick<TPropertyListingPageFilters['cities'][number], 'disabled' | 'name' | 'slug'> & {
+  onClick: () => void;
+};
+type TPriceFilter = TPropertyListingPageFilters['prices'][number];
+interface IPriceButton {
+  label: string;
+  onClick: () => void;
+  price: TPriceFilter;
+}
+
+const { parsedSegments, stateFilters, filters } = defineProps<{
   active: boolean;
   filters: TPropertyListingPageFilters;
   parsedSegments?: TParsedSegments;
@@ -146,30 +146,66 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  closeFilters: [];
-  updateFilter: [type: FilterCode, value: string];
+  filtersClose: [];
+  filterUpdate: [payload: IPropertyFilterUpdatePayload];
 }>();
 
 defineSlots<{
   submitButton(): TSlot;
 }>();
 
-const buttonPriceTextMap = {
-  0: (price: TPropertyListingPageFilters['prices'][number]) => `до ${formatThousands(price.to)}`,
-  1: (price: TPropertyListingPageFilters['prices'][number]) =>
-    `от ${formatThousands(price.from)} до ${formatThousands(price.to)}`,
-  2: (price: TPropertyListingPageFilters['prices'][number]) => `от ${formatThousands(price.from)}`,
-};
+const PRICE_LABEL_FORMATTERS = [formatMaxPrice, formatRangePrice, formatMinPrice];
 
-const existFilters = computed<boolean>(() => Object.values(props.parsedSegments ?? {}).filter(Boolean).length > 0);
+const propertyTypeButtons = computed<TFacetButton[]>(() =>
+  filters.propertyTypes.map((type) => ({
+    ...type,
+    onClick() {
+      onFilterUpdate({ code: FilterCode.PropertyType, value: type.slug });
+    },
+  })),
+);
+const cityButtons = computed<TFacetButton[]>(() =>
+  filters.cities.map((city) => ({
+    ...city,
+    onClick() {
+      onFilterUpdate({ code: FilterCode.City, value: city.slug });
+    },
+  })),
+);
+const priceButtons = computed<IPriceButton[]>(() => filters.prices.map(createPriceButton));
+
+const filtersAvailable = computed<boolean>(() => Object.values(parsedSegments ?? {}).filter(Boolean).length > 0);
 
 function formatThousands(price: number): string {
   return `${Math.floor(price / 1_000)} тыс.`;
 }
 
+function formatMaxPrice(price: TPriceFilter): string {
+  return `до ${formatThousands(price.to)}`;
+}
+
+function formatRangePrice(price: TPriceFilter): string {
+  return `от ${formatThousands(price.from)} до ${formatThousands(price.to)}`;
+}
+
+function formatMinPrice(price: TPriceFilter): string {
+  return `от ${formatThousands(price.from)}`;
+}
+
+function createPriceButton(price: TPriceFilter, index: number): IPriceButton {
+  return {
+    price,
+    label: PRICE_LABEL_FORMATTERS[index](price),
+    onClick() {
+      onFilterUpdate({ code: FilterCode.PriceFrom, value: `${price.from}` });
+      onFilterUpdate({ code: FilterCode.PriceTo, value: `${price.to}` });
+    },
+  };
+}
+
 function getPriceButtonVariant(price: TPropertyListingPageFilters['prices'][number]): ButtonVariant {
-  const priceForm = Number(props.stateFilters?.[FilterCode.PriceFrom]);
-  const priceTo = Number(props.stateFilters?.[FilterCode.PriceTo]);
+  const priceForm = Number(stateFilters?.[FilterCode.PriceFrom]);
+  const priceTo = Number(stateFilters?.[FilterCode.PriceTo]);
 
   if (price.disabled) return ButtonVariant.Outline;
 
@@ -178,8 +214,25 @@ function getPriceButtonVariant(price: TPropertyListingPageFilters['prices'][numb
   return ButtonVariant.Outline;
 }
 
-function onUpdateFilter(type: FilterCode, value: string) {
-  emit('updateFilter', type, value);
+function onFilterUpdate(payload: IPropertyFilterUpdatePayload) {
+  emit('filterUpdate', payload);
+}
+
+function onFiltersClose() {
+  emit('filtersClose');
+}
+
+function onResetPropertyType() {
+  onFilterUpdate({ code: FilterCode.PropertyType, value: '' });
+}
+
+function onResetCity() {
+  onFilterUpdate({ code: FilterCode.City, value: '' });
+}
+
+function onResetPrice() {
+  onFilterUpdate({ code: FilterCode.PriceFrom, value: '' });
+  onFilterUpdate({ code: FilterCode.PriceTo, value: '' });
 }
 </script>
 
@@ -187,11 +240,11 @@ function onUpdateFilter(type: FilterCode, value: string) {
 @use '@/styles/mixins.scss' as *;
 
 .v-property-listing-filters {
+  @include hide-scrollbar-but-scrolling();
+
   transition:
     transform 0.3s ease,
     visibility 0s linear 0.3s;
-
-  @include hide-scrollbar-but-scrolling();
 
   @media (max-width: calc(#{theme('screens.xl')} - 1px)) {
     position: fixed;

@@ -15,11 +15,11 @@
       <img
         class="v-image__img absolute inset-0 h-full w-full"
         :src="srcDesktop"
-        :alt="alt"
-        :loading="loading"
-        :fetchpriority="fetchpriority"
-        :decoding="decoding"
-        :class="fitMap[fit]"
+        :alt
+        :loading
+        :fetchpriority
+        :decoding
+        :class="FIT_CLASSES[fit]"
         v-bind="attrs"
       />
     </picture>
@@ -27,12 +27,12 @@
     <img
       class="v-image__placeholder absolute inset-0 h-full w-full"
       :src="srcPlaceholder"
-      :class="fitMap[fit]"
-      :alt="alt"
+      :class="FIT_CLASSES[fit]"
+      :alt
       aria-hidden="true"
-      :loading="loading"
-      :fetchpriority="fetchpriority"
-      :decoding="decoding"
+      :loading
+      :fetchpriority
+      :decoding
       v-bind="attrs"
     />
   </div>
@@ -42,7 +42,7 @@
 import type { TImage } from '@contracts';
 import { type ImgHTMLAttributes, useAttrs } from 'vue';
 
-interface Props {
+interface IImageProps {
   decoding?: ImgHTMLAttributes['decoding'];
   fetchpriority?: ImgHTMLAttributes['fetchpriority'];
   fit?: 'contain' | 'cover';
@@ -56,28 +56,27 @@ defineOptions({
   inheritAttrs: false,
 });
 
-const props = withDefaults(defineProps<Props>(), {
-  loading: 'lazy',
-  fetchpriority: 'auto',
-  thumbnail: false,
-  decoding: 'async',
-  fit: 'cover',
-});
+const {
+  image,
+  loading = 'lazy',
+  fetchpriority = 'auto',
+  thumbnail = false,
+  decoding = 'async',
+  fit = 'cover',
+} = defineProps<IImageProps>();
 
 const { class: className, ...attrs } = useAttrs();
 
-const fitMap: Record<typeof props.fit, string> = {
+const FIT_CLASSES: Record<NonNullable<IImageProps['fit']>, string> = {
   cover: 'object-cover',
   contain: 'object-contain',
 };
 
-const alt = props.image.alternativeText ?? '';
-const srcPlaceholder = props.image.formats.thumbnail || props.image.url;
-const srcMobile = props.thumbnail ? srcPlaceholder : props.image.formats.small || props.image.formats.thumbnail;
-const srcTablet = props.thumbnail
-  ? srcPlaceholder
-  : props.image.formats.medium || props.image.formats.small || props.image.formats.thumbnail;
-const srcDesktop = props.thumbnail ? srcPlaceholder : props.image.formats.large || props.image.url;
+const alt = image.alternativeText ?? '';
+const srcPlaceholder = image.formats.thumbnail || image.url;
+const srcMobile = thumbnail ? srcPlaceholder : image.formats.small || image.formats.thumbnail;
+const srcTablet = thumbnail ? srcPlaceholder : image.formats.medium || image.formats.small || image.formats.thumbnail;
+const srcDesktop = thumbnail ? srcPlaceholder : image.formats.large || image.url;
 </script>
 
 <style lang="scss">

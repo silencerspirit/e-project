@@ -22,13 +22,13 @@
             aria-label="Фильтр объектов по типу"
           >
             <VButton
-              v-for="filter in filters"
+              v-for="{ filter, onClick } in filterButtons"
               :key="filter"
               type="button"
               :rounded="ButtonRounded.Full"
               :aria-pressed="filter === activeFilter"
               :variant="filter === activeFilter ? ButtonVariant.Default : ButtonVariant.Outline"
-              @click="onClickFilter(filter)"
+              @click="onClick"
             >
               {{ filter }}
             </VButton>
@@ -41,7 +41,7 @@
               :variant="ButtonVariant.Link"
               aria-label="Предыдущей слайд"
               :id="sliderPrevButtonId"
-              :class="{ hidden: isNavigationHidden }"
+              :class="{ hidden: navigationHidden }"
             >
               <ArrowLeft
                 aria-hidden="true"
@@ -55,7 +55,7 @@
               :variant="ButtonVariant.Link"
               aria-label="Следующий слайд"
               :id="sliderNextButtonId"
-              :class="{ hidden: isNavigationHidden }"
+              :class="{ hidden: navigationHidden }"
             >
               <ArrowRight
                 aria-hidden="true"
@@ -77,7 +77,7 @@
           <VPropertyCard
             v-for="property in filteredProperties"
             :key="property.slug"
-            :property="property"
+            :property
             full-price
             class="swiper-slide flex"
           />
@@ -109,25 +109,30 @@ import { ArrowLeft, ArrowRight } from 'lucide-vue-next';
 import type SwiperInstance from 'swiper';
 import { computed, nextTick, onMounted, onUnmounted, ref, useId, useTemplateRef, watch } from 'vue';
 
-import { loadSwiperCore, loadSwiperNavigation } from '@/components/ui/swiper/loader';
+import { loadSwiperCore, loadSwiperNavigation } from '@/components/ui/swiper/swiper.utils';
 import { ButtonRounded, ButtonSize, ButtonVariant } from '@/components/vue/button/button.enums';
 import VButton from '@/components/vue/button/VButton.vue';
 import VPropertyCard from '@/components/vue/property-card/VPropertyCard.vue';
 
-const props = defineProps<{
+const { info } = defineProps<{
   info: TShowcaseBanner;
 }>();
 
 const propertyTypes: string[] = [
-  ...new Set(props.info.properties.map((property) => property.propertyType?.name ?? '').filter(Boolean)),
+  ...new Set(info.properties.map((property) => property.propertyType?.name ?? '').filter(Boolean)),
 ];
 const DEFAULT_FILTER_VALUE = 'Все';
-const filters = [DEFAULT_FILTER_VALUE, ...propertyTypes] as const;
+const filterButtons = [DEFAULT_FILTER_VALUE, ...propertyTypes].map((filter) => ({
+  filter,
+  onClick() {
+    onClickFilter(filter);
+  },
+}));
 let sliderInstance: null | SwiperInstance = null;
 
 const swiperRef = useTemplateRef<HTMLElement>('swiper');
 const activeFilter = ref<string>(DEFAULT_FILTER_VALUE);
-const isNavigationHidden = ref<boolean>(false);
+const navigationHidden = ref<boolean>(false);
 
 const swiperInstanceId = useId().replace(/:/g, '-');
 const sliderPrevButtonId = `slider-prev-button-${swiperInstanceId}`;
@@ -135,16 +140,12 @@ const sliderNextButtonId = `slider-next-button-${swiperInstanceId}`;
 
 const filteredProperties = computed<TPropertyListItem[]>(() =>
   activeFilter.value === DEFAULT_FILTER_VALUE
-    ? props.info.properties
-    : props.info.properties.filter((property) => property.propertyType?.name === activeFilter.value),
+    ? info.properties
+    : info.properties.filter((property) => property.propertyType?.name === activeFilter.value),
 );
 
-function loadSwiper() {
-  return Promise.all([loadSwiperCore(), loadSwiperNavigation()]);
-}
-
 function updateNavigationVisibility() {
-  isNavigationHidden.value = sliderInstance ? sliderInstance.isBeginning && sliderInstance.isEnd : true;
+  navigationHidden.value = sliderInstance ? sliderInstance.isBeginning && sliderInstance.isEnd : true;
 }
 
 function onClickFilter(filter: string) {
@@ -152,7 +153,7 @@ function onClickFilter(filter: string) {
 }
 
 async function initSwiper() {
-  const [{ Swiper }, { Navigation }] = await loadSwiper();
+  const [{ Swiper }, { Navigation }] = await Promise.all([loadSwiperCore(), loadSwiperNavigation()]);
 
   if (!swiperRef.value) return;
 

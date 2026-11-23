@@ -1,4 +1,4 @@
-export default ({ env }: { env: EnvFn }) => {
+export default function createDatabaseConfig({ env }: { env: IEnvFn }) {
   const client = env('DATABASE_CLIENT', 'mysql');
 
   const connection = {
@@ -26,4 +26,4 @@ export default ({ env }: { env: EnvFn }) => {
       acquireConnectionTimeout: env.int('DATABASE_CONNECTION_TIMEOUT', 60000),
     },
   };
-};
+}

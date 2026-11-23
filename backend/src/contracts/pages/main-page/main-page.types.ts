@@ -1,4 +1,4 @@
-import { MainPagePageFacetSchema, MainPagePageFormSchema, MainPageSchema } from './main-page.schemas';
+import { type MainPagePageFacetSchema, type MainPagePageFormSchema, type MainPageSchema } from './main-page.schemas';
 import type { InferOutput } from 'valibot';
 
 export type TMainPage = InferOutput<typeof MainPageSchema>;

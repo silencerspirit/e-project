@@ -7,36 +7,38 @@ import { verifySmartCaptcha } from '../../../utils/smartcaptcha/smartcaptcha.uti
 import { REQUEST_FORM_LOG_MESSAGES, REQUEST_FORM_MESSAGES } from '../request-form.constants';
 import type { Context } from 'koa';
 
-export default ({ strapi }: { strapi: Core.Strapi }) => ({
-  async sendForm(context: Context & { request: { body: unknown } }) {
-    const parsed = safeParse(RequestFormSubmissionSchema, context.request.body);
+export default function createRequestFormController({ strapi }: { strapi: Core.Strapi }) {
+  return {
+    async sendForm(context: Context & { request: { body: unknown } }) {
+      const parsed = safeParse(RequestFormSubmissionSchema, context.request.body);
 
-    if (!parsed.success) {
-      return context.badRequest(REQUEST_FORM_MESSAGES.invalid);
-    }
-
-    const { captchaToken, ...form } = parsed.output;
-
-    try {
-      await verifySmartCaptcha(captchaToken, context.ip, {
-        secretKey: strapi.config.get<string>('smartcaptcha.secretKey', ''),
-        allowedHosts: strapi.config.get<string[]>('smartcaptcha.allowedHosts', []),
-      });
-    } catch (error) {
-      if (error instanceof SmartCaptchaError) {
-        if (error.status === HttpStatus.BadRequest) return context.badRequest(error.message);
-        strapi.log.warn(REQUEST_FORM_LOG_MESSAGES.captchaUnavailable);
-        return context.serviceUnavailable(error.message);
+      if (!parsed.success) {
+        return context.badRequest(REQUEST_FORM_MESSAGES.invalid);
       }
-      throw error;
-    }
 
-    try {
-      await strapi.service('api::request-form.request-form').sendForm(form);
-      return {};
-    } catch {
-      strapi.log.error(REQUEST_FORM_LOG_MESSAGES.emailFailed);
-      return context.internalServerError(REQUEST_FORM_MESSAGES.failed);
-    }
-  },
-});
+      const { captchaToken, ...form } = parsed.output;
+
+      try {
+        await verifySmartCaptcha(captchaToken, context.ip, {
+          secretKey: strapi.config.get<string>('smartcaptcha.secretKey', ''),
+          allowedHosts: strapi.config.get<string[]>('smartcaptcha.allowedHosts', []),
+        });
+      } catch (error) {
+        if (error instanceof SmartCaptchaError) {
+          if (error.status === HttpStatus.BadRequest) return context.badRequest(error.message);
+          strapi.log.warn(REQUEST_FORM_LOG_MESSAGES.captchaUnavailable);
+          return context.serviceUnavailable(error.message);
+        }
+        throw error;
+      }
+
+      try {
+        await strapi.service('api::request-form.request-form').sendForm(form);
+        return {};
+      } catch {
+        strapi.log.error(REQUEST_FORM_LOG_MESSAGES.emailFailed);
+        return context.internalServerError(REQUEST_FORM_MESSAGES.failed);
+      }
+    },
+  };
+}

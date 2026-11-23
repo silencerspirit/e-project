@@ -6,7 +6,7 @@ const CACHE_CONTROL_HEADER = 'public, max-age=3600, s-maxage=3600';
 
 export const prerender = false;
 
-export const GET: APIRoute = async ({ request }) => {
+export async function GET({ request }: Parameters<APIRoute>[0]): Promise<Response> {
   const siteUrl = getPublicSiteUrl(request.url);
   const sitemapUrl = new URL('/sitemap.xml', `${siteUrl}/`).toString();
 
@@ -18,4 +18,4 @@ export const GET: APIRoute = async ({ request }) => {
       'Cache-Control': CACHE_CONTROL_HEADER,
     },
   });
-};
+}

@@ -18,7 +18,9 @@ export default factories.createCoreController('api::navigation-item.navigation-i
       };
 
       items.forEach((item) => {
-        if (item.position) positionMap[item.position].push(item);
+        if (item.position) {
+          positionMap[item.position].push(item);
+        }
       });
 
       return parse(MenuSchema, positionMap);

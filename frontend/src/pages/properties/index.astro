@@ -2,7 +2,7 @@
 import { getPropertyListingPage, getPropertyListingPageList } from '@/api';
 import { parsePropertyListingPageRequest } from '@/components/pages/properties';
 
-import PropertyListingPageWrapper from '@/components/pages/properties/components/PropertyListingPageWrapper.astro';
+import PropertyListingPageWrapper from '@/components/pages/properties/listing/PropertyListingPageWrapper.astro';
 
 const { parsedSegments, query, request } = parsePropertyListingPageRequest(Astro.url.searchParams);
 

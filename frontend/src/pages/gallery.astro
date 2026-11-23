@@ -1,15 +1,25 @@
 ---
+import type { TGalleryPage } from '@contracts';
+
 import { getGalleryPage } from '@/api';
 import { ListView, VIEW_COOKIE_NAME } from '@/components/pages/gallery';
-import VGalleryContainer from '@/components/pages/gallery/components/VGalleryContainer.vue';
+import VGalleryContainer from '@/components/pages/gallery/VGalleryContainer.vue';
 import VBreadcrumbs from '@/components/vue/breadcrumbs/VBreadcrumbs.vue';
 
 import Layout from '@/layouts/Layout.astro';
 
-const page = await getGalleryPage();
+let page: TGalleryPage | undefined;
 
-const metaTitle: string = page.seo?.metaTitle ?? '';
-const metaDescription: string = page.seo?.metaDescription ?? '';
+try {
+  page = await getGalleryPage();
+} catch {
+  Astro.response.status = 503;
+  Astro.response.headers.set('Cache-Control', 'no-store');
+}
+
+const title = page?.title ?? 'Фотогалерея';
+const metaTitle: string = page?.seo?.metaTitle ?? title;
+const metaDescription: string = page?.seo?.metaDescription ?? '';
 
 const initialView: ListView = (Astro.cookies?.get(VIEW_COOKIE_NAME)?.value as ListView) ?? ListView.Grid2X2;
 ---
@@ -19,15 +29,34 @@ const initialView: ListView = (Astro.cookies?.get(VIEW_COOKIE_NAME)?.value as Li
   metaDescription={metaDescription}
 >
   <VBreadcrumbs
-    title={page.title}
-    description={page.description}
+    title={title}
+    description={page?.description}
   />
 
   <section class="py-12 lg:py-16">
-    <VGalleryContainer
-      client:load
-      items={page.items}
-      view={initialView}
-    />
+    {
+      page ? (
+        <VGalleryContainer
+          client:load
+          items={page.items}
+          view={initialView}
+        />
+      ) : (
+        <div class="mx-auto max-w-7xl space-y-4 px-4 text-center sm:px-6 lg:px-8">
+          <p
+            role="status"
+            class="text-muted-foreground"
+          >
+            Фотографии временно недоступны. Попробуйте обновить страницу позже.
+          </p>
+          <a
+            href={Astro.url.pathname}
+            class="inline-block text-primary underline underline-offset-4"
+          >
+            Обновить страницу
+          </a>
+        </div>
+      )
+    }
   </section>
 </Layout>

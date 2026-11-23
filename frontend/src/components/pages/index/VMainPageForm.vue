@@ -122,7 +122,7 @@
 
       <div class="flex items-end">
         <VButton
-          size="{ButtonSize.Lg}"
+          :size="ButtonSize.Lg"
           type="submit"
           class="h-12 w-full gap-2 bg-primary font-medium text-primary-foreground hover:bg-primary/90"
         >
@@ -142,6 +142,7 @@ import type { TMainPageForm } from '@contracts';
 import { Banknote, Building2, ChevronDown, MapPin, Search } from 'lucide-vue-next';
 import { reactive } from 'vue';
 
+import { ButtonSize } from '@/components/vue/button/button.enums';
 import VButton from '@/components/vue/button/VButton.vue';
 import VInput from '@/components/vue/input/VInput.vue';
 import { formatPrice } from '@/helpers';
@@ -150,7 +151,7 @@ import { buildSegmentsUrl, FilterCode, type TParsedSegments } from '../propertie
 
 const ALL_VALUE = 'all';
 
-const props = defineProps<{
+const { form } = defineProps<{
   form: TMainPageForm;
 }>();
 
@@ -178,11 +179,17 @@ function getFilters(): TParsedSegments {
   const filters: TParsedSegments = {};
   const propertyType = fields.propertyType;
   const city = fields.city;
-  const budget = normalizeBudgetValue(fields.budget, props.form.maxPrice.toString());
+  const budget = normalizeBudgetValue(fields.budget, form.maxPrice.toString());
 
-  if (propertyType && propertyType !== ALL_VALUE) filters[FilterCode.PropertyType] = propertyType;
-  if (city && city !== ALL_VALUE) filters[FilterCode.City] = city;
-  if (budget) filters[FilterCode.PriceTo] = budget;
+  if (propertyType && propertyType !== ALL_VALUE) {
+    filters[FilterCode.PropertyType] = propertyType;
+  }
+  if (city && city !== ALL_VALUE) {
+    filters[FilterCode.City] = city;
+  }
+  if (budget) {
+    filters[FilterCode.PriceTo] = budget;
+  }
 
   return filters;
 }

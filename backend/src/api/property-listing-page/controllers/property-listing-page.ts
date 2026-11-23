@@ -7,7 +7,7 @@ import {
 } from '@/contracts';
 import { factories } from '@strapi/strapi';
 import { parse } from 'valibot';
-import { Context } from 'koa';
+import { type Context } from 'koa';
 
 export default factories.createCoreController('api::property-listing-page.property-listing-page', ({ strapi }) => ({
   async getPropertyListingPage() {

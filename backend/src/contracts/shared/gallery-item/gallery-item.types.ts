@@ -1,4 +1,4 @@
-import { GalleryItemScheme } from './gallery-item.schemas';
+import { type GalleryItemScheme } from './gallery-item.schemas';
 
 import type { InferOutput } from 'valibot';
 

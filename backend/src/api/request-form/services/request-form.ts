@@ -1,25 +1,27 @@
 import type { TRequestForm } from '@/contracts';
 import type { Core } from '@strapi/strapi';
 
-export default ({ strapi }: { strapi: Core.Strapi }) => ({
-  async sendForm(params: TRequestForm) {
-    const to = process.env.SMTP_USERNAME;
+export default function createRequestFormService({ strapi }: { strapi: Core.Strapi }) {
+  return {
+    async sendForm(params: TRequestForm) {
+      const to = process.env.SMTP_USERNAME;
 
-    if (!to) {
-      throw new Error('Email recipient is not configured');
-    }
+      if (!to) {
+        throw new Error('Email recipient is not configured');
+      }
 
-    await strapi
-      .plugin('email')
-      .service('email')
-      .send({
-        to,
-        subject: buildSubject(params),
-        text: buildPlainText(params),
-        html: buildHtml(params),
-      });
-  },
-});
+      await strapi
+        .plugin('email')
+        .service('email')
+        .send({
+          to,
+          subject: buildSubject(params),
+          text: buildPlainText(params),
+          html: buildHtml(params),
+        });
+    },
+  };
+}
 
 function buildSubject(params: TRequestForm): string {
   return params.pageUrl ? `Новая заявка с ${params.pageUrl}` : 'Новая заявка с сайта';

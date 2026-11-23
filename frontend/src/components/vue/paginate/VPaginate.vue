@@ -1,6 +1,6 @@
 <template>
   <nav
-    v-if="isVisible"
+    v-if="visible"
     class="flex"
     :class="$attrs.class"
     aria-label="Навигация по страницам"
@@ -51,19 +51,19 @@ defineOptions({
 
 const ELLIPSIS = '...';
 
-const props = defineProps<{
+const { paginate } = defineProps<{
   paginate: TPaginate;
 }>();
 
 const { url } = useAstro();
 
-const totalPages = computed<number>(() => props.paginate.totalPages);
+const totalPages = computed<number>(() => paginate.totalPages);
 const currentPage = computed<number>(() => {
   if (totalPages.value <= 0) {
     return 0;
   }
 
-  return Math.min(Math.max(props.paginate.page, 1), totalPages.value);
+  return Math.min(Math.max(paginate.page, 1), totalPages.value);
 });
 
 const visiblePages = computed<number[]>(() => buildVisiblePages(totalPages.value, currentPage.value));
@@ -84,7 +84,7 @@ const items = computed<Array<number | typeof ELLIPSIS>>(() => {
   return result;
 });
 
-const isVisible = computed<boolean>(() => totalPages.value > 1);
+const visible = computed<boolean>(() => totalPages.value > 1);
 
 function buildHref(targetPage: number): string {
   const search = (import.meta.env.SSR ? url?.search : window.location.search) ?? '';

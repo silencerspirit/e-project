@@ -26,6 +26,17 @@ export const ImageScheme = /*#__PURE__*/ pipe(
   })),
 );
 
+export const ImageResponseSchema = /*#__PURE__*/ object({
+  url: string(),
+  alternativeText: string(),
+  formats: object({
+    large: string(),
+    medium: string(),
+    small: string(),
+    thumbnail: string(),
+  }),
+});
+
 export const ImageTransformScheme = /*#__PURE__*/ pipe(
   object({
     image: nullish(ImageScheme, null),

@@ -1,4 +1,4 @@
-import { FeatureItemScheme } from './feature-item.schemas';
+import { type FeatureItemScheme } from './feature-item.schemas';
 
 import type { InferOutput } from 'valibot';
 

@@ -35,7 +35,7 @@
             v-if="info?.content"
             class="html-content mt-6 space-y-4 leading-relaxed text-muted-foreground"
             v-html="info?.content"
-          ></div>
+          />
         </article>
       </div>
     </div>

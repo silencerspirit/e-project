@@ -1,4 +1,4 @@
-import { FeatureBannerScheme } from './feature-banner.schemas';
+import { type FeatureBannerScheme } from './feature-banner.schemas';
 
 import type { InferOutput } from 'valibot';
 

@@ -1,2 +1,2 @@
-export * from './gallery.const';
+export * from './gallery.consts';
 export * from './gallery.enums';

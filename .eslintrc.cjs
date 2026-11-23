@@ -1,10 +1,26 @@
 const prettierPluginAstro = require.resolve('prettier-plugin-astro');
 const prettierPluginTailwindcss = require.resolve('prettier-plugin-tailwindcss');
 
-const perfectionistNaturalSort = {
+const PERFECTIONIST_NATURAL_SORT = {
   order: 'asc',
   type: 'natural',
 };
+
+const CODE_STYLE_RESTRICTED_SYNTAX = [
+  {
+    selector: 'IfStatement[consequent.type="ExpressionStatement"]',
+    message: 'Для тела if с выражением обязательны фигурные скобки.',
+  },
+  {
+    selector: 'IfStatement[alternate.type="ExpressionStatement"]',
+    message: 'Для тела else с выражением обязательны фигурные скобки.',
+  },
+  {
+    selector:
+      'CallExpression[callee.type="Identifier"][callee.name=/^(ref|reactive|computed|shallowRef)$/]:not([typeArguments])',
+    message: 'Для реактивного состояния явно укажите тип через generic-параметр.',
+  },
+];
 
 module.exports = {
   root: true,
@@ -21,6 +37,7 @@ module.exports = {
     '**/.astro/**',
     '**/.cache/**',
     '**/.tmp/**',
+    'output/alfa-dev/**',
     'backend/public/**',
     'frontend/public/**',
     'backend/types/generated/**',
@@ -106,9 +123,9 @@ module.exports = {
             ],
           },
         ],
-        'simple-import-sort/exports': 'error',
         'no-restricted-syntax': [
           'error',
+          ...CODE_STYLE_RESTRICTED_SYNTAX,
           {
             selector:
               "Property[key.type='Identifier'][key.name='link'][value.type='Literal'][value.value=/^\\/(?!$).+[^\\/]$/]",
@@ -185,8 +202,25 @@ module.exports = {
             ],
           },
         ],
-        'simple-import-sort/exports': 'error',
-        'vue/multi-word-component-names': 'off',
+        'vue/define-emits-declaration': ['error', 'type-literal'],
+        'vue/html-self-closing': [
+          'error',
+          {
+            html: { component: 'always', normal: 'always', void: 'always' },
+            math: 'always',
+            svg: 'always',
+          },
+        ],
+        'vue/multi-word-component-names': 'error',
+        'vue/no-restricted-syntax': [
+          'error',
+          {
+            selector:
+              'VAttribute[directive=true][key.name.name="on"] > VExpressionContainer[expression.type!="Identifier"][expression.type!="MemberExpression"]',
+            message: 'Для обработчиков событий используйте ссылки на именованные методы.',
+          },
+        ],
+        'vue/v-bind-style': ['error', 'shorthand', { sameNameShorthand: 'always' }],
       },
     },
     {
@@ -222,14 +256,35 @@ module.exports = {
     },
   ],
   rules: {
-    'perfectionist/sort-enums': ['error', perfectionistNaturalSort],
-    'perfectionist/sort-exports': ['error', perfectionistNaturalSort],
-    'perfectionist/sort-interfaces': ['error', perfectionistNaturalSort],
-    'perfectionist/sort-intersection-types': ['error', perfectionistNaturalSort],
-    'perfectionist/sort-named-exports': ['error', perfectionistNaturalSort],
-    'perfectionist/sort-named-imports': ['error', perfectionistNaturalSort],
-    'perfectionist/sort-object-types': ['error', perfectionistNaturalSort],
-    'perfectionist/sort-union-types': ['error', perfectionistNaturalSort],
+    '@typescript-eslint/consistent-type-imports': [
+      'error',
+      { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
+    ],
+    '@typescript-eslint/naming-convention': [
+      'error',
+      {
+        selector: 'interface',
+        format: ['PascalCase'],
+        prefix: ['I'],
+        filter: { regex: '^(Props|Window|ImportMeta|ImportMetaEnv)$', match: false },
+      },
+      {
+        selector: 'typeAlias',
+        format: ['PascalCase'],
+        prefix: ['T'],
+        filter: { regex: '^(MaybeArray|CSSStyleDeclarationOptional|CSSClassDeclaration|VNodeArray)$', match: false },
+      },
+    ],
+    'func-style': ['error', 'declaration'],
+    'no-restricted-syntax': ['error', ...CODE_STYLE_RESTRICTED_SYNTAX],
+    'perfectionist/sort-enums': ['error', PERFECTIONIST_NATURAL_SORT],
+    'perfectionist/sort-exports': ['error', PERFECTIONIST_NATURAL_SORT],
+    'perfectionist/sort-interfaces': ['error', PERFECTIONIST_NATURAL_SORT],
+    'perfectionist/sort-intersection-types': ['error', PERFECTIONIST_NATURAL_SORT],
+    'perfectionist/sort-named-exports': ['error', PERFECTIONIST_NATURAL_SORT],
+    'perfectionist/sort-named-imports': ['error', PERFECTIONIST_NATURAL_SORT],
+    'perfectionist/sort-object-types': ['error', PERFECTIONIST_NATURAL_SORT],
+    'perfectionist/sort-union-types': ['error', PERFECTIONIST_NATURAL_SORT],
     'prettier/prettier': [
       'error',
       {

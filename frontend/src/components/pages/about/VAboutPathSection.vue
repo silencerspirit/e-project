@@ -21,7 +21,7 @@
         <div
           class="absolute bottom-0 left-4 top-0 w-px bg-border lg:left-1/2 lg:-translate-x-px"
           aria-hidden="true"
-        ></div>
+        />
         <ol class="space-y-12">
           <li
             class="relative"
@@ -54,13 +54,13 @@
                   </p>
                 </div>
               </div>
-              <div class="hidden lg:block lg:w-1/2"></div>
+              <div class="hidden lg:block lg:w-1/2" />
             </div>
 
             <div
               class="absolute left-4 top-8 h-3 w-3 -translate-x-1.5 rounded-full bg-primary ring-4 ring-background lg:left-1/2 lg:-translate-x-1.5"
               aria-hidden="true"
-            ></div>
+            />
           </li>
         </ol>
       </div>

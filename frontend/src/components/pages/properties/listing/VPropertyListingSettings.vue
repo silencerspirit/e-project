@@ -5,7 +5,7 @@
       class="inline-flex items-center gap-2 text-sm xl:hidden"
       aria-controls="property-listing-filters"
       aria-expanded="false"
-      @click="emit('openFilters')"
+      @click="onFiltersOpen"
     >
       <SlidersHorizontal
         aria-hidden="true"
@@ -24,7 +24,7 @@
           name="sort"
           aria-label="Сортировка недвижимости"
           class="appearance-none rounded-lg border-none bg-secondary py-2 pl-3 pr-8 text-sm text-foreground outline-none focus:ring-2 focus:ring-primary/30"
-          @change="onChangeSort"
+          @change="onSortChange"
         >
           <option
             v-for="sort in SORT_LIST"
@@ -44,8 +44,8 @@
 
     <div class="hidden items-center rounded-lg bg-secondary p-1 lg:flex">
       <button
-        v-for="{ label, icon, key } in VIEW_LIST"
-        :key="key"
+        v-for="{ label, icon, key, onClick } in viewButtons"
+        :key
         type="button"
         class="rounded-md p-1.5 transition-colors"
         :class="{
@@ -54,7 +54,7 @@
         }"
         :aria-label="label"
         :aria-pressed="view === key"
-        @click="emit('changeView', key)"
+        @click="onClick"
       >
         <component
           :is="icon"
@@ -74,25 +74,17 @@ import { declOfNum } from '@/helpers';
 
 import { ListView } from '../properties.enums';
 
-const props = defineProps<{
+const { paginate } = defineProps<{
   paginate: TPaginate;
   query: TPropertyListingPageQuery;
   view: ListView;
 }>();
 
 const emit = defineEmits<{
-  changeSort: [value: PropertyListingPageSort];
-  changeView: [value: ListView];
-  openFilters: [];
+  filtersOpen: [];
+  sortChange: [value: PropertyListingPageSort];
+  viewChange: [value: ListView];
 }>();
-
-const countText = computed<string>(() =>
-  declOfNum(props.paginate.totalItems, [
-    `Найден ${props.paginate.totalItems} объект`,
-    `Найдено ${props.paginate.totalItems} объекта`,
-    `Найдено ${props.paginate.totalItems} объектов`,
-  ]),
-);
 
 const SORT_LIST = [
   {
@@ -122,9 +114,28 @@ const VIEW_LIST = [
   },
 ] as const;
 
-function onChangeSort(e: Event) {
+const viewButtons = VIEW_LIST.map((button) => ({
+  ...button,
+  onClick() {
+    emit('viewChange', button.key);
+  },
+}));
+
+const countText = computed<string>(() =>
+  declOfNum(paginate.totalItems, [
+    `Найден ${paginate.totalItems} объект`,
+    `Найдено ${paginate.totalItems} объекта`,
+    `Найдено ${paginate.totalItems} объектов`,
+  ]),
+);
+
+function onFiltersOpen() {
+  emit('filtersOpen');
+}
+
+function onSortChange(e: Event) {
   if (!(e.target instanceof HTMLSelectElement)) return;
-  emit('changeSort', e.target.value as PropertyListingPageSort);
+  emit('sortChange', e.target.value as PropertyListingPageSort);
 }
 </script>
 

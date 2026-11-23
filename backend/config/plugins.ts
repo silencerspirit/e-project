@@ -1,9 +1,9 @@
-export default ({ env }: { env: EnvFn }) => {
-  const hasS3Credentials = Boolean(
+export default function createPluginsConfig({ env }: { env: IEnvFn }) {
+  const s3CredentialsConfigured = Boolean(
     env('S3_ENDPOINT') && env('S3_BUCKET') && env('S3_ACCESS_KEY_ID') && env('S3_SECRET_ACCESS_KEY'),
   );
 
-  const isS3UploadEnabled = env.bool('S3_UPLOAD_ENABLED', hasS3Credentials);
+  const s3UploadEnabled = env.bool('S3_UPLOAD_ENABLED', s3CredentialsConfigured);
   const s3Acl = env('S3_ACL');
 
   const s3Params: Record<string, number | string> = {
@@ -16,7 +16,7 @@ export default ({ env }: { env: EnvFn }) => {
   }
 
   return {
-    ...(isS3UploadEnabled
+    ...(s3UploadEnabled
       ? {
           upload: {
             config: {
@@ -73,4 +73,4 @@ export default ({ env }: { env: EnvFn }) => {
       },
     },
   };
-};
+}

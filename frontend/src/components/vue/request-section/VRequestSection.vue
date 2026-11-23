@@ -11,8 +11,8 @@
           class="pointer-events-none absolute inset-0 opacity-10"
           aria-hidden="true"
         >
-          <div class="absolute right-0 top-0 h-96 w-96 -translate-y-1/2 translate-x-1/2 rounded-full bg-card"></div>
-          <div class="absolute bottom-0 left-0 h-64 w-64 -translate-x-1/2 translate-y-1/2 rounded-full bg-card"></div>
+          <div class="absolute right-0 top-0 h-96 w-96 -translate-y-1/2 translate-x-1/2 rounded-full bg-card" />
+          <div class="absolute bottom-0 left-0 h-64 w-64 -translate-x-1/2 translate-y-1/2 rounded-full bg-card" />
         </div>
 
         <div class="relative grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
@@ -126,7 +126,7 @@ import VFormFeedback from '@/components/vue/form-feedback/VFormFeedback.vue';
 import VFormSuccess from '@/components/vue/form-success/VFormSuccess.vue';
 import { useRequestForm } from '@/composables';
 
-import VInput from './input/VInput.vue';
+import VInput from '../input/VInput.vue';
 
 defineProps<{ info: TRequestBanner }>();
 

@@ -26,7 +26,7 @@
             :key="property.slug"
             hideDetails
             class="swiper-slide flex h-auto"
-            :property="property"
+            :property
           />
         </ul>
       </div>
@@ -40,7 +40,7 @@ import { ArrowRight } from 'lucide-vue-next';
 import type SwiperInstance from 'swiper';
 import { onMounted, onUnmounted, useTemplateRef } from 'vue';
 
-import { loadSwiperCore } from '@/components/ui/swiper/loader';
+import { loadSwiperCore } from '@/components/ui/swiper/swiper.utils';
 import VPropertyCard from '@/components/vue/property-card/VPropertyCard.vue';
 
 defineProps<{
@@ -50,12 +50,8 @@ defineProps<{
 let sliderInstance: null | SwiperInstance = null;
 const swiperRef = useTemplateRef<HTMLElement>('swiper');
 
-function loadSwiper() {
-  return loadSwiperCore();
-}
-
 async function initSwiper() {
-  const { Swiper } = await loadSwiper();
+  const { Swiper } = await loadSwiperCore();
 
   if (!swiperRef.value) return;
 

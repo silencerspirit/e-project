@@ -110,7 +110,7 @@
                   name="comment"
                   placeholder="Опишите ваш вопрос..."
                   class="min-h-[120px] w-full resize-none rounded-xl border border-input py-3 pl-12 pr-4 text-base focus:outline-none focus:ring-1 focus:ring-ring"
-                ></textarea>
+                />
               </div>
             </div>
             <VButton

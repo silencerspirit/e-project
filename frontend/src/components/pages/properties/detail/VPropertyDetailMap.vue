@@ -17,10 +17,10 @@
       <div
         :ref="MAP_CONTAINER_REF"
         class="h-full w-full"
-      ></div>
+      />
 
       <VMapZoomControls
-        :current-zoom="currentZoom"
+        :current-zoom
         :max-zoom="MAP_MAX_ZOOM"
         :min-zoom="MAP_MIN_ZOOM"
         @zoom-in="zoomIn"
@@ -38,21 +38,21 @@ import { computed, useTemplateRef } from 'vue';
 import VMapZoomControls from '@/components/vue/map/VMapZoomControls.vue';
 import { MAP_CONTAINER_REF, MAP_MAX_ZOOM, MAP_MIN_ZOOM, useMap } from '@/composables';
 
-const props = defineProps<{
+const { item } = defineProps<{
   item: TPropertyFullItem;
 }>();
 
 const mapContainerEl = useTemplateRef<HTMLElement>(MAP_CONTAINER_REF);
-const coordinates = computed<[number, number]>(() => [props.item.longitude ?? 0, props.item.latitude ?? 0]);
+const coordinates = computed<[number, number]>(() => [item.longitude ?? 0, item.latitude ?? 0]);
 const { currentZoom, zoomIn, zoomOut } = useMap(() => {
-  if (props.item.longitude == null || props.item.latitude == null) return;
+  if (item.longitude == null || item.latitude == null) return;
 
   return {
     container: mapContainerEl.value,
     center: coordinates.value,
     markers: [
       {
-        id: props.item.slug,
+        id: item.slug,
         coordinates: coordinates.value,
       },
     ],

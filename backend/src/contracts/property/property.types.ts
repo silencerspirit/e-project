@@ -1,10 +1,10 @@
 import { type InferOutput } from 'valibot';
 import {
-  PropertyFullItemSchema,
-  PropertyListItemSchema,
-  PropertySlugListItemSchema,
-  PropertySlugListSchema,
-  PropertySlugSchema,
+  type PropertyFullItemSchema,
+  type PropertyListItemSchema,
+  type PropertySlugListItemSchema,
+  type PropertySlugListSchema,
+  type PropertySlugSchema,
 } from './property.schemas';
 
 export type TPropertySlug = InferOutput<typeof PropertySlugSchema>;

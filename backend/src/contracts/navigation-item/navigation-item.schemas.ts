@@ -1,4 +1,4 @@
-import { array, GenericSchema, nullish, number, object, string } from 'valibot';
+import { array, type GenericSchema, nullish, number, object, string } from 'valibot';
 import { MenuPosition } from './navigation-item.enums';
 
 interface INavigationItem {

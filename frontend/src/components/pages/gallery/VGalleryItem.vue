@@ -34,7 +34,7 @@ import type { TGalleryItem } from '@contracts';
 import { LucideZoomIn } from 'lucide-vue-next';
 
 import VImage from '@/components/vue/image/VImage.vue';
-const props = defineProps<{
+const { index } = defineProps<{
   index: number;
   item: TGalleryItem;
 }>();
@@ -44,7 +44,7 @@ const emit = defineEmits<{
 }>();
 
 function onClick() {
-  emit('open', props.index);
+  emit('open', index);
 }
 </script>
 

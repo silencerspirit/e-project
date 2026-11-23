@@ -52,6 +52,7 @@ lcov.info
 ############################
 dist/
 build/
+/output/alfa-dev/
 coverage/
 .cache/
 .tmp/

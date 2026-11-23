@@ -59,13 +59,13 @@
 <script lang="ts" setup>
 import type { TFeatureBanner } from '@contracts';
 import { ArrowRight, Building, House, Key, Store } from 'lucide-vue-next';
-const props = defineProps<{
+const { info } = defineProps<{
   info: TFeatureBanner;
 }>();
 
 const ICONS = [Building, House, Store, Key];
 
-const featuresList = props.info.features.map((feature, i) => ({
+const featuresList = info.features.map((feature, i) => ({
   ...feature,
   icon: ICONS[i] ?? Building,
 }));

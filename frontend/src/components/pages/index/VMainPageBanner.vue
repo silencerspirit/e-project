@@ -11,7 +11,7 @@
         fetchpriority="high"
         loading="eager"
       />
-      <div class="absolute inset-0 bg-gradient-to-r from-foreground/85 via-foreground/65 to-foreground/45"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-foreground/85 via-foreground/65 to-foreground/45" />
     </div>
 
     <div class="relative z-10 mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
@@ -25,10 +25,10 @@
 
         <p class="mt-6 max-w-2xl text-lg leading-relaxed text-card/80 sm:text-xl">{{ info.description }}</p>
 
-        <VMainPageForm :form="form" />
+        <VMainPageForm :form />
 
         <div
-          v-if="isExistMetrics"
+          v-if="metricsAvailable"
           class="mt-10 flex flex-wrap gap-8 lg:gap-12"
         >
           <div
@@ -51,10 +51,10 @@ import VImage from '@/components/vue/image/VImage.vue';
 
 import VMainPageForm from './VMainPageForm.vue';
 
-const props = defineProps<{
+const { info } = defineProps<{
   form: TMainPageForm;
   info: THeroBanner;
 }>();
 
-const isExistMetrics: boolean = Boolean(props.info.metrics.length);
+const metricsAvailable: boolean = Boolean(info.metrics.length);
 </script>

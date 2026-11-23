@@ -1,7 +1,7 @@
-export default ({ env }: { env: EnvFn }) => {
+export default function createMiddlewaresConfig({ env }: { env: IEnvFn }) {
   const cspHosts = new Set(['market-assets.strapi.io', ...env.array('S3_CSP_HOSTS', [])]);
 
-  const addHost = (value?: string) => {
+  function addHost(value?: string) {
     if (!value) {
       return;
     }
@@ -11,7 +11,7 @@ export default ({ env }: { env: EnvFn }) => {
     } catch {
       cspHosts.add(value);
     }
-  };
+  }
 
   addHost(env('S3_ENDPOINT', undefined));
   addHost(env('S3_BASE_URL', undefined));
@@ -41,4 +41,4 @@ export default ({ env }: { env: EnvFn }) => {
     'strapi::favicon',
     'strapi::public',
   ];
-};
+}

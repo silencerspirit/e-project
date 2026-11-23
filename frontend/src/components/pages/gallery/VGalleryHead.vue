@@ -4,16 +4,16 @@
       <VButton
         :rounded="ButtonRounded.Full"
         :variant="isActiveGroup('') ? ButtonVariant.Default : ButtonVariant.Outline"
-        @click="onChangeGroup('')"
+        @click="onResetGroup"
       >
         Все
       </VButton>
       <VButton
-        v-for="(group, i) in groups"
+        v-for="({ group, onClick }, i) in groupButtons"
         :rounded="ButtonRounded.Full"
         :key="i"
         :variant="isActiveGroup(group) ? ButtonVariant.Default : ButtonVariant.Outline"
-        @click="onChangeGroup(group)"
+        @click="onClick"
       >
         {{ group }}
       </VButton>
@@ -23,11 +23,11 @@
       <span class="mr-auto text-sm text-muted-foreground md:mr-2">{{ totalText }}</span>
 
       <VButton
-        v-for="{ viewName, icon } in VIEW_BUTTONS"
+        v-for="{ viewName, icon, onClick } in viewButtons"
         :size="ButtonSize.Icon"
         :key="viewName"
         :variant="isActiveView(viewName) ? ButtonVariant.Default : ButtonVariant.Outline"
-        @click="onChangeView(viewName)"
+        @click="onClick"
       >
         <component
           :is="icon"
@@ -45,13 +45,18 @@ import { type Component, computed } from 'vue';
 import { ButtonRounded, ButtonSize, ButtonVariant } from '@/components/vue/button/button.enums';
 import VButton from '@/components/vue/button/VButton.vue';
 
-import { ListView } from '../gallery.enums';
+import { ListView } from './gallery.enums';
 
-const props = defineProps<{ count: number; currentGroup: string; groups: string[]; view: ListView }>();
+const { count, currentGroup, groups, view } = defineProps<{
+  count: number;
+  currentGroup: string;
+  groups: string[];
+  view: ListView;
+}>();
 
 const emit = defineEmits<{
-  changeGroup: [value: string];
-  changeView: [value: ListView];
+  groupChange: [value: string];
+  viewChange: [value: ListView];
 }>();
 
 const VIEW_BUTTONS: {
@@ -68,21 +73,41 @@ const VIEW_BUTTONS: {
   },
 ];
 
-const totalText = computed<string>(() => `${props.count} фото`);
+const viewButtons = VIEW_BUTTONS.map((button) => ({
+  ...button,
+  onClick() {
+    onViewChange(button.viewName);
+  },
+}));
+
+const groupButtons = computed<Array<{ group: string; onClick: () => void }>>(() =>
+  groups.map((group) => ({
+    group,
+    onClick() {
+      onGroupChange(group);
+    },
+  })),
+);
+
+const totalText = computed<string>(() => `${count} фото`);
 
 function isActiveGroup(group: string): boolean {
-  return group === props.currentGroup;
+  return group === currentGroup;
 }
 
 function isActiveView(item: ListView): boolean {
-  return item === props.view;
+  return item === view;
 }
 
-function onChangeGroup(group: string) {
-  emit('changeGroup', group);
+function onGroupChange(group: string) {
+  emit('groupChange', group);
 }
 
-function onChangeView(viewName: ListView) {
-  emit('changeView', viewName);
+function onResetGroup() {
+  onGroupChange('');
+}
+
+function onViewChange(viewName: ListView) {
+  emit('viewChange', viewName);
 }
 </script>

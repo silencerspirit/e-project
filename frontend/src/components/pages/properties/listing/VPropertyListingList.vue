@@ -1,30 +1,30 @@
 <template>
   <div class="v-property-listing-list flex min-w-0 flex-1 flex-col gap-8">
     <VPropertyListingSettings
-      :paginate="paginate"
-      :query="query"
+      :paginate
+      :query
       :view="viewMode"
-      @change-view="onChangeView"
-      @change-sort="onChangeSort"
-      @open-filters="onOpenFilters"
+      @view-change="onViewChange"
+      @sort-change="onSortChange"
+      @filters-open="onFiltersOpen"
     />
 
     <ul
       class="grid grid-cols-1 gap-6 md:grid-cols-2"
       :class="{
-        'lg:grid-cols-1': isListView,
+        'lg:grid-cols-1': listView,
       }"
     >
       <VPropertyCard
         v-for="property in list"
-        :row="isListView"
-        :property="property"
+        :row="listView"
+        :property
         :key="property.slug"
         fullPrice
       />
     </ul>
 
-    <VPaginate :paginate="paginate" />
+    <VPaginate :paginate />
   </div>
 </template>
 
@@ -40,7 +40,7 @@ import { VIEW_COOKIE_NAME } from '../properties.consts';
 import { ListView } from '../properties.enums';
 import VPropertyListingSettings from './VPropertyListingSettings.vue';
 
-const props = defineProps<{
+const { view: viewProp } = defineProps<{
   list: TPropertyListItem[];
   paginate: TPaginate;
   query: TPropertyListingPageQuery;
@@ -48,24 +48,24 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  changeSort: [value: PropertyListingPageSort];
-  openFilters: [];
+  filtersOpen: [];
+  sortChange: [value: PropertyListingPageSort];
 }>();
 
-const viewMode = ref<ListView>(props.view);
+const viewMode = ref<ListView>(viewProp);
 
-const isListView = computed<boolean>(() => viewMode.value === ListView.List);
+const listView = computed<boolean>(() => viewMode.value === ListView.List);
 
-function onChangeView(view: ListView) {
+function onViewChange(view: ListView) {
   viewMode.value = view;
   Cookie.set(VIEW_COOKIE_NAME, view);
 }
 
-function onChangeSort(sort: PropertyListingPageSort) {
-  emit('changeSort', sort);
+function onSortChange(sort: PropertyListingPageSort) {
+  emit('sortChange', sort);
 }
 
-function onOpenFilters() {
-  emit('openFilters');
+function onFiltersOpen() {
+  emit('filtersOpen');
 }
 </script>
